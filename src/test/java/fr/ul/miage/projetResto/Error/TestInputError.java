@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 import static org.junit.jupiter.api.DynamicTest.stream;
 
-@DisplayName("ErrorInput")
+@DisplayName("InputError")
 public class TestInputError {
 
 	@Test
@@ -36,35 +36,84 @@ public class TestInputError {
     @DisplayName("Integer : Vérifier que la methode renvoie null si le nombre est trop petit")
     void checkInputIntegerSmallReturnNull() {
 		String test = "0";
-		assertEquals(3, InputError.checkInteger(test, 1, 5));
+		assertNull(InputError.checkInteger(test, 1, 5));
     }
-	
+	 
 	@Test
     @DisplayName("Integer : Vérifier que la methode renvoie null si le nombre est trop grand")
     void checkInputIntegerBigReturnNull() {
 		String test = "7";
-		assertEquals(3, InputError.checkInteger(test, 1, 5));
+		assertNull(InputError.checkInteger(test, 1, 5));
     }
 	
 	@Test
     @DisplayName("Integer : Vérifier que la methode renvoie null si le nombre dépasse la taille maximum d'un int")
     void checkInputIntegerMaxSizeReturnNull() {
 		String test = "9999999999999999999999999";
-		assertEquals(3, InputError.checkInteger(test, 1, 5));
+		assertNull(InputError.checkInteger(test, 1, 5));
     }
 	
 	@Test
-    @DisplayName("String : Vérifier que si l'input est un integer alors renvoyer null")
-    void checkInputStringReturnNull() {
-		String test = "3";
-		assertNull(InputError.checkString(test));
+    @DisplayName("Integer : Vérifier que la methode renvoie null si le nombre est vide")
+    void checkInputIntegerEmptyReturnNull() {
+		String test = "";
+		assertNull(InputError.checkInteger(test, 1, 5));
     }
 	
 	@Test
-    @DisplayName("String : Vérifier que l'input est un string et renvoie le bon string")
+    @DisplayName("String Commande : Vérifier que on peut ajouter commande enfant")
+    void checkInputStringCommandeEnfant() {
+		String test = "-e 1/5";
+		assertEquals("-e 1/5",InputError.checkStringCommande(test, 1, 5));
+    }
+	
+	@Test
+    @DisplayName("String Commande : Vérifier que on peut ajouter commande adulte")
+    void checkInputStringCommandeAdulte() {
+		String test = "-a 1/5";
+		assertEquals("-a 1/5", InputError.checkStringCommande(test, 1, 5));
+    }
+	
+	@Test
+    @DisplayName("String Commande : Vérifier que on peut valider")
+    void checkInputStringCommandeValidee() {
+		String test = "-v";
+		assertEquals("-v", InputError.checkStringCommande(test, null, null));
+    }
+	
+	@Test
+    @DisplayName("String Commande : Vérifier que on peut supprimer")
+    void checkInputStringCommandeSupprimeElement() {
+		String test = "-d 1/5";
+		assertEquals("-d 1/5", InputError.checkStringCommande(test, 1, 5));
+    }
+	
+	@Test
+    @DisplayName("String Commande : Vérification si input est faux")
+    void checkInputStringCommandeIncorrect() {
+		String test = "-a -e";
+		assertNull(InputError.checkStringCommande(test, 1, 5));
+    }
+	
+	@Test
+    @DisplayName("String Commande : Vérification si input est faux")
+    void checkInputStringCommandeIncorrect2() {
+		String test = "124";
+		assertNull(InputError.checkStringCommande(test, 1, 5));
+    }
+	
+	@Test
+    @DisplayName("String Commande : Vérification si input est faux")
+    void checkInputStringCommandeIncorrect3() {
+		String test = "-a 1 12";
+		assertNull(InputError.checkStringCommande(test, 1, 5));
+    }
+	
+	@Test
+    @DisplayName("String Commande : Vérifier que l'input est un string et renvoie le bon string")
     void checkInputString() {
-		String test = "test";
-		assertEquals("test", InputError.checkString(test));
+		String test = "-a";
+		assertNull(InputError.checkStringCommande(test, null, null));
     }
 	
 	@Test
@@ -89,16 +138,30 @@ public class TestInputError {
     }
 	
 	@Test
-    @DisplayName("Date : Vérifier que la méthode retourne null si la date est impossible")
+    @DisplayName("Date : Vérifier que la méthode retourne null si la date est impossible (31 février) ")
     void checkInputDateImpossibleReturnNull() {
 		String test = "2021/02/31";
 		assertEquals(null, InputError.checkDate(test));
     }
 	
 	@Test
+    @DisplayName("Date : Vérifier que la méthode retourne null si la date est impossible (mois n°56)")
+    void checkInputDateImpossibleReturnNull2() {
+		String test = "2021/56/12";
+		assertEquals(null, InputError.checkDate(test));
+    }
+	
+	@Test
+    @DisplayName("Date : Vérifier que la méthode retourne null si la date est impossible (jour n°56)")
+    void checkInputDateImpossibleReturnNull3() {
+		String test = "2021/03/56";
+		assertEquals(null, InputError.checkDate(test));
+    }
+	
+	@Test
     @DisplayName("Date : Vérifier que la méthode retourne la bonne date sous forme de string si elle est correcte")
     void checkInputDate() {
-		String test = "test-";
-		assertEquals(null, InputError.checkDate(test));
+		String test = "2021/03/30";
+		assertEquals("2021/03/30", InputError.checkDate(test));
     }
 }
