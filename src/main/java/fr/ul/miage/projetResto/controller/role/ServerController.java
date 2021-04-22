@@ -30,6 +30,9 @@ public class ServerController extends RoleMenuController {
             case 3:
                 takeOrders();
                 break;
+            case 4:
+                serveOrders();
+                break;
         }
     }
 
@@ -40,5 +43,8 @@ public class ServerController extends RoleMenuController {
     }
 
     protected void takeOrders() {
+    }
+
+    private void serveOrders() {
     }
 }
