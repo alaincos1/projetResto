@@ -1,4 +1,5 @@
 package fr.ul.miage.projetResto.view.role;
 
-public class ButlerView {
+public class ButlerView extends RoleView {
+
 }

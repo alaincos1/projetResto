@@ -1,4 +1,5 @@
 package fr.ul.miage.projetResto.view.role;
 
-public class CookView {
+public class CookView extends RoleView {
+
 }
