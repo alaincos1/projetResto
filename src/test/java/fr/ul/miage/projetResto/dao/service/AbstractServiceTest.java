@@ -39,5 +39,5 @@ public abstract class AbstractServiceTest {
     UserCollection userCollection;
 
     @InjectMocks
-    Service service;
+    BaseService baseService;
 }

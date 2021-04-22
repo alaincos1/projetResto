@@ -8,14 +8,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class Service_PerformanceTest extends AbstractServiceTest {
+public class BaseService_PerformanceTest extends AbstractServiceTest {
     @Test
     public void testSavePerformance() {
         PerformanceEntity performanceEntity = easyRandom.nextObject(PerformanceEntity.class);
 
         when(performanceCollection.save(any())).thenReturn(true);
 
-        boolean response = service.save(performanceEntity);
+        boolean response = baseService.save(performanceEntity);
 
         Assertions.assertTrue(response);
     }
@@ -26,7 +26,7 @@ public class Service_PerformanceTest extends AbstractServiceTest {
 
         when(performanceCollection.getPerformanceById(anyString())).thenReturn(expected);
 
-        PerformanceEntity actual = service.getPerformanceById(expected.get_id());
+        PerformanceEntity actual = baseService.getPerformanceById(expected.get_id());
 
         assertEqual(actual, expected);
     }
@@ -37,7 +37,7 @@ public class Service_PerformanceTest extends AbstractServiceTest {
 
         when(performanceCollection.getPerformanceById(anyString())).thenReturn(null);
 
-        PerformanceEntity actual = service.getPerformanceById(expected.get_id());
+        PerformanceEntity actual = baseService.getPerformanceById(expected.get_id());
 
         Assertions.assertNull(actual);
     }

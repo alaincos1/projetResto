@@ -3,7 +3,7 @@ package fr.ul.miage.projetResto;
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.Role;
-import fr.ul.miage.projetResto.model.User;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,13 +25,13 @@ public class LauncherTest {
 
     @Test
     void testSetLoggedUser(){
-        Launcher.setLoggedUser(new User("admin", Role.Director));
-        assertEquals(Launcher.getLoggedUser(),new User("admin", Role.Director));
+        Launcher.setLoggedUser(new UserEntity("admin", Role.Director));
+        assertEquals(Launcher.getLoggedUser(),new UserEntity("admin", Role.Director));
     }
 
     @Test
     void testGetLoggedUser(){
-        Launcher.setLoggedUser(new User("admin", Role.Butler));
-        assertEquals(Launcher.getLoggedUser(), new User("admin", Role.Butler));
+        Launcher.setLoggedUser(new UserEntity("admin", Role.Butler));
+        assertEquals(Launcher.getLoggedUser(), new UserEntity("admin", Role.Butler));
     }
 }

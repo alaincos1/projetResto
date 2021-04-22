@@ -8,14 +8,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class Service_BillTest extends AbstractServiceTest {
+public class BaseService_BillTest extends AbstractServiceTest {
     @Test
     public void testSaveBill() {
         BillEntity billEntity = easyRandom.nextObject(BillEntity.class);
 
         when(billCollection.save(any())).thenReturn(true);
 
-        boolean response = service.save(billEntity);
+        boolean response = baseService.save(billEntity);
 
         Assertions.assertTrue(response);
     }
@@ -26,7 +26,7 @@ public class Service_BillTest extends AbstractServiceTest {
 
         when(billCollection.getBillById(anyString())).thenReturn(expected);
 
-        BillEntity actual = service.getBillById(expected.get_id());
+        BillEntity actual = baseService.getBillById(expected.get_id());
 
         assertEqual(actual, expected);
     }
@@ -37,7 +37,7 @@ public class Service_BillTest extends AbstractServiceTest {
 
         when(billCollection.getBillById(anyString())).thenReturn(null);
 
-        BillEntity actual = service.getBillById(expected.get_id());
+        BillEntity actual = baseService.getBillById(expected.get_id());
 
         Assertions.assertNull(actual);
     }

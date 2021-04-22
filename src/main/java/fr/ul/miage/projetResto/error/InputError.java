@@ -1,9 +1,8 @@
-package fr.ul.miage.projetResto.Error;
+package fr.ul.miage.projetResto.error;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +46,7 @@ public class InputError {
 	}
 
 	public static String checkStringCommande(String commande, Integer borneMin, Integer borneMax) {
-		if (commande.charAt(0) != ("-").charAt(0)) {
+		if (commande.charAt(0) != '-') {
 			return null;
 		}
 
@@ -57,7 +56,7 @@ public class InputError {
 		String action = String.valueOf(commande.charAt(1));
 		switch (action) {
 		case "v":
-			if (commande.substring(2) != "") {
+			if (commande.replace(" ", "").length() > 2) {
 				return null;
 			}
 			break;

@@ -8,14 +8,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class Service_UserTest extends AbstractServiceTest {
+public class BaseService_UserTest extends AbstractServiceTest {
     @Test
     public void testSaveUser() {
         UserEntity userEntity = easyRandom.nextObject(UserEntity.class);
 
         when(userCollection.save(any())).thenReturn(true);
 
-        boolean response = service.save(userEntity);
+        boolean response = baseService.save(userEntity);
 
         Assertions.assertTrue(response);
     }
@@ -26,7 +26,7 @@ public class Service_UserTest extends AbstractServiceTest {
 
         when(userCollection.getUserById(anyString())).thenReturn(expected);
 
-        UserEntity actual = service.getUserById(expected.get_id());
+        UserEntity actual = baseService.getUserById(expected.get_id());
 
         assertEqual(actual, expected);
     }
@@ -37,7 +37,7 @@ public class Service_UserTest extends AbstractServiceTest {
 
         when(userCollection.getUserById(anyString())).thenReturn(null);
 
-        UserEntity actual = service.getUserById(expected.get_id());
+        UserEntity actual = baseService.getUserById(expected.get_id());
 
         Assertions.assertNull(actual);
     }
