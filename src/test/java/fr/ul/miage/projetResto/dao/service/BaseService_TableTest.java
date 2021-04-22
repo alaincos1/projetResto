@@ -8,14 +8,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class Service_TableTest extends AbstractServiceTest {
+public class BaseService_TableTest extends AbstractServiceTest {
     @Test
     public void testSaveTable() {
         TableEntity tableEntity = easyRandom.nextObject(TableEntity.class);
 
         when(tableCollection.save(any())).thenReturn(true);
 
-        boolean response = service.save(tableEntity);
+        boolean response = baseService.save(tableEntity);
 
         Assertions.assertTrue(response);
     }
@@ -26,7 +26,7 @@ public class Service_TableTest extends AbstractServiceTest {
 
         when(tableCollection.getTableById(anyString())).thenReturn(expected);
 
-        TableEntity actual = service.getTableById(expected.get_id());
+        TableEntity actual = baseService.getTableById(expected.get_id());
 
         assertEqual(actual, expected);
     }
@@ -37,7 +37,7 @@ public class Service_TableTest extends AbstractServiceTest {
 
         when(tableCollection.getTableById(anyString())).thenReturn(null);
 
-        TableEntity actual = service.getTableById(expected.get_id());
+        TableEntity actual = baseService.getTableById(expected.get_id());
 
         Assertions.assertNull(actual);
     }

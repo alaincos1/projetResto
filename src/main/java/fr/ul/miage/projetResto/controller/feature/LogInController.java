@@ -3,7 +3,8 @@ package fr.ul.miage.projetResto.controller.feature;
 import fr.ul.miage.projetResto.Launcher;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.role.*;
-import fr.ul.miage.projetResto.model.User;
+import fr.ul.miage.projetResto.error.InputError;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +21,7 @@ public class LogInController {
         logInView.displayLogIn();
         String input = null;
         while(StringUtils.isBlank(input)) {
-            input = InputUtil.getUserInput(); //TODO: à remplacer par méthode de verif de userId USNF7.1
+            input = InputError.checkUserId(InputUtil.getUserInput());
             if(StringUtils.isBlank(input)){
                 System.out.println("Problème de saisie, veuillez recommencer.");
             }
@@ -32,16 +33,8 @@ public class LogInController {
     }
 
     private boolean isUserIdCorrect(String userId) {
-//        User user = getUserById();             // TODO: fonction débloquable après la USNF6
-//        if(user != null){
-//            Launcher.setSession(user);
-//            return true;
-//        }
-//        return false;
-
-        User user = null;
-        if(user != null || userId.equals("admin")){
-            user = new User("admin", Role.Cook);
+        UserEntity user = Launcher.baseService.getUserById(userId);
+        if(user != null){
             Launcher.setLoggedUser(user);
             return true;
         }

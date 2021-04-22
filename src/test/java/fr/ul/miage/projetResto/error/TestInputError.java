@@ -1,4 +1,4 @@
-package fr.ul.miage.projetResto.Error;
+package fr.ul.miage.projetResto.error;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
-import static org.junit.jupiter.api.DynamicTest.stream;
 
 @DisplayName("InputError")
 public class TestInputError {

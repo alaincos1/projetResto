@@ -8,14 +8,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class Service_MenuTest extends AbstractServiceTest {
+public class BaseService_MenuTest extends AbstractServiceTest {
     @Test
     public void testSaveMenu() {
         MenuEntity menuEntity = easyRandom.nextObject(MenuEntity.class);
 
         when(menuCollection.save(any())).thenReturn(true);
 
-        boolean response = service.save(menuEntity);
+        boolean response = baseService.save(menuEntity);
 
         Assertions.assertTrue(response);
     }
@@ -26,7 +26,7 @@ public class Service_MenuTest extends AbstractServiceTest {
 
         when(menuCollection.getMenuById(anyString())).thenReturn(expected);
 
-        MenuEntity actual = service.getMenuById(expected.get_id());
+        MenuEntity actual = baseService.getMenuById(expected.get_id());
 
         assertEqual(actual, expected);
     }
@@ -37,7 +37,7 @@ public class Service_MenuTest extends AbstractServiceTest {
 
         when(menuCollection.getMenuById(anyString())).thenReturn(null);
 
-        MenuEntity actual = service.getMenuById(expected.get_id());
+        MenuEntity actual = baseService.getMenuById(expected.get_id());
 
         Assertions.assertNull(actual);
     }

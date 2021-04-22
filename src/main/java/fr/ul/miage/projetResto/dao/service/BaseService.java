@@ -5,7 +5,7 @@ import fr.ul.miage.projetResto.model.entity.*;
 
 import java.util.Map;
 
-public class Service {
+public class BaseService {
     private final BillCollection billCollection;
     private final BookingCollection bookingCollection;
     private final DishCollection dishCollection;
@@ -17,15 +17,15 @@ public class Service {
     private final UserCollection userCollection;
     Map<Class, MongoAccess> map;
 
-    public Service(BillCollection billCollection,
-                   BookingCollection bookingCollection,
-                   DishCollection dishCollection,
-                   MenuCollection menuCollection,
-                   OrderCollection orderCollection,
-                   PerformanceCollection performanceCollection,
-                   ProductCollection productCollection,
-                   TableCollection tableCollection,
-                   UserCollection userCollection) {
+    public BaseService(BillCollection billCollection,
+                       BookingCollection bookingCollection,
+                       DishCollection dishCollection,
+                       MenuCollection menuCollection,
+                       OrderCollection orderCollection,
+                       PerformanceCollection performanceCollection,
+                       ProductCollection productCollection,
+                       TableCollection tableCollection,
+                       UserCollection userCollection) {
 
         this.billCollection = billCollection;
         this.bookingCollection = bookingCollection;
