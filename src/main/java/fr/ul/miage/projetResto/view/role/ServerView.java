@@ -1,4 +1,5 @@
 package fr.ul.miage.projetResto.view.role;
 
-public class ServerView {
+public class ServerView extends RoleView {
+
 }
