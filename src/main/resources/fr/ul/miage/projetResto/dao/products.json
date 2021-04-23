@@ -1,0 +1,30 @@
+[
+  {
+    "_id" : "Sardines",
+    "stock" : 5
+  },
+  {
+    "_id" : "Salades",
+    "stock" : 7
+  },
+  {
+    "_id" : "Boeuf",
+    "stock" : 4
+  },
+  {
+    "_id" : "Pommes de terre",
+    "stock" : 2
+  },
+  {
+    "_id" : "Bananes",
+    "stock" : 6
+  },
+  {
+    "_id" : "Haricots",
+    "stock" : 4
+  },
+  {
+    "_id" : "Glace à la vanille",
+    "stock" : 8
+  }
+]
