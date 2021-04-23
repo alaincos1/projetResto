@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- *  Liste de toutes les fonctionnalités par role.
- *  En cas d'ajout d'une fonctionnalité, ajouter celle-ci dans la fonction callAction() du role correspondant dans le *Role*Controller
+ * Liste de toutes les fonctionnalités par role.
+ * En cas d'ajout d'une fonctionnalité, ajouter celle-ci dans la fonction callAction() du role correspondant dans le *Role*Controller
  */
 @AllArgsConstructor
 @Getter

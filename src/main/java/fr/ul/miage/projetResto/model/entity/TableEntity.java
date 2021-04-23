@@ -1,15 +1,13 @@
 package fr.ul.miage.projetResto.model.entity;
 
+import fr.ul.miage.projetResto.constants.TableState;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class TableEntity {
     private String _id;
-    private String tableState;
-    private String idUser1;
-    private String idUser2;
-    private List<String> idsBooking;
-    private List<String> idsBill;
+    private TableState tableState;
+    private Integer nbSeats;
+    private String idServer;
+    private String idHelper;
 }

@@ -1,5 +1,6 @@
 package fr.ul.miage.projetResto.model.entity;
 
+import fr.ul.miage.projetResto.constants.DishType;
 import lombok.Data;
 
 import java.util.List;
@@ -8,6 +9,6 @@ import java.util.List;
 public class DishEntity {
     private String _id;
     private Integer price;
-    private String dishType;
+    private DishType dishType;
     private List<String> idsProduct;
 }
