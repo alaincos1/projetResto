@@ -1,0 +1,14 @@
+[
+  {
+    "_id" : "2021/05/04",
+    "idsDish" : [
+      "Salade de sardines","Glace à la vanille"
+    ]
+  },
+  {
+    "_id" : "2021/05/05",
+    "idsDish" : [
+      "Bananes","Glace à la vanille"
+    ]
+  }
+]
