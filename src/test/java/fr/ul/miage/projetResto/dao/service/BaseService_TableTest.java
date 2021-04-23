@@ -45,10 +45,9 @@ public class BaseService_TableTest extends AbstractServiceTest {
     private void assertEqual(TableEntity actual, TableEntity expected) {
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(actual.get_id(), expected.get_id());
-        Assertions.assertEquals(actual.getIdsBill().size(), expected.getIdsBill().size());
-        Assertions.assertEquals(actual.getIdsBooking().size(), expected.getIdsBooking().size());
-        Assertions.assertEquals(actual.getIdUser1(), expected.getIdUser1());
-        Assertions.assertEquals(actual.getIdUser2(), expected.getIdUser2());
         Assertions.assertEquals(actual.getTableState(), expected.getTableState());
+        Assertions.assertEquals(actual.getNbSeats(), expected.getNbSeats());
+        Assertions.assertEquals(actual.getIdServer(), expected.getIdServer());
+        Assertions.assertEquals(actual.getIdHelper(), expected.getIdHelper());
     }
 }

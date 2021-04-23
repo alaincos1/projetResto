@@ -49,5 +49,6 @@ public class BaseService_OrderTest extends AbstractServiceTest {
         Assertions.assertEquals(actual.getOrderState(), expected.getOrderState());
         Assertions.assertEquals(actual.getChildOrder(), expected.getChildOrder());
         Assertions.assertEquals(actual.getIdsDish().size(), expected.getIdsDish().size());
+        Assertions.assertEquals(actual.getRank(), expected.getRank());
     }
 }

@@ -45,7 +45,6 @@ public class BaseServiceProductTest extends AbstractServiceTest {
     private void assertEqual(ProductEntity actual, ProductEntity expected) {
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(actual.get_id(), expected.get_id());
-        Assertions.assertEquals(actual.getIdsDish().size(), expected.getIdsDish().size());
         Assertions.assertEquals(actual.getStock(), expected.getStock());
     }
 }

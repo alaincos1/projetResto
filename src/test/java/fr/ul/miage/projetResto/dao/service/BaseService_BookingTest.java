@@ -48,5 +48,6 @@ public class BaseService_BookingTest extends AbstractServiceTest {
         Assertions.assertEquals(actual.getReservationName(), expected.getReservationName());
         Assertions.assertEquals(actual.getIdTable(), expected.getIdTable());
         Assertions.assertEquals(actual.getMealType(), expected.getMealType());
+        Assertions.assertEquals(actual.getDate(), expected.getDate());
     }
 }

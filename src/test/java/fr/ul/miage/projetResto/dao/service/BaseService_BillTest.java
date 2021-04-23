@@ -46,8 +46,8 @@ public class BaseService_BillTest extends AbstractServiceTest {
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(actual.get_id(), expected.get_id());
         Assertions.assertEquals(actual.getDate(), expected.getDate());
-        Assertions.assertEquals(actual.getIdTable(), expected.getIdTable());
         Assertions.assertEquals(actual.getMealType(), expected.getMealType());
         Assertions.assertEquals(actual.getTotalPrice(), expected.getTotalPrice());
+        Assertions.assertEquals(actual.getIdsOrder().size(), expected.getIdsOrder().size());
     }
 }
