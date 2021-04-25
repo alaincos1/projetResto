@@ -4,8 +4,8 @@ import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.view.role.DirectorView;
 
-public class DirectorController extends RoleMenuController{
-    private DirectorView directorView = new DirectorView();
+public class DirectorController extends RoleMenuController {
+    private final DirectorView directorView = new DirectorView();
 
     @Override
     public void callAction(Integer action) {
@@ -13,7 +13,7 @@ public class DirectorController extends RoleMenuController{
         ServerController serverController = new ServerController();
         HelperController helperController = new HelperController();
         CookController cookController = new CookController();
-        switch(action){
+        switch (action) {
             case 0:
                 LogInController logInController = new LogInController();
                 logInController.disconnect();

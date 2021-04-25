@@ -17,5 +17,5 @@ public enum TableState implements EnumInBase {
     Occupied("Occupée"),
     Dirty("Sâle");
 
-    private String state;
+    private final String state;
 }

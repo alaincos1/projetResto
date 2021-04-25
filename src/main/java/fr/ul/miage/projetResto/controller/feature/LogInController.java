@@ -10,7 +10,7 @@ import fr.ul.miage.projetResto.view.feature.LogInView;
 import org.apache.commons.lang3.StringUtils;
 
 public class LogInController {
-   private LogInView logInView = new LogInView();
+    private final LogInView logInView = new LogInView();
 
     public void launch() {
         askUserId();
@@ -20,12 +20,11 @@ public class LogInController {
     public void askUserId() {
         logInView.displayLogIn();
         String input = null;
-        while(StringUtils.isBlank(input)) {
+        while (StringUtils.isBlank(input)) {
             input = InputError.checkUserId(InputUtil.getUserInput());
-            if(StringUtils.isBlank(input)){
+            if (StringUtils.isBlank(input)) {
                 System.out.println("Problème de saisie, veuillez recommencer.");
-            }
-            else if(!StringUtils.isBlank(input) && !isUserIdCorrect(input)){
+            } else if (!StringUtils.isBlank(input) && !isUserIdCorrect(input)) {
                 input = null;
                 System.out.println("Utilisateur inconnu, veuillez recommencer.");
             }
@@ -34,7 +33,7 @@ public class LogInController {
 
     private boolean isUserIdCorrect(String userId) {
         UserEntity user = Launcher.baseService.getUserById(userId);
-        if(user != null){
+        if (user != null) {
             Launcher.setLoggedUser(user);
             return true;
         }
@@ -44,7 +43,7 @@ public class LogInController {
     private void connectUserAccordingRole() {
         RoleMenuController controller = null;
         Role role = Launcher.getLoggedUser().getRole();
-        switch(role){
+        switch (role) {
             case Director:
                 controller = new DirectorController();
                 break;

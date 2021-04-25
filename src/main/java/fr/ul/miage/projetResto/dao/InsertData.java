@@ -22,7 +22,7 @@ public class InsertData {
         List<PerformanceEntity> performances = null;
         List<ProductEntity> products = null;
         List<TableEntity> tables = null;
-        try{
+        try {
             users = objectMapper.readValue(InsertData.class.getResource("users.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, UserEntity.class));
             bills = objectMapper.readValue(InsertData.class.getResource("bills.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, BillEntity.class));
             bookings = objectMapper.readValue(InsertData.class.getResource("bookings.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, BookingEntity.class));
@@ -31,7 +31,7 @@ public class InsertData {
             performances = objectMapper.readValue(InsertData.class.getResource("performances.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, PerformanceEntity.class));
             products = objectMapper.readValue(InsertData.class.getResource("products.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, ProductEntity.class));
             tables = objectMapper.readValue(InsertData.class.getResource("tables.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, TableEntity.class));
-        }catch(JsonMappingException exception){
+        } catch (JsonMappingException exception) {
             log.error(exception.getMessage());
         } catch (IOException exception) {
             log.error(exception.getMessage());

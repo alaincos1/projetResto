@@ -30,12 +30,14 @@ public class RoleMenuController {
     public Integer askAction() {
         roleView.displayMenu(roleTemp);
         Integer input = InputError.checkInteger(InputUtil.getUserInput(), 0, nbActions);
-        while(input == null) {
+        while (input == null) {
             System.out.println("Problème de saisie, veuillez recommencer.");
             input = InputError.checkInteger(InputUtil.getUserInput(), 0, nbActions);
         }
         return input;
     }
 
-    public void callAction(Integer action){};
+    public void callAction(Integer action) {
+    }
+
 }

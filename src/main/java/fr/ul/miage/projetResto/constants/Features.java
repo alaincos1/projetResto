@@ -35,6 +35,6 @@ public enum Features {
     CreateDishes("Créer des plats", Role.Cook),
     EndCooking("Prévenir de la fin des prises de commandes", Role.Cook);
 
-    private String label;
-    private Role role;
+    private final String label;
+    private final Role role;
 }

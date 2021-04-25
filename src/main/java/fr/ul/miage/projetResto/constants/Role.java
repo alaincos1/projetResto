@@ -18,5 +18,5 @@ public enum Role implements EnumInBase {
     Helper("Assistant de service"),
     Cook("Cusinier");
 
-    private String value;
+    private final String value;
 }

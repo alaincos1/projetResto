@@ -6,7 +6,7 @@ public class LogInView {
         System.out.println("Veuillez vous connecter avec votre identifiant : ");
     }
 
-    public void displayDisconnect(){
+    public void displayDisconnect() {
         System.out.println("Vous êtes déconnecté.e");
     }
 }

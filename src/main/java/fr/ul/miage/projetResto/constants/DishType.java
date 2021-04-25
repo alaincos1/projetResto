@@ -17,5 +17,5 @@ public enum DishType implements EnumInBase {
     Dessert("Dessert"),
     Drink("Boisson");
 
-    private String dish;
+    private final String dish;
 }

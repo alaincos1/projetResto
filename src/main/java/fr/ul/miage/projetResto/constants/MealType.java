@@ -15,7 +15,7 @@ public enum MealType implements EnumInBase {
     Déjeuner(1),
     Dîner(2);
 
-    private Integer id;
+    private final Integer id;
 
     public static MealType getFromId(Integer id) {
         switch (id) {

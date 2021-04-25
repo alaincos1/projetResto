@@ -17,7 +17,7 @@ public enum OrderState implements EnumInBase {
     Served("Servie"),
     Checked("Payée");
 
-    private String state;
+    private final String state;
 
     public String getName() {
         return "orderState";

@@ -11,12 +11,12 @@ public class CookController extends RoleMenuController {
     @Override
     public void callAction(Integer action) {
         Role role = Launcher.getLoggedUser().getRole();
-        switch(action){
+        switch (action) {
             case 0:
-                if(role.equals(Role.Director)){
+                if (role.equals(Role.Director)) {
                     DirectorController directorController = new DirectorController();
                     directorController.launch(Role.Director);
-                }else {
+                } else {
                     LogInController logInController = new LogInController();
                     logInController.disconnect();
                 }

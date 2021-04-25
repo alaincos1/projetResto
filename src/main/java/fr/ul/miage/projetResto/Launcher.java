@@ -1,5 +1,6 @@
 package fr.ul.miage.projetResto;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.MealType;
@@ -7,16 +8,15 @@ import fr.ul.miage.projetResto.controller.feature.StartController;
 import fr.ul.miage.projetResto.dao.InsertData;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.dao.service.BaseService;
-import fr.ul.miage.projetResto.model.entity.*;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 import org.slf4j.LoggerFactory;
-import ch.qos.logback.classic.Level;
 
 public class Launcher {
+    public static BaseService baseService;
     private static Service service;
     private static UserEntity loggedUser;
-    public static BaseService baseService;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.OFF);
         initBaseService();
         InsertData.feedData();
@@ -36,7 +36,7 @@ public class Launcher {
                 new UserCollection());
     }
 
-    public static void setService(MealType mealtype, String date){
+    public static void setService(MealType mealtype, String date) {
         service = new Service(mealtype, date);
     }
 
@@ -44,11 +44,11 @@ public class Launcher {
         return service;
     }
 
-    public static void setLoggedUser(UserEntity user){
-        loggedUser = user;
-    }
-
     public static UserEntity getLoggedUser() {
         return loggedUser;
+    }
+
+    public static void setLoggedUser(UserEntity user) {
+        loggedUser = user;
     }
 }
