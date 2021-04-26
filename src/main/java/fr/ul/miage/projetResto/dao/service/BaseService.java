@@ -3,6 +3,7 @@ package fr.ul.miage.projetResto.dao.service;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.model.entity.*;
 
+import java.util.List;
 import java.util.Map;
 
 public class BaseService {
@@ -91,5 +92,9 @@ public class BaseService {
 
     public UserEntity getUserById(String id) {
         return userCollection.getUserById(id);
+    }
+
+    public List<OrderEntity> getNotPreparedOrders() {
+        return orderCollection.getNotPreparedOrders();
     }
 }

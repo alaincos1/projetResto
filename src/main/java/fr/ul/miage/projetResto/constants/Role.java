@@ -16,7 +16,7 @@ public enum Role implements EnumInBase {
     Butler("Maître d'hôtel"),
     Server("Serveur"),
     Helper("Assistant de service"),
-    Cook("Cusinier");
+    Cook("Cuisinier");
 
     private final String value;
 }

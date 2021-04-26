@@ -4,10 +4,12 @@ import fr.ul.miage.projetResto.constants.Features;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.role.RoleView;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class RoleMenuController {
     protected RoleView roleView = new RoleView();
     protected Integer nbActions;
@@ -32,6 +34,13 @@ public class RoleMenuController {
     }
 
     public void callAction(Integer action) {
+        log.debug("Nothing to do with " + action);
     }
 
+    public void askMainMenu() {
+        roleView.displayAskReturnMainMenu();
+        if (InputUtil.getIntegerInput(0, 0) == 0) {
+            launch(roleTemp);
+        }
+    }
 }

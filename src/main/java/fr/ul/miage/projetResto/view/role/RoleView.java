@@ -16,4 +16,8 @@ public class RoleView {
             }
         }
     }
+
+    public void displayAskReturnMainMenu() {
+        System.out.println("\n Entrez 0 pour revenir au menu principal.");
+    }
 }
