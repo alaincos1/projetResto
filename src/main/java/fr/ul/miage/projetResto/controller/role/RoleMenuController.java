@@ -28,7 +28,7 @@ public class RoleMenuController {
 
     public Integer askAction() {
         roleView.displayMenu(roleTemp);
-        return InputUtil.getIntegerInput( 0, nbActions);
+        return InputUtil.getIntegerInput(0, nbActions);
     }
 
     public void callAction(Integer action) {

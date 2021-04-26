@@ -9,7 +9,7 @@ public class Service {
     private String date;
     private boolean endNewClients;
 
-    public Service(MealType mealType, String date){
+    public Service(MealType mealType, String date) {
         this.mealType = mealType;
         this.date = date;
         this.endNewClients = false;

@@ -17,7 +17,7 @@ public class InputUtil {
         scanner.close();
     }
 
-    public static Integer getIntegerInput(Integer min, Integer max){
+    public static Integer getIntegerInput(Integer min, Integer max) {
         Integer input = InputError.checkInteger(getUserInput(), min, max);
         while (input == null) {
             System.out.println("Problème de saisie, veuillez recommencer.");
@@ -26,7 +26,7 @@ public class InputUtil {
         return input;
     }
 
-    public static String getDateInput(){
+    public static String getDateInput() {
         String input = InputError.checkDate(getUserInput());
         while (StringUtils.isBlank(input)) {
             System.out.println("Problème de saisie, veuillez recommencer.");
@@ -35,7 +35,7 @@ public class InputUtil {
         return input;
     }
 
-    public static String getUserIdInput(){
+    public static String getUserIdInput() {
         String input = InputError.checkUserId(getUserInput());
         while (StringUtils.isBlank(input)) {
             System.out.println("Problème de saisie, veuillez recommencer.");
@@ -45,7 +45,7 @@ public class InputUtil {
         return input;
     }
 
-    public static String getStringCommandInput(Integer min, Integer max){
+    public static String getStringCommandInput(Integer min, Integer max) {
         String input = InputError.checkStringCommand(getUserInput(), min, max);
         while (StringUtils.isBlank(input)) {
             System.out.println("Problème de saisie, veuillez recommencer.");
