@@ -63,56 +63,56 @@ public class TestInputError {
     @DisplayName("String Commande : Vérifier que on peut ajouter commande enfant")
     void checkInputStringCommandeEnfant() {
 		String test = "-e 1/5";
-		assertEquals("-e 1/5",InputError.checkStringCommande(test, 1, 5));
+		assertEquals("-e 1/5",InputError.checkStringCommand(test, 1, 5));
     }
 	
 	@Test
     @DisplayName("String Commande : Vérifier que on peut ajouter commande adulte")
     void checkInputStringCommandeAdulte() {
 		String test = "-a 1/5";
-		assertEquals("-a 1/5", InputError.checkStringCommande(test, 1, 5));
+		assertEquals("-a 1/5", InputError.checkStringCommand(test, 1, 5));
     }
 	
 	@Test
     @DisplayName("String Commande : Vérifier que on peut valider")
     void checkInputStringCommandeValidee() {
 		String test = "-v";
-		assertEquals("-v", InputError.checkStringCommande(test, null, null));
+		assertEquals("-v", InputError.checkStringCommand(test, null, null));
     }
 	
 	@Test
     @DisplayName("String Commande : Vérifier que on peut supprimer")
     void checkInputStringCommandeSupprimeElement() {
 		String test = "-d 1/5";
-		assertEquals("-d 1/5", InputError.checkStringCommande(test, 1, 5));
+		assertEquals("-d 1/5", InputError.checkStringCommand(test, 1, 5));
     }
 	
 	@Test
     @DisplayName("String Commande : Vérification si input est faux")
     void checkInputStringCommandeIncorrect() {
 		String test = "-a -e";
-		assertNull(InputError.checkStringCommande(test, 1, 5));
+		assertNull(InputError.checkStringCommand(test, 1, 5));
     }
 	
 	@Test
     @DisplayName("String Commande : Vérification si input est faux")
     void checkInputStringCommandeIncorrect2() {
 		String test = "124";
-		assertNull(InputError.checkStringCommande(test, 1, 5));
+		assertNull(InputError.checkStringCommand(test, 1, 5));
     }
 	
 	@Test
     @DisplayName("String Commande : Vérification si input est faux")
     void checkInputStringCommandeIncorrect3() {
 		String test = "-a 1 12";
-		assertNull(InputError.checkStringCommande(test, 1, 5));
+		assertNull(InputError.checkStringCommand(test, 1, 5));
     }
 	
 	@Test
     @DisplayName("String Commande : Vérifier que l'input est un string et renvoie le bon string")
     void checkInputString() {
 		String test = "-a";
-		assertNull(InputError.checkStringCommande(test, null, null));
+		assertNull(InputError.checkStringCommand(test, null, null));
     }
 	
 	@Test

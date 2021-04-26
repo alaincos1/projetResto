@@ -2,7 +2,6 @@ package fr.ul.miage.projetResto.controller.role;
 
 import fr.ul.miage.projetResto.constants.Features;
 import fr.ul.miage.projetResto.constants.Role;
-import fr.ul.miage.projetResto.error.InputError;
 import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.role.RoleView;
 
@@ -29,12 +28,7 @@ public class RoleMenuController {
 
     public Integer askAction() {
         roleView.displayMenu(roleTemp);
-        Integer input = InputError.checkInteger(InputUtil.getUserInput(), 0, nbActions);
-        while (input == null) {
-            System.out.println("Problème de saisie, veuillez recommencer.");
-            input = InputError.checkInteger(InputUtil.getUserInput(), 0, nbActions);
-        }
-        return input;
+        return InputUtil.getIntegerInput( 0, nbActions);
     }
 
     public void callAction(Integer action) {
