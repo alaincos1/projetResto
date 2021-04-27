@@ -2,11 +2,13 @@ package fr.ul.miage.projetResto.controller.feature;
 
 import fr.ul.miage.projetResto.Launcher;
 import fr.ul.miage.projetResto.constants.MealType;
+import fr.ul.miage.projetResto.dao.InitRestaurant;
 import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.feature.StartView;
 
 public class StartController {
     StartView startView = new StartView();
+    private InitRestaurant initRestaurant;
     private MealType mealType;
     private String date;
 
@@ -14,6 +16,8 @@ public class StartController {
         askMealType();
         askMealDate();
         createService();
+        initRestaurant = new InitRestaurant(Launcher.getService(), Launcher.getBaseService());
+        initRestaurant.initRestaurant();
         launchLoginView();
     }
 

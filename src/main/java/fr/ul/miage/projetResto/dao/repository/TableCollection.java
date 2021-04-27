@@ -4,6 +4,10 @@ import com.mongodb.client.MongoCollection;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import org.bson.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class TableCollection extends MongoAccess {
     MongoCollection<Document> collection = database.getCollection("tables");
 
@@ -19,5 +23,11 @@ public class TableCollection extends MongoAccess {
     public TableEntity getTableById(String id) {
         Document doc = getDocumentById(id, collection);
         return doc == null ? null : (TableEntity) Mapper.toObject(doc, TableEntity.class);
+    }
+
+    public List<TableEntity> getAll() {
+        return collection.find().into(new ArrayList<Document>()).stream()
+                .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
+                .collect(Collectors.toList());
     }
 }

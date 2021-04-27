@@ -1,13 +1,16 @@
 package fr.ul.miage.projetResto.dao.repository;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
@@ -52,4 +55,10 @@ public class OrderCollection extends MongoAccess {
         return orders;
     }
 
+    public List<OrderEntity> getAllNotChecked() {
+        Bson doc = Filters.ne("orderState", OrderState.Checked.toString());
+        return collection.find(doc).into(new ArrayList<Document>()).stream()
+                .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
+                .collect(Collectors.toList());
+    }
 }

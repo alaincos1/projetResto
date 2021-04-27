@@ -104,4 +104,20 @@ public class BaseService {
     public List<OrderEntity> getNotPreparedOrders() {
         return orderCollection.getNotPreparedOrders();
     }
+
+    public List<TableEntity> getAllTable() {
+        return tableCollection.getAll();
+    }
+
+    public List<BookingEntity> getAllBooking() {
+        return bookingCollection.getAll();
+    }
+
+    public List<OrderEntity> getAllNotCheckedOrder() {
+        return orderCollection.getAllNotChecked();
+    }
+
+    public void deletePastBooking(String date) {
+        bookingCollection.deletePastBookings(date);
+    }
 }

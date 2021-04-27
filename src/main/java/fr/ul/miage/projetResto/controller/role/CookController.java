@@ -41,7 +41,7 @@ public class CookController extends RoleMenuController {
     }
 
     protected void viewOrdersList() {
-        List<OrderEntity> orders = Launcher.baseService.getNotPreparedOrders();
+        List<OrderEntity> orders = Launcher.getBaseService().getNotPreparedOrders();
         cookView.displayOrdersList(orders);
         askMainMenu();
     }
