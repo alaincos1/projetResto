@@ -100,4 +100,8 @@ public class BaseService {
     public UserEntity getUserById(String id) {
         return userCollection.getUserById(id);
     }
+
+    public List<OrderEntity> getNotPreparedOrders() {
+        return orderCollection.getNotPreparedOrders();
+    }
 }

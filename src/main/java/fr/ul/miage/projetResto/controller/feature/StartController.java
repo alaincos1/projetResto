@@ -21,22 +21,13 @@ public class StartController {
 
     public void askMealType() {
         startView.displayMealType();
-        Integer input = InputError.checkInteger(InputUtil.getUserInput(), 1, 2);
-        while (input == null) {
-            System.out.println("Problème de saisie, veuillez recommencer.");
-            input = InputError.checkInteger(InputUtil.getUserInput(), 1, 2);
-        }
+        Integer input = InputUtil.getIntegerInput(1, 2);
         mealType = MealType.values()[input-1];
     }
 
     public void askMealDate() {
         startView.displayDate();
-        String input = InputError.checkDate(InputUtil.getUserInput());
-        while (StringUtils.isBlank(input)) {
-            System.out.println("Problème de saisie, veuillez recommencer.");
-            input = InputError.checkDate(InputUtil.getUserInput());
-        }
-        date = input;
+        date = InputUtil.getDateInput();
     }
 
     public void createService() {

@@ -45,18 +45,18 @@ public class InputError {
         return date;
     }
 
-    public static String checkStringCommande(String commande, Integer borneMin, Integer borneMax) {
-        if (commande.charAt(0) != '-') {
+    public static String checkStringCommand(String command, Integer borneMin, Integer borneMax) {
+        if (command.charAt(0) != '-') {
             return null;
         }
 
 
-        String selection = commande.substring(2);
+        String selection = command.substring(2);
         String[] listSelection = selection.replace(" ", "").split("/");
-        String action = String.valueOf(commande.charAt(1));
+        String action = String.valueOf(command.charAt(1));
         switch (action) {
             case "v":
-                if (commande.replace(" ", "").length() > 2) {
+                if (command.replace(" ", "").length() > 2) {
                     return null;
                 }
                 break;
@@ -72,7 +72,7 @@ public class InputError {
             default:
                 return null;
         }
-        return commande;
+        return command;
     }
 
 }

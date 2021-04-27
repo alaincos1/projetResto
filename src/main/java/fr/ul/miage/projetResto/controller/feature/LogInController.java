@@ -3,7 +3,6 @@ package fr.ul.miage.projetResto.controller.feature;
 import fr.ul.miage.projetResto.Launcher;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.role.*;
-import fr.ul.miage.projetResto.error.InputError;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.feature.LogInView;
@@ -19,15 +18,10 @@ public class LogInController {
 
     public void askUserId() {
         logInView.displayLogIn();
-        String input = null;
-        while (StringUtils.isBlank(input)) {
-            input = InputError.checkUserId(InputUtil.getUserInput());
-            if (StringUtils.isBlank(input)) {
-                System.out.println("Problème de saisie, veuillez recommencer.");
-            } else if (!StringUtils.isBlank(input) && !isUserIdCorrect(input)) {
-                input = null;
-                System.out.println("Utilisateur inconnu, veuillez recommencer.");
-            }
+        String input = InputUtil.getUserIdInput();
+        if (!StringUtils.isBlank(input) && !isUserIdCorrect(input)) {
+            System.out.println("Utilisateur inconnu, veuillez recommencer.");
+            askUserId();
         }
     }
 

@@ -3,7 +3,11 @@ package fr.ul.miage.projetResto.controller.role;
 import fr.ul.miage.projetResto.Launcher;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
+import fr.ul.miage.projetResto.model.entity.OrderEntity;
+import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.role.CookView;
+
+import java.util.List;
 
 public class CookController extends RoleMenuController {
     CookView cookView = new CookView();
@@ -37,6 +41,9 @@ public class CookController extends RoleMenuController {
     }
 
     protected void viewOrdersList() {
+        List<OrderEntity> orders = Launcher.baseService.getNotPreparedOrders();
+        cookView.displayOrdersList(orders);
+        askMainMenu();
     }
 
     protected void setOrderReady() {
@@ -46,5 +53,16 @@ public class CookController extends RoleMenuController {
     }
 
     protected void endCooking() {
+        if (!Launcher.getService().isEndNewClients()) {
+            cookView.displayAskEndCooking();
+            Integer input = InputUtil.getIntegerInput(0, 1);
+            if (input == 1) {
+                Launcher.getService().setEndNewClients(true);
+                cookView.displayEnded();
+            }
+        } else {
+            cookView.displayAlreadyEnded();
+        }
+        launch(Role.Cook);
     }
 }
