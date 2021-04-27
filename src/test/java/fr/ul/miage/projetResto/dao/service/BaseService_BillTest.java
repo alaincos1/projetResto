@@ -21,6 +21,17 @@ public class BaseService_BillTest extends AbstractServiceTest {
     }
 
     @Test
+    public void testUpdateBill() {
+        BillEntity billEntity = easyRandom.nextObject(BillEntity.class);
+
+        when(billCollection.update(any())).thenReturn(true);
+
+        boolean response = baseService.update(billEntity);
+
+        Assertions.assertTrue(response);
+    }
+
+    @Test
     public void testGetById() {
         BillEntity expected = easyRandom.nextObject(BillEntity.class);
 

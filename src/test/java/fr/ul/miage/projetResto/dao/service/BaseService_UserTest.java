@@ -21,6 +21,17 @@ public class BaseService_UserTest extends AbstractServiceTest {
     }
 
     @Test
+    public void testUpdateUser() {
+        UserEntity userEntity = easyRandom.nextObject(UserEntity.class);
+
+        when(userCollection.update(any())).thenReturn(true);
+
+        boolean response = baseService.update(userEntity);
+
+        Assertions.assertTrue(response);
+    }
+
+    @Test
     public void testGetById() {
         UserEntity expected = easyRandom.nextObject(UserEntity.class);
 

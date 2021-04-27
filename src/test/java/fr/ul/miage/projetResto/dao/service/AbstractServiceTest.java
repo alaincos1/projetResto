@@ -21,7 +21,7 @@ public abstract class AbstractServiceTest {
     DishCollection dishCollection;
 
     @Mock
-    MenuCollection menuCollection;
+    CategoryCollection categoryCollection;
 
     @Mock
     OrderCollection orderCollection;

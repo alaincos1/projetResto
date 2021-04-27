@@ -1,6 +1,6 @@
 package fr.ul.miage.projetResto.dao.service;
 
-import fr.ul.miage.projetResto.model.entity.MenuEntity;
+import fr.ul.miage.projetResto.model.entity.CategoryEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,40 +11,50 @@ import static org.mockito.Mockito.when;
 public class BaseService_MenuTest extends AbstractServiceTest {
     @Test
     public void testSaveMenu() {
-        MenuEntity menuEntity = easyRandom.nextObject(MenuEntity.class);
+        CategoryEntity categoryEntity = easyRandom.nextObject(CategoryEntity.class);
 
-        when(menuCollection.save(any())).thenReturn(true);
+        when(categoryCollection.save(any())).thenReturn(true);
 
-        boolean response = baseService.save(menuEntity);
+        boolean response = baseService.save(categoryEntity);
+
+        Assertions.assertTrue(response);
+    }
+
+    @Test
+    public void testUpdateMenu() {
+        CategoryEntity categoryEntity = easyRandom.nextObject(CategoryEntity.class);
+
+        when(categoryCollection.update(any())).thenReturn(true);
+
+        boolean response = baseService.update(categoryEntity);
 
         Assertions.assertTrue(response);
     }
 
     @Test
     public void testGetById() {
-        MenuEntity expected = easyRandom.nextObject(MenuEntity.class);
+        CategoryEntity expected = easyRandom.nextObject(CategoryEntity.class);
 
-        when(menuCollection.getMenuById(anyString())).thenReturn(expected);
+        when(categoryCollection.getCategoryById(anyString())).thenReturn(expected);
 
-        MenuEntity actual = baseService.getMenuById(expected.get_id());
+        CategoryEntity actual = baseService.getCategoryById(expected.get_id());
 
         assertEqual(actual, expected);
     }
 
     @Test
     public void testGetByIdWithError() {
-        MenuEntity expected = easyRandom.nextObject(MenuEntity.class);
+        CategoryEntity expected = easyRandom.nextObject(CategoryEntity.class);
 
-        when(menuCollection.getMenuById(anyString())).thenReturn(null);
+        when(categoryCollection.getCategoryById(anyString())).thenReturn(null);
 
-        MenuEntity actual = baseService.getMenuById(expected.get_id());
+        CategoryEntity actual = baseService.getCategoryById(expected.get_id());
 
         Assertions.assertNull(actual);
     }
 
-    private void assertEqual(MenuEntity actual, MenuEntity expected) {
+    private void assertEqual(CategoryEntity actual, CategoryEntity expected) {
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(actual.get_id(), expected.get_id());
-        Assertions.assertEquals(actual.getIdsDish().size(), expected.getIdsDish().size());
     }
 }

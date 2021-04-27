@@ -13,4 +13,13 @@ public class BaseServiceTest extends AbstractServiceTest {
 
         Assertions.assertFalse(response);
     }
+
+    @Test
+    public void testUpdateWithError() {
+        String obj = RandomStringUtils.randomAlphabetic(10);
+
+        boolean response = baseService.update(obj);
+
+        Assertions.assertFalse(response);
+    }
 }

@@ -21,6 +21,17 @@ public class BaseService_DishTest extends AbstractServiceTest {
     }
 
     @Test
+    public void testUpdateDish() {
+        DishEntity dishEntity = easyRandom.nextObject(DishEntity.class);
+
+        when(dishCollection.update(any())).thenReturn(true);
+
+        boolean response = baseService.update(dishEntity);
+
+        Assertions.assertTrue(response);
+    }
+
+    @Test
     public void testGetById() {
         DishEntity expected = easyRandom.nextObject(DishEntity.class);
 
@@ -48,5 +59,6 @@ public class BaseService_DishTest extends AbstractServiceTest {
         Assertions.assertEquals(actual.getDishType(), expected.getDishType());
         Assertions.assertEquals(actual.getIdsProduct().size(), expected.getIdsProduct().size());
         Assertions.assertEquals(actual.getPrice(), expected.getPrice());
+        Assertions.assertEquals(actual.getIdCategory(), expected.getIdCategory());
     }
 }

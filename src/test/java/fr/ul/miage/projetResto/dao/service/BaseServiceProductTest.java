@@ -21,6 +21,17 @@ public class BaseServiceProductTest extends AbstractServiceTest {
     }
 
     @Test
+    public void testUpdateProduct() {
+        ProductEntity productEntity = easyRandom.nextObject(ProductEntity.class);
+
+        when(productCollection.update(any())).thenReturn(true);
+
+        boolean response = baseService.update(productEntity);
+
+        Assertions.assertTrue(response);
+    }
+
+    @Test
     public void testGetById() {
         ProductEntity expected = easyRandom.nextObject(ProductEntity.class);
 

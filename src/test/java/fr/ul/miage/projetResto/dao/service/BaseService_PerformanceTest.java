@@ -21,6 +21,17 @@ public class BaseService_PerformanceTest extends AbstractServiceTest {
     }
 
     @Test
+    public void testUpdatePerformance() {
+        PerformanceEntity performanceEntity = easyRandom.nextObject(PerformanceEntity.class);
+
+        when(performanceCollection.update(any())).thenReturn(true);
+
+        boolean response = baseService.update(performanceEntity);
+
+        Assertions.assertTrue(response);
+    }
+
+    @Test
     public void testGetById() {
         PerformanceEntity expected = easyRandom.nextObject(PerformanceEntity.class);
 
