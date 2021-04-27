@@ -116,6 +116,10 @@ public class BaseService {
     public List<OrderEntity> getAllNotCheckedOrder() {
         return orderCollection.getAllNotChecked();
     }
+    
+    public List<UserEntity> getAllUser() {
+        return userCollection.getAll();
+    }
 
     public void deletePastBooking(String date) {
         bookingCollection.deletePastBookings(date);
