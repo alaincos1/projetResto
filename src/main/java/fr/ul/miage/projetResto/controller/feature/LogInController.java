@@ -32,7 +32,7 @@ public class LogInController {
     }
 
     private boolean isUserIdCorrect(String userId) {
-        UserEntity user = Launcher.baseService.getUserById(userId);
+        UserEntity user = Launcher.getBaseService().getUserById(userId);
         if (user != null) {
             Launcher.setLoggedUser(user);
             return true;

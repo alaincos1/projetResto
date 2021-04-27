@@ -17,7 +17,7 @@ public class InsertData {
         List<UserEntity> users = null;
         List<BillEntity> bills = null;
         List<BookingEntity> bookings = null;
-        List<MenuEntity> menus = null;
+        List<CategoryEntity> categories = null;
         List<OrderEntity> orders = null;
         List<PerformanceEntity> performances = null;
         List<ProductEntity> products = null;
@@ -26,7 +26,7 @@ public class InsertData {
             users = objectMapper.readValue(InsertData.class.getResource("users.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, UserEntity.class));
             bills = objectMapper.readValue(InsertData.class.getResource("bills.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, BillEntity.class));
             bookings = objectMapper.readValue(InsertData.class.getResource("bookings.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, BookingEntity.class));
-            menus = objectMapper.readValue(InsertData.class.getResource("dayMenu.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, MenuEntity.class));
+            categories = objectMapper.readValue(InsertData.class.getResource("categories.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, CategoryEntity.class));
             orders = objectMapper.readValue(InsertData.class.getResource("orders.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, OrderEntity.class));
             performances = objectMapper.readValue(InsertData.class.getResource("performances.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, PerformanceEntity.class));
             products = objectMapper.readValue(InsertData.class.getResource("products.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, ProductEntity.class));
@@ -36,13 +36,13 @@ public class InsertData {
         } catch (IOException exception) {
             log.error(exception.getMessage());
         }
-        users.forEach(Launcher.baseService::save);
-        bills.forEach(Launcher.baseService::save);
-        bookings.forEach(Launcher.baseService::save);
-        menus.forEach(Launcher.baseService::save);
-        orders.forEach(Launcher.baseService::save);
-        performances.forEach(Launcher.baseService::save);
-        products.forEach(Launcher.baseService::save);
-        tables.forEach(Launcher.baseService::save);
+        users.forEach(Launcher.getBaseService()::save);
+        bills.forEach(Launcher.getBaseService()::save);
+        bookings.forEach(Launcher.getBaseService()::save);
+        categories.forEach(Launcher.getBaseService()::save);
+        orders.forEach(Launcher.getBaseService()::save);
+        performances.forEach(Launcher.getBaseService()::save);
+        products.forEach(Launcher.getBaseService()::save);
+        tables.forEach(Launcher.getBaseService()::save);
     }
 }

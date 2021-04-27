@@ -11,6 +11,11 @@ public class PerformanceCollection extends MongoAccess {
         return super.insert(Mapper.toDocument(performanceEntity), collection);
     }
 
+    @Override
+    public boolean update(Object o) {
+        return super.update(Mapper.toDocument(o), collection);
+    }
+
     public PerformanceEntity getPerformanceById(String id) {
         Document doc = getDocumentById(id, collection);
         return doc == null ? null : (PerformanceEntity) Mapper.toObject(doc, PerformanceEntity.class);

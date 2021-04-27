@@ -26,7 +26,7 @@ public class StartController {
             System.out.println("Problème de saisie, veuillez recommencer.");
             input = InputError.checkInteger(InputUtil.getUserInput(), 1, 2);
         }
-        mealType = MealType.getFromId(input);
+        mealType = MealType.values()[input-1];
     }
 
     public void askMealDate() {

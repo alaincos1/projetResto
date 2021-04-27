@@ -12,19 +12,6 @@ import lombok.Getter;
 @JsonSerialize(converter = EnumSerializer.class)
 @JsonDeserialize(converter = MealTypeDeserializer.class)
 public enum MealType implements EnumInBase {
-    Déjeuner(1),
-    Dîner(2);
-
-    private final Integer id;
-
-    public static MealType getFromId(Integer id) {
-        switch (id) {
-            case 1:
-                return Déjeuner;
-            case 2:
-                return Dîner;
-            default:
-                return null;
-        }
-    }
+    Déjeuner,
+    Dîner;
 }

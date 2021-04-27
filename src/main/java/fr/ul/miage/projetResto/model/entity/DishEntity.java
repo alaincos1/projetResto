@@ -11,4 +11,5 @@ public class DishEntity {
     private Integer price;
     private DishType dishType;
     private List<String> idsProduct;
+    private String idCategory;
 }

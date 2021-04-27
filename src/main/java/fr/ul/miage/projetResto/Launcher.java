@@ -5,21 +5,19 @@ import ch.qos.logback.classic.LoggerContext;
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.controller.feature.StartController;
-import fr.ul.miage.projetResto.dao.InsertData;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 import org.slf4j.LoggerFactory;
 
 public class Launcher {
-    public static BaseService baseService;
+    private static BaseService baseService;
     private static Service service;
     private static UserEntity loggedUser;
 
     public static void main(String[] args) {
         ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.OFF);
         initBaseService();
-        InsertData.feedData();
         StartController startController = new StartController();
         startController.launch();
     }
@@ -28,7 +26,7 @@ public class Launcher {
         baseService = new BaseService(new BillCollection(),
                 new BookingCollection(),
                 new DishCollection(),
-                new MenuCollection(),
+                new CategoryCollection(),
                 new OrderCollection(),
                 new PerformanceCollection(),
                 new ProductCollection(),
@@ -50,5 +48,9 @@ public class Launcher {
 
     public static void setLoggedUser(UserEntity user) {
         loggedUser = user;
+    }
+
+    public static BaseService getBaseService() {
+        return baseService;
     }
 }

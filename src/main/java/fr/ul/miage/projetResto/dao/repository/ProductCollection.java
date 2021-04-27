@@ -11,6 +11,11 @@ public class ProductCollection extends MongoAccess {
         return super.insert(Mapper.toDocument(productEntity), collection);
     }
 
+    @Override
+    public boolean update(Object o) {
+        return super.update(Mapper.toDocument(o), collection);
+    }
+
     public ProductEntity getProductById(String id) {
         Document doc = getDocumentById(id, collection);
         return doc == null ? null : (ProductEntity) Mapper.toObject(doc, ProductEntity.class);

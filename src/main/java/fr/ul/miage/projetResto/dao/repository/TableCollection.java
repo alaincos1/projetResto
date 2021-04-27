@@ -4,11 +4,20 @@ import com.mongodb.client.MongoCollection;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import org.bson.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class TableCollection extends MongoAccess {
     MongoCollection<Document> collection = database.getCollection("tables");
 
     public boolean save(Object tableEntity) {
         return super.insert(Mapper.toDocument(tableEntity), collection);
+    }
+
+    @Override
+    public boolean update(Object o) {
+        return super.update(Mapper.toDocument(o), collection);
     }
 
     public TableEntity getTableById(String id) {

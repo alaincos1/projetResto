@@ -11,6 +11,11 @@ public class BillCollection extends MongoAccess {
         return super.insert(Mapper.toDocument(billEntity), collection);
     }
 
+    @Override
+    public boolean update(Object o) {
+        return super.update(Mapper.toDocument(o), collection);
+    }
+
     public BillEntity getBillById(String id) {
         Document doc = getDocumentById(id, collection);
         return doc == null ? null : (BillEntity) Mapper.toObject(doc, BillEntity.class);

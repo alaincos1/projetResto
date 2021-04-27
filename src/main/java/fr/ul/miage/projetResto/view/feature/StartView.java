@@ -7,8 +7,9 @@ public class StartView {
 
     public void displayMealType() {
         System.out.println("Veuillez choisir le type de service :");
+        int i = 1;
         for (MealType mealType : MealType.values()) {
-            System.out.println(mealType.getId() + ") " + mealType);
+            System.out.println(i++ + ") " + mealType);
         }
     }
 

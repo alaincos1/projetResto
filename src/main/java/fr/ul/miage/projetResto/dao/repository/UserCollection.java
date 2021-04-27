@@ -11,6 +11,11 @@ public class UserCollection extends MongoAccess {
         return super.insert(Mapper.toDocument(userEntity), collection);
     }
 
+    @Override
+    public boolean update(Object o) {
+        return super.update(Mapper.toDocument(o), collection);
+    }
+
     public UserEntity getUserById(String id) {
         Document doc = getDocumentById(id, collection);
         return doc == null ? null : (UserEntity) Mapper.toObject(doc, UserEntity.class);

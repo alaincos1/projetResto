@@ -15,7 +15,8 @@ public enum OrderState implements EnumInBase {
     Ordered("Commandée"),
     Prepared("Préparée"),
     Served("Servie"),
-    Checked("Payée");
+    Checked("Payée"),
+    Unchecked("impayée");
 
     private final String state;
 

@@ -12,6 +12,7 @@ public abstract class MongoAccess {
     MongoDatabase database = mongoClient.getDatabase("bdd_restaurant");
 
     public abstract boolean save(Object o);
+    public abstract boolean update(Object o);
 
     public boolean insert(Document doc, MongoCollection<Document> collection) {
         if (alreadyExist(String.valueOf(doc.get("_id")), collection)) {
@@ -19,6 +20,15 @@ public abstract class MongoAccess {
         }
         collection.insertOne(doc);
         return true;
+    }
+
+    public boolean update(Document doc, MongoCollection<Document> collection) {
+        if (alreadyExist(String.valueOf(doc.get("_id")), collection)) {
+            Document filter = new Document("_id", String.valueOf(doc.get("_id")));
+            collection.replaceOne(filter, doc);
+            return true;
+        }
+        return false;
     }
 
     public Document getDocumentById(String id, MongoCollection<Document> collection) {

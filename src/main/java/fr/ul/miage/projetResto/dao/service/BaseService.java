@@ -3,13 +3,14 @@ package fr.ul.miage.projetResto.dao.service;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.model.entity.*;
 
+import java.util.List;
 import java.util.Map;
 
 public class BaseService {
     private final BillCollection billCollection;
     private final BookingCollection bookingCollection;
     private final DishCollection dishCollection;
-    private final MenuCollection menuCollection;
+    private final CategoryCollection categoryCollection;
     private final OrderCollection orderCollection;
     private final PerformanceCollection performanceCollection;
     private final ProductCollection productCollection;
@@ -20,7 +21,7 @@ public class BaseService {
     public BaseService(BillCollection billCollection,
                        BookingCollection bookingCollection,
                        DishCollection dishCollection,
-                       MenuCollection menuCollection,
+                       CategoryCollection categoryCollection,
                        OrderCollection orderCollection,
                        PerformanceCollection performanceCollection,
                        ProductCollection productCollection,
@@ -30,7 +31,7 @@ public class BaseService {
         this.billCollection = billCollection;
         this.bookingCollection = bookingCollection;
         this.dishCollection = dishCollection;
-        this.menuCollection = menuCollection;
+        this.categoryCollection = categoryCollection;
         this.orderCollection = orderCollection;
         this.performanceCollection = performanceCollection;
         this.productCollection = productCollection;
@@ -41,7 +42,7 @@ public class BaseService {
                 BillEntity.class, billCollection,
                 BookingEntity.class, bookingCollection,
                 DishEntity.class, dishCollection,
-                MenuEntity.class, menuCollection,
+                CategoryEntity.class, categoryCollection,
                 OrderEntity.class, orderCollection,
                 PerformanceEntity.class, performanceCollection,
                 ProductEntity.class, productCollection,
@@ -53,6 +54,13 @@ public class BaseService {
     public boolean save(Object o) {
         if (map.containsKey(o.getClass())) {
             return map.get(o.getClass()).save(o);
+        }
+        return false;
+    }
+
+    public boolean update(Object o) {
+        if (map.containsKey(o.getClass())) {
+            return map.get(o.getClass()).update(o);
         }
         return false;
     }
@@ -69,8 +77,8 @@ public class BaseService {
         return dishCollection.getDishById(id);
     }
 
-    public MenuEntity getMenuById(String id) {
-        return menuCollection.getMenuById(id);
+    public CategoryEntity getCategoryById(String id) {
+        return categoryCollection.getCategoryById(id);
     }
 
     public OrderEntity getOrderById(String id) {
