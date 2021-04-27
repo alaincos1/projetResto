@@ -4,10 +4,6 @@ import com.mongodb.client.MongoCollection;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import org.bson.Document;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class TableCollection extends MongoAccess {
     MongoCollection<Document> collection = database.getCollection("tables");
 

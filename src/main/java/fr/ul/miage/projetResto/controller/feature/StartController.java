@@ -2,10 +2,8 @@ package fr.ul.miage.projetResto.controller.feature;
 
 import fr.ul.miage.projetResto.Launcher;
 import fr.ul.miage.projetResto.constants.MealType;
-import fr.ul.miage.projetResto.error.InputError;
 import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.feature.StartView;
-import org.apache.commons.lang3.StringUtils;
 
 public class StartController {
     StartView startView = new StartView();
@@ -22,7 +20,7 @@ public class StartController {
     public void askMealType() {
         startView.displayMealType();
         Integer input = InputUtil.getIntegerInput(1, 2);
-        mealType = MealType.values()[input-1];
+        mealType = MealType.values()[input - 1];
     }
 
     public void askMealDate() {

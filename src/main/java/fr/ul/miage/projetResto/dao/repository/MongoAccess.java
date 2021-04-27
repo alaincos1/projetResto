@@ -12,6 +12,7 @@ public abstract class MongoAccess {
     MongoDatabase database = mongoClient.getDatabase("bdd_restaurant");
 
     public abstract boolean save(Object o);
+
     public abstract boolean update(Object o);
 
     public boolean insert(Document doc, MongoCollection<Document> collection) {
