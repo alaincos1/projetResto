@@ -31,4 +31,19 @@ public class CookView extends RoleView {
             i++;
         }
     }
+
+    public void displayWhichOrderPrepared() {
+        System.out.println("\nEntrez le numéro de la commande prête à être servie ou 0 pour annuler.");
+    }
+
+    public void displayOrderPrepared(String id, String idTable) {
+        System.out.println("La commande "+id+" pour la table "+idTable+" est prête !" +
+                "\nVoulez vous déclarer une autre commande terminée ?" +
+                "\n O) Non" +
+                "\n 1) Oui");
+    }
+
+    public void displayNoOrderToPrepare() {
+        System.out.println("Il n\'y a aucune commande à préparer.");
+    }
 }

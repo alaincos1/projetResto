@@ -1,6 +1,7 @@
 package fr.ul.miage.projetResto.controller.role;
 
 import fr.ul.miage.projetResto.Launcher;
+import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.model.entity.OrderEntity;
@@ -42,11 +43,33 @@ public class CookController extends RoleMenuController {
 
     protected void viewOrdersList() {
         List<OrderEntity> orders = Launcher.getBaseService().getNotPreparedOrders();
-        cookView.displayOrdersList(orders);
-        askMainMenu();
+        if (orders.isEmpty()) {
+            cookView.displayNoOrderToPrepare();
+            launch(Role.Cook);
+        } else {
+            cookView.displayOrdersList(orders);
+            askMainMenu();
+        }
     }
 
     protected void setOrderReady() {
+        List<OrderEntity> orders = Launcher.getBaseService().getNotPreparedOrders();
+        if (!orders.isEmpty()) {
+            cookView.displayOrdersList(orders);
+            cookView.displayWhichOrderPrepared();
+            Integer input = InputUtil.getIntegerInput(0, orders.size()) - 1;
+            if (input != -1) {
+                orders.get(input).setOrderState(OrderState.Prepared);
+                Launcher.getBaseService().update(orders.get(input));
+                cookView.displayOrderPrepared(orders.get(input).get_id(), orders.get(input).getIdTable());
+                if (doAgain()) {
+                    setOrderReady();
+                }
+            }
+        } else {
+            cookView.displayNoOrderToPrepare();
+        }
+        launch(Role.Cook);
     }
 
     protected void createDishes() {

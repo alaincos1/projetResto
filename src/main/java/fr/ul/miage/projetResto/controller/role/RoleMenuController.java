@@ -43,4 +43,8 @@ public class RoleMenuController {
             launch(roleTemp);
         }
     }
+
+    public boolean doAgain() {
+        return InputUtil.getIntegerInput(0, 1) == 1;
+    }
 }
