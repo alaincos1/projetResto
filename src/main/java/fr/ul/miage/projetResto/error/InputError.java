@@ -50,7 +50,6 @@ public class InputError {
             return null;
         }
 
-
         String selection = command.substring(2);
         String[] listSelection = selection.replace(" ", "").split("/");
         String action = String.valueOf(command.charAt(1));
