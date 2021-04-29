@@ -120,4 +120,12 @@ public class BaseService {
     public void deletePastBooking(String date) {
         bookingCollection.deletePastBookings(date);
     }
+
+    public List<CategoryEntity> getAllCategoriesAsList() {
+        return categoryCollection.getAllCategoriesAsList();
+    }
+
+    public List<ProductEntity> getAllProductsAsList() {
+        return productCollection.getAllProductsAsList();
+    }
 }

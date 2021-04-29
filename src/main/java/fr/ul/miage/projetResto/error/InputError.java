@@ -1,5 +1,8 @@
 package fr.ul.miage.projetResto.error;
 
+import fr.ul.miage.projetResto.constants.InfoRestaurant;
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,6 +73,31 @@ public class InputError {
                 break;
             default:
                 return null;
+        }
+        return command;
+    }
+
+    public static String checkString(String string) {
+        if (string.length() > InfoRestaurant.MAX_LENGTH_NAME.getValue() || StringUtils.isBlank(string)) {
+            return null;
+        }
+        return string;
+    }
+
+    public static String checkStringMultipleChoices(String command, Integer borneMin, Integer borneMax) {
+        if (StringUtils.isBlank(command)) {
+            return null;
+        }
+
+        String selection = command.replace(" ", "");
+        String[] listSelection = selection.split("/");
+        if (listSelection.length > InfoRestaurant.MAX_CHOICES.getValue()) {
+            return null;
+        }
+        for (String part : listSelection) {
+            if (checkInteger(part, borneMin, borneMax) == null) {
+                return null;
+            }
         }
         return command;
     }
