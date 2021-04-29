@@ -48,7 +48,7 @@ public class CookView extends RoleView {
     }
 
     public void displayNoOrderToPrepare() {
-        System.out.println("Il n\'y a aucune commande à préparer.");
+        System.out.println("Il n'y a aucune commande à préparer.");
     }
 
     public void displayAskInput(String input, String regex) {

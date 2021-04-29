@@ -8,6 +8,7 @@ import fr.ul.miage.projetResto.controller.feature.StartController;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
+import fr.ul.miage.projetResto.view.feature.StartView;
 import org.slf4j.LoggerFactory;
 
 public class Launcher {
@@ -18,7 +19,7 @@ public class Launcher {
     public static void main(String[] args) {
         ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.OFF);
         initBaseService();
-        StartController startController = new StartController(baseService, service);
+        StartController startController = new StartController(baseService, service, new StartView());
         startController.launch();
     }
 

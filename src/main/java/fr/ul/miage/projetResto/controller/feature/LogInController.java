@@ -8,17 +8,15 @@ import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.feature.LogInView;
+import fr.ul.miage.projetResto.view.role.*;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
+@AllArgsConstructor
 public class LogInController {
-    private BaseService baseService;
-    private Service service;
-    private final LogInView logInView = new LogInView();
-
-    public LogInController(BaseService baseService, Service service){
-        this.baseService = baseService;
-        this.service = service;
-    }
+    private final BaseService baseService;
+    private final Service service;
+    private final LogInView logInView;
 
     public void launch() {
         askUserId();
@@ -27,7 +25,7 @@ public class LogInController {
 
     public void askUserId() {
         logInView.displayLogIn();
-        String input = InputUtil.getUserIdInput();
+        String input = getUserIdInput();
         UserEntity user = baseService.getUserById(input);
         if (!StringUtils.isBlank(input) && user == null) {
             logInView.displayLogInError();
@@ -42,19 +40,19 @@ public class LogInController {
         Role role = Launcher.getLoggedUser().getRole();
         switch (role) {
             case Director:
-                controller = new DirectorController(baseService, service);
+                controller = new DirectorController(baseService, service, new DirectorView());
                 break;
             case Butler:
-                controller = new ButlerController(baseService, service);
+                controller = new ButlerController(baseService, service, new ButlerView());
                 break;
             case Cook:
-                controller = new CookController(baseService, service);
+                controller = new CookController(baseService, service, new CookView());
                 break;
             case Server:
-                controller = new ServerController(baseService, service);
+                controller = new ServerController(baseService, service, new ServerView());
                 break;
             case Helper:
-                controller = new HelperController(baseService, service);
+                controller = new HelperController(baseService, service, new HelperView());
                 break;
         }
         controller.launch(role);
@@ -64,6 +62,10 @@ public class LogInController {
         Launcher.setLoggedUser(null);
         logInView.displayDisconnect();
         launch();
+    }
+
+    public String getUserIdInput() {
+        return InputUtil.getUserIdInput();
     }
 
 }

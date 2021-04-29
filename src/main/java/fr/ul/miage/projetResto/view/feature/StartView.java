@@ -18,6 +18,6 @@ public class StartView {
     }
 
     public void displayService(Service service) {
-        System.out.println("Service du jour : " +service.getMealType() + " " + service.getDate());
+        System.out.println("Service du jour : " + service.getMealType() + " " + service.getDate());
     }
 }

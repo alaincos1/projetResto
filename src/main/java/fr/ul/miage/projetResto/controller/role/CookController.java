@@ -12,22 +12,20 @@ import fr.ul.miage.projetResto.model.entity.CategoryEntity;
 import fr.ul.miage.projetResto.model.entity.DishEntity;
 import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
-import fr.ul.miage.projetResto.utils.InputUtil;
+import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.CookView;
+import fr.ul.miage.projetResto.view.role.DirectorView;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 public class CookController extends RoleMenuController {
-    private BaseService baseService;
-    private Service service;
-    CookView cookView = new CookView();
-
-    public CookController(BaseService baseService, Service service){
-        this.baseService = baseService;
-        this.service = service;
-    }
+    private final BaseService baseService;
+    private final Service service;
+    private final CookView cookView;
 
     @Override
     public void callAction(Integer action) {
@@ -35,10 +33,10 @@ public class CookController extends RoleMenuController {
         switch (action) {
             case 0:
                 if (role.equals(Role.Director)) {
-                    DirectorController directorController = new DirectorController(baseService, service);
+                    DirectorController directorController = new DirectorController(baseService, service, new DirectorView());
                     directorController.launch(Role.Director);
                 } else {
-                    LogInController logInController = new LogInController(baseService, service);
+                    LogInController logInController = new LogInController(baseService, service, new LogInView());
                     logInController.disconnect();
                 }
                 break;
@@ -75,7 +73,7 @@ public class CookController extends RoleMenuController {
         if (!orders.isEmpty()) {
             cookView.displayOrdersList(orders);
             cookView.displayWhichOrderPrepared();
-            int input = InputUtil.getIntegerInput(0, orders.size()) - 1;
+            int input = getIntegerInput(0, orders.size()) - 1;
             if (input != -1) {
                 orders.get(input).setOrderState(OrderState.Prepared);
                 baseService.update(orders.get(input));
@@ -94,10 +92,10 @@ public class CookController extends RoleMenuController {
         DishEntity newDish = new DishEntity();
         boolean modify = false;
         cookView.displayAskInput("le nom du plat", "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
-        String name = InputUtil.getStringInput();
+        String name = getStringInput();
         if (baseService.getDishById(name) != null) {
             cookView.displayModifyOrCancel();
-            Integer choice = InputUtil.getIntegerInput(0, 1);
+            Integer choice = getIntegerInput(0, 1);
             if (choice == 0) {
                 launch(Role.Cook);
                 return;
@@ -112,7 +110,7 @@ public class CookController extends RoleMenuController {
         newDish.setOnTheMenu(false);
 
         cookView.displayDish(newDish);
-        if (InputUtil.getIntegerInput(0, 1) == 1) {
+        if (getIntegerInput(0, 1) == 1) {
             saveDish(newDish, modify);
         } else {
             cookView.displaySaveOrNot(false);
@@ -122,13 +120,13 @@ public class CookController extends RoleMenuController {
 
     private Integer getPriceDish() {
         cookView.displayAskInput("le prix", "<=" + InfoRestaurant.MAX_PRICE.getValue() + " €");
-        return InputUtil.getIntegerInput(1, InfoRestaurant.MAX_PRICE.getValue());
+        return getIntegerInput(1, InfoRestaurant.MAX_PRICE.getValue());
     }
 
     private DishType getDishType() {
         cookView.displayAskInput("le type de plat", StringUtils.EMPTY);
         cookView.displayDishType();
-        Integer input = InputUtil.getIntegerInput(1, DishType.values().length);
+        Integer input = getIntegerInput(1, DishType.values().length);
         return DishType.values()[input - 1];
     }
 
@@ -136,10 +134,10 @@ public class CookController extends RoleMenuController {
         cookView.displayAskInput("la catégorie du plat", StringUtils.EMPTY);
         List<CategoryEntity> categories = baseService.getAllCategoriesAsList();
         cookView.displayCategories(categories);
-        Integer input = InputUtil.getIntegerInput(0, categories.size());
+        Integer input = getIntegerInput(0, categories.size());
         if (input == 0) {
             cookView.displayAskInput("la nouvelle catégorie du plat", "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
-            return InputUtil.getStringInput();
+            return getStringInput();
         } else {
             return categories.get(input - 1).get_id();
         }
@@ -149,10 +147,10 @@ public class CookController extends RoleMenuController {
         List<ProductEntity> productEntities = baseService.getAllProductsAsList();
         cookView.displayAskInput("les produits du plat", "ex : 1/6/8, maximum " + InfoRestaurant.MAX_CHOICES.getValue() + " produits");
         cookView.displayProducts(productEntities);
-        List<ProductEntity> selection = parseToSelectedProducts(productEntities, InputUtil.getStringMultipleChoices(1, productEntities.size()));
+        List<ProductEntity> selection = parseToSelectedProducts(productEntities, getStringMultipleChoices(1, productEntities.size()));
         cookView.displayProducts(selection);
         cookView.displayProductsOkOrNot();
-        if (InputUtil.getIntegerInput(0, 1) == 0) {
+        if (getIntegerInput(0, 1) == 0) {
             return getDishProducts();
         } else {
             return parseToIdProducts(selection);
@@ -171,7 +169,7 @@ public class CookController extends RoleMenuController {
         String[] selection = stringMultipleChoices.replace(" ", "").split("/");
         List<ProductEntity> selectedProducts = new ArrayList<>();
         for (String sel : selection) {
-            if (selectedProducts.stream().noneMatch(x -> x.equals(productEntities.get(Integer.parseInt(sel) - 1)))){
+            if (selectedProducts.stream().noneMatch(x -> x.equals(productEntities.get(Integer.parseInt(sel) - 1)))) {
                 selectedProducts.add(productEntities.get(Integer.parseInt(sel) - 1));
             }
         }
@@ -204,7 +202,7 @@ public class CookController extends RoleMenuController {
     protected void endCooking() {
         if (!service.isEndNewClients()) {
             cookView.displayAskEndCooking();
-            Integer input = InputUtil.getIntegerInput(0, 1);
+            Integer input = getIntegerInput(0, 1);
             if (input == 1) {
                 service.setEndNewClients(true);
                 cookView.displayEnded();
