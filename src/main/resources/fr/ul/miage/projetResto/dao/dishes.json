@@ -5,7 +5,9 @@
     "dishType" : "Starter",
     "idsProduct" : [
       "Salades","Sardines"
-    ]
+    ],
+    "idCategory" : "Salade",
+    "onTheMenu" : true
   },
   {
     "_id" : "Salade caesar",
@@ -13,7 +15,9 @@
     "dishType" : "Starter",
     "idsProduct" : [
       "Salades"
-    ]
+    ],
+    "idCategory" : "Salade",
+    "onTheMenu" : true
   },
   {
     "_id" : "Patates sautées et légumes",
@@ -21,7 +25,9 @@
     "dishType" : "MainCourse",
     "idsProduct" : [
       "Pommes de terre","Haricots"
-    ]
+    ],
+    "idCategory" : "Légumes",
+    "onTheMenu" : true
   },
   {
     "_id" : "Boeuf et légumes",
@@ -29,7 +35,9 @@
     "dishType" : "MainCourse",
     "idsProduct" : [
       "Boeuf","Haricots"
-    ]
+    ],
+    "idCategory" : "Viande",
+    "onTheMenu" : true
   },
   {
     "_id" : "Banana Split",
@@ -37,7 +45,9 @@
     "dishType" : "Dessert",
     "idsProduct" : [
       "Bananes","Glace à la vanille"
-    ]
+    ],
+    "idCategory" : "Glace",
+    "onTheMenu" : true
   },
   {
     "_id" : "Beignet de banane",
@@ -45,6 +55,8 @@
     "dishType" : "Dessert",
     "idsProduct" : [
       "Bananes"
-    ]
+    ],
+    "idCategory" : "Gâteau",
+    "onTheMenu" : true
   }
 ]

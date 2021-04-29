@@ -3,6 +3,15 @@
     "_id" : "Viande"
   },
   {
-    "_id" : "Poisson"
+    "_id" : "Salade"
+  },
+  {
+    "_id" : "Légumes"
+  },
+  {
+    "_id" : "Glace"
+  },
+  {
+    "_id" : "Gâteau"
   }
 ]
