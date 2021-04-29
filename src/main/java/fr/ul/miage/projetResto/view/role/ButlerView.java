@@ -109,4 +109,13 @@ public class ButlerView extends RoleView {
 		System.out.println("Entrez le nom de réservation.");
 	}
 
+	public void displayBookingDiner() {
+		System.out.println("La réservation est possible seulement pour le service du diner.");
+		System.out.println("Est ce correct ? \n0) Non \n1) Oui");
+	}
+
+	public void displayBookingImpossible() {
+		System.out.println("Impossible de créer une réservation pour aujourd'hui.");
+	}
+
 }

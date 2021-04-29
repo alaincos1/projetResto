@@ -135,13 +135,12 @@ public class ButlerController extends RoleMenuController {
 		//Si la reservation est pour la date du jour et qu'on est au service du diner alors la reservation est impossible
 		if (dateBooking.equals(Launcher.getService().getDate())
 				&& Launcher.getService().getMealType() == MealType.Dîner) {
-			System.out.println("Impossible de créer une réservation pour aujourd'hui.");
+			butlerView.displayBookingImpossible();
 			launch(Role.Butler);
 		} 
 		//Si la reservation est pour le jour et qu'on est au service du dejeuner alors la reservation est automatique pour le soir
 		else if (dateBooking.equals(Launcher.getService().getDate())) {
-			System.out.println("La réservation est possible seulement pour le service du diner.");
-			System.out.println("Est ce correct ? \n0) Non \n1) Oui");
+			butlerView.displayBookingDiner();
 			Integer correct = InputUtil.getIntegerInput(0, 1);
 			if (correct == 0) {
 				launch(Role.Butler);
