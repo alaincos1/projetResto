@@ -117,7 +117,7 @@ public class ButlerController extends RoleMenuController {
 		String choiceTable = choiceTable(null);
 
 		BookingEntity booking = new BookingEntity();
-//		booking.set_id(new ObjectId().toString());
+		booking.set_id(new ObjectId().toString());
 		booking.setDate(dateBooking);
 		booking.setIdTable(choiceTable);
 		booking.setMealType(mealTypeBooking);

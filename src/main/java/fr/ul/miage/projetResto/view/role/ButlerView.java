@@ -2,14 +2,11 @@ package fr.ul.miage.projetResto.view.role;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 
 import fr.ul.miage.projetResto.Launcher;
 import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.Role;
-import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.model.entity.BookingEntity;
-import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 
