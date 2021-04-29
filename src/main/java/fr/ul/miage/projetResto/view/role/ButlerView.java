@@ -118,4 +118,12 @@ public class ButlerView extends RoleView {
 		System.out.println("Impossible de créer une réservation pour aujourd'hui.");
 	}
 
+	public void displayAnyBooking() {
+		System.out.println("Il n'y a pas de réservation ce jour.");
+	}
+
+	public void displayInputIncorrect() {
+		System.out.println("Entrée incorrecte, veuillez recommencer.");
+	}
+
 }

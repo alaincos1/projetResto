@@ -184,7 +184,7 @@ public class ButlerController extends RoleMenuController {
 		String choiceTable = InputUtil.getUserIdInput();
 
 		if (!StringUtils.isBlank(choiceTable.toString()) && !isTableIdCorrect(choiceTable, state)) {
-			System.out.println("Table incorrecte, veuillez recommencer.");
+			butlerView.displayInputIncorrect();
 			return choiceTable(state);
 		}
 		return choiceTable;
@@ -195,7 +195,7 @@ public class ButlerController extends RoleMenuController {
 		String choiceTable = InputUtil.getUserIdInput();
 
 		if (!StringUtils.isBlank(choiceTable.toString()) && !isTableIdCorrectServer(choiceTable, user)) {
-			System.out.println("Table incorrecte, veuillez recommencer.");
+			butlerView.displayInputIncorrect();
 			return choiceTableServer(user);
 		}
 		return choiceTable;
@@ -220,7 +220,7 @@ public class ButlerController extends RoleMenuController {
 				butlerView.displayChoiceTableClient();
 				choiceTable = choiceTable(TableState.Booked);
 			} else {
-				System.out.println("Il n'y a pas de réservation ce jour.");
+				butlerView.displayAnyBooking();
 			}
 		}
 		return choiceTable;
