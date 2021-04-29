@@ -28,7 +28,7 @@ public class CookView extends RoleView {
     public void displayOrdersList(List<OrderEntity> orders) {
         int i = 1;
         for (OrderEntity order : orders) {
-            System.out.println(" " + i + ") Id: " + order.get_id() + " Table: " + order.getIdTable() + (Boolean.TRUE.equals(order.getChildOrder()) ? " PRIORITAIRE ENFANT" : StringUtils.EMPTY));
+            System.out.println(" " + i + ") Table: " + order.getIdTable() + (Boolean.TRUE.equals(order.getChildOrder()) ? " PRIORITAIRE ENFANT" : StringUtils.EMPTY));
             for (String dish : order.getIdsDish()) {
                 System.out.println("  -> " + dish);
             }
@@ -40,8 +40,8 @@ public class CookView extends RoleView {
         System.out.println("\nEntrez le numéro de la commande prête à être servie ou 0 pour annuler.");
     }
 
-    public void displayOrderPrepared(String id, String idTable) {
-        System.out.println("La commande " + id + " pour la table " + idTable + " est prête !" +
+    public void displayOrderPrepared(String idTable) {
+        System.out.println("La commande pour la table " + idTable + " est prête !" +
                 "\nVoulez vous déclarer une autre commande terminée ?" +
                 "\n O) Non" +
                 "\n 1) Oui");

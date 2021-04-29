@@ -70,7 +70,7 @@ public class CookController extends RoleMenuController {
             if (input != -1) {
                 orders.get(input).setOrderState(OrderState.Prepared);
                 Launcher.getBaseService().update(orders.get(input));
-                cookView.displayOrderPrepared(orders.get(input).get_id(), orders.get(input).getIdTable());
+                cookView.displayOrderPrepared(orders.get(input).getIdTable());
                 if (doAgain()) {
                     setOrderReady();
                 }

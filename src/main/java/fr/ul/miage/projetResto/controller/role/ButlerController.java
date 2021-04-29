@@ -10,9 +10,7 @@ import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
-import fr.ul.miage.projetResto.dao.repository.Mapper;
 import fr.ul.miage.projetResto.model.entity.BookingEntity;
-import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.utils.InputUtil;
@@ -111,7 +109,7 @@ public class ButlerController extends RoleMenuController {
 		MealType mealTypeBooking = choiceMealTypeWithDate(dateBooking);		
 
 		butlerView.displayBookingName();
-		String nameBooking = InputUtil.getUserIdInput();
+		String nameBooking = InputUtil.getStringInput();
 
 		List<TableEntity> tables = Launcher.getBaseService().getAllTable();
 		butlerView.displayAllTablesWithNoBooking(tables, dateBooking, mealTypeBooking);
@@ -119,7 +117,7 @@ public class ButlerController extends RoleMenuController {
 		String choiceTable = choiceTable(null);
 
 		BookingEntity booking = new BookingEntity();
-		booking.set_id(new ObjectId().toString());
+//		booking.set_id(new ObjectId().toString());
 		booking.setDate(dateBooking);
 		booking.setIdTable(choiceTable);
 		booking.setMealType(mealTypeBooking);
@@ -181,7 +179,7 @@ public class ButlerController extends RoleMenuController {
 
 	//Retourne l'id de la table si elle existe et est correcte d'apres l'entrée de l'utilisateur en fonction de l'etat de la table
 	private String choiceTable(TableState state) {
-		String choiceTable = InputUtil.getUserIdInput();
+		String choiceTable = InputUtil.getStringInput();
 
 		if (!StringUtils.isBlank(choiceTable.toString()) && !isTableIdCorrect(choiceTable, state)) {
 			butlerView.displayInputIncorrect();
