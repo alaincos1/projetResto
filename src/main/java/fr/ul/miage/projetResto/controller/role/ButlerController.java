@@ -108,9 +108,7 @@ public class ButlerController extends RoleMenuController {
 		String dateBooking = InputUtil.getDateInput();
 
 
-		MealType mealTypeBooking = choiceMealTypeWithDate(dateBooking);
-//		MealType mealTypeBooking = MealType.Déjeuner;
-		
+		MealType mealTypeBooking = choiceMealTypeWithDate(dateBooking);		
 
 		butlerView.displayBookingName();
 		String nameBooking = InputUtil.getUserIdInput();
@@ -160,6 +158,7 @@ public class ButlerController extends RoleMenuController {
 		return mealTypeBooking;
 	}
 	
+	//FOnction qui permet de définir le service en fonction d l'entrée de l'utilisateur 
 	private MealType choiceMealType(Integer choiceMealType) {
 		MealType mealTypeBooking;
 		if (choiceMealType == 0) {
@@ -171,6 +170,8 @@ public class ButlerController extends RoleMenuController {
 		return mealTypeBooking;
 	}
 
+	//Fonction qui permet de savoir si la table existe en focntion de son id et si sont état est correct
+	//Par exemple savoir si le table avec l'id 1 existe et est libre 
 	private boolean isTableIdCorrect(String tableId, TableState state) {
 		TableEntity table = Launcher.getBaseService().getTableById(tableId);
 		if (table != null && (state == null || table.getTableState() == state)) {
@@ -179,6 +180,7 @@ public class ButlerController extends RoleMenuController {
 		return false;
 	}
 
+	//Retourne l'id de la table si elle existe et est correcte d'apres l'entrée de l'utilisateur en fonction de l'etat de la table
 	private String choiceTable(TableState state) {
 		String choiceTable = InputUtil.getUserIdInput();
 
@@ -189,6 +191,7 @@ public class ButlerController extends RoleMenuController {
 		return choiceTable;
 	}
 
+	//Retourne l'id de la table si elle existe et est correct vis à vis du serveur/assistant en charge de celle ci 
 	private String choiceTableServer(UserEntity user) {
 		String choiceTable = InputUtil.getUserIdInput();
 
@@ -199,6 +202,7 @@ public class ButlerController extends RoleMenuController {
 		return choiceTable;
 	}
 
+	
 	private boolean isTableIdCorrectServer(String tableId, UserEntity user) {
 		TableEntity table = Launcher.getBaseService().getTableById(tableId);
 		if (table != null && !table.getIdServer().equals(user.get_id()) && !table.getIdHelper().equals(user.get_id())) {
@@ -207,6 +211,8 @@ public class ButlerController extends RoleMenuController {
 		return false;
 	}
 
+	//retourne l'id de la table qui correspond à l'entrée de l'utilisateur
+	//la table est une table réservée
 	private String choiceReservation(List<TableEntity> tables, Integer reservation) {
 		String choiceTable = null;
 		if (reservation == 1) {
@@ -221,6 +227,7 @@ public class ButlerController extends RoleMenuController {
 		return choiceTable;
 	}
 
+	//Mettre à jour un objet (table...)
 	private void updateObject(Object o) {
 		if (Launcher.getBaseService().update(o)) {
 			butlerView.displayActionSucceded();
@@ -230,6 +237,7 @@ public class ButlerController extends RoleMenuController {
 		launch(Role.Butler);
 	}
 
+	//Insere un objet (facture, réservation..)
 	private void saveObject(Object o) {
 		if (Launcher.getBaseService().save(o)) {
 			butlerView.displayActionSucceded();
