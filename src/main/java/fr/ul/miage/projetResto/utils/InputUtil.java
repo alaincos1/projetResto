@@ -11,7 +11,7 @@ public class InputUtil {
     private static final Scanner scanner = new Scanner(System.in);
 
     private static String getUserInput() {
-        return scanner.next();
+        return scanner.nextLine();
     }
 
     public static void closeScanner() {
@@ -51,6 +51,25 @@ public class InputUtil {
         while (StringUtils.isBlank(input)) {
             System.out.println("Problème de saisie, veuillez recommencer.");
             input = InputError.checkStringCommand(getUserInput(), min, max);
+
+        }
+        return input;
+    }
+
+    public static String getStringInput() {
+        String input = InputError.checkString(getUserInput());
+        while (StringUtils.isBlank(input)) {
+            System.out.println("Problème de saisie (texte trop long), veuillez recommencer.");
+            input = InputError.checkString(getUserInput());
+        }
+        return input;
+    }
+
+    public static String getStringMultipleChoices(Integer min, Integer max) {
+        String input = InputError.checkStringMultipleChoices(getUserInput(), min, max);
+        while (StringUtils.isBlank(input)) {
+            System.out.println("Problème de saisie, veuillez recommencer.");
+            input = InputError.checkStringMultipleChoices(getUserInput(), min, max);
 
         }
         return input;

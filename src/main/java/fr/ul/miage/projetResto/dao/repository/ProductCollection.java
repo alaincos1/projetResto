@@ -4,6 +4,9 @@ import com.mongodb.client.MongoCollection;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
 import org.bson.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductCollection extends MongoAccess {
     MongoCollection<Document> collection = database.getCollection("products");
 
@@ -19,5 +22,15 @@ public class ProductCollection extends MongoAccess {
     public ProductEntity getProductById(String id) {
         Document doc = getDocumentById(id, collection);
         return doc == null ? null : (ProductEntity) Mapper.toObject(doc, ProductEntity.class);
+    }
+
+    public List<ProductEntity> getAllProductsAsList() {
+        List<Document> productDoc = collection.find()
+                .into(new ArrayList<>());
+        List<ProductEntity> productEntities = new ArrayList<>();
+        for (Document prod : productDoc) {
+            productEntities.add((ProductEntity) Mapper.toObject(prod, ProductEntity.class));
+        }
+        return productEntities;
     }
 }

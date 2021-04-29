@@ -9,4 +9,8 @@ public class LogInView {
     public void displayDisconnect() {
         System.out.println("Vous êtes déconnecté.e");
     }
+
+    public void displayLogInError() {
+        System.out.println("Utilisateur inconnu, veuillez recommencer.");
+    }
 }

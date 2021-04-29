@@ -22,6 +22,7 @@ public class InsertData {
         List<PerformanceEntity> performances = null;
         List<ProductEntity> products = null;
         List<TableEntity> tables = null;
+        List<DishEntity> dishes = null;
         try {
             users = objectMapper.readValue(InsertData.class.getResource("users.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, UserEntity.class));
             bills = objectMapper.readValue(InsertData.class.getResource("bills.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, BillEntity.class));
@@ -31,6 +32,7 @@ public class InsertData {
             performances = objectMapper.readValue(InsertData.class.getResource("performances.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, PerformanceEntity.class));
             products = objectMapper.readValue(InsertData.class.getResource("products.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, ProductEntity.class));
             tables = objectMapper.readValue(InsertData.class.getResource("tables.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, TableEntity.class));
+            dishes = objectMapper.readValue(InsertData.class.getResource("dishes.json"), objectMapper.getTypeFactory().constructCollectionType(List.class, DishEntity.class));
         } catch (JsonMappingException exception) {
             log.error(exception.getMessage());
         } catch (IOException exception) {
@@ -44,5 +46,6 @@ public class InsertData {
         performances.forEach(Launcher.getBaseService()::save);
         products.forEach(Launcher.getBaseService()::save);
         tables.forEach(Launcher.getBaseService()::save);
+        dishes.forEach(Launcher.getBaseService()::save);
     }
 }

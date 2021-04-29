@@ -19,19 +19,13 @@ public class LogInController {
     public void askUserId() {
         logInView.displayLogIn();
         String input = InputUtil.getUserIdInput();
-        if (!StringUtils.isBlank(input) && !isUserIdCorrect(input)) {
-            System.out.println("Utilisateur inconnu, veuillez recommencer.");
+        UserEntity user = Launcher.getBaseService().getUserById(input);
+        if (!StringUtils.isBlank(input) && user == null) {
+            logInView.displayLogInError();
             askUserId();
-        }
-    }
-
-    private boolean isUserIdCorrect(String userId) {
-        UserEntity user = Launcher.getBaseService().getUserById(userId);
-        if (user != null) {
+        } else if (user != null) {
             Launcher.setLoggedUser(user);
-            return true;
         }
-        return false;
     }
 
     private void connectUserAccordingRole() {

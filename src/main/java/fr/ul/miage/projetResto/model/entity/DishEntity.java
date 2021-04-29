@@ -12,4 +12,18 @@ public class DishEntity {
     private DishType dishType;
     private List<String> idsProduct;
     private String idCategory;
+    private boolean onTheMenu;
+
+    @Override
+    public String toString() {
+        StringBuilder toString = new StringBuilder();
+        toString.append(_id + ", ");
+        toString.append(price + "€, ");
+        toString.append(dishType.getDish() + ", (");
+        toString.append(idCategory + ")\n");
+        for (String product : idsProduct) {
+            toString.append(" - " + product + "\n");
+        }
+        return toString.toString();
+    }
 }
