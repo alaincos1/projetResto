@@ -116,6 +116,13 @@ public class TestInputError {
     }
 	
 	@Test
+    @DisplayName("String Commande : Vérifier que valider ne prends pas de nombre derrière")
+    void checkInputStringCommandeValideNull() {
+		String test = "-v 1";
+		assertNull(InputError.checkStringCommand(test, 1, 5));
+    }
+	
+	@Test
     @DisplayName("UserId : Vérifier que l'input est un string et renvoie le bon string")
     void checkInputUserId() {
 		String test = "test";

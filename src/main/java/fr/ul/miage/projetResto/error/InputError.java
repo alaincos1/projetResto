@@ -37,19 +37,25 @@ public class InputError {
     public static String checkDate(String date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         format.setLenient(false);
+        Date d;
         try {
-            Date d = format.parse(date);
+            d = format.parse(date);
         } catch (ParseException e) {
             return null;
         }
-        return date;
+
+        Date auj = new Date();        
+        if (d.before(auj) && !format.format(auj).equals(format.format(d)) ) {
+        	System.out.println("La date ne peut pas être dans le passé.");
+        	return null;
+        }
+        return format.format(d);
     }
 
     public static String checkStringCommand(String command, Integer borneMin, Integer borneMax) {
         if (command.charAt(0) != '-') {
             return null;
         }
-
 
         String selection = command.substring(2);
         String[] listSelection = selection.replace(" ", "").split("/");

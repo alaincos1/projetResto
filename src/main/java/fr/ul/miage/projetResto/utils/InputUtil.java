@@ -4,6 +4,7 @@ package fr.ul.miage.projetResto.utils;
 import fr.ul.miage.projetResto.error.InputError;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Date;
 import java.util.Scanner;
 
 public class InputUtil {
