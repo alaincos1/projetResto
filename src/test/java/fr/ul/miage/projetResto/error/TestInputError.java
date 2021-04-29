@@ -1,5 +1,6 @@
 package fr.ul.miage.projetResto.error;
 
+import fr.ul.miage.projetResto.constants.InfoRestaurant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -126,35 +127,35 @@ public class TestInputError {
     @DisplayName("UserId : Vérifier que la méthode retourne null si le string contient des caractères spéciaux")
     void checkInputUserIdReturnNull() {
 		String test = "test-";
-		assertEquals(null, InputError.checkUserId(test));
+        assertNull(InputError.checkUserId(test));
     }
 	
 	@Test
     @DisplayName("Date : Vérifier que la méthode retourne null si le string n'est pas de format")
     void checkInputDateFormatReturnNull() {
 		String test = "22/03/2020";
-		assertEquals(null, InputError.checkDate(test));
+        assertNull(InputError.checkDate(test));
     }
 	
 	@Test
     @DisplayName("Date : Vérifier que la méthode retourne null si la date est impossible (31 février) ")
     void checkInputDateImpossibleReturnNull() {
 		String test = "2021/02/31";
-		assertEquals(null, InputError.checkDate(test));
+        assertNull(InputError.checkDate(test));
     }
 	
 	@Test
     @DisplayName("Date : Vérifier que la méthode retourne null si la date est impossible (mois n°56)")
     void checkInputDateImpossibleReturnNull2() {
 		String test = "2021/56/12";
-		assertEquals(null, InputError.checkDate(test));
+        assertNull(InputError.checkDate(test));
     }
 	
 	@Test
     @DisplayName("Date : Vérifier que la méthode retourne null si la date est impossible (jour n°56)")
     void checkInputDateImpossibleReturnNull3() {
 		String test = "2021/03/56";
-		assertEquals(null, InputError.checkDate(test));
+        assertNull(InputError.checkDate(test));
     }
 	
 	@Test
@@ -162,5 +163,56 @@ public class TestInputError {
     void checkInputDate() {
 		String test = "2021/03/30";
 		assertEquals("2021/03/30", InputError.checkDate(test));
+    }
+
+    @Test
+    @DisplayName("String : Vérifier que la méthode retourne null si la chaîne est vide")
+    void checkEmptyString() {
+        String test = "    ";
+        assertNull(InputError.checkString(test));
+    }
+
+    @Test
+    @DisplayName("String : Vérifier que la méthode retourne null si la chaîne est plus grande que 30")
+    void checkStringLength() {
+        String test = "Salades de champignons à la turque et aux olives";
+        assertNull(InputError.checkString(test));
+    }
+
+    @Test
+    @DisplayName("String : Vérifier que la méthode retourne la commande si aucune problème n'est détecté")
+    void checkStringCorrect() {
+        String test = "Salades de champignons";
+        assertEquals(test, InputError.checkString(test));
+    }
+
+    @Test
+    @DisplayName("String : Vérifier que la méthode retourne null si la chaîne est vide")
+    void checkEmptyMultipleChoices() {
+        String test = "   ";
+        assertNull(InputError.checkStringMultipleChoices(test, 1, 2));
+    }
+
+    @Test
+    @DisplayName("String : Vérifier que la méthode retourne null si plus de 10 choix")
+    void checkMultipleChoicesLength() {
+        String test = "1/2/3/4/5/6/7/8/9/10/11";
+        assertNull(InputError.checkStringMultipleChoices(test, 1, 11));
+    }
+
+    @Test
+    @DisplayName("String : Vérifier que la méthode retourne null si un élément des choix est hors bornes")
+    void checkMultipleChoicesLimits() {
+        String test = "1/6";
+        String test2 = "6";
+        assertNull(InputError.checkStringMultipleChoices(test, 1, 3));
+        assertNull(InputError.checkStringMultipleChoices(test2, 1, 3));
+    }
+
+    @Test
+    @DisplayName("String : Vérifier que la méthode retourne les choix si tout est correct")
+    void checkMultipleChoicesCorrect() {
+        String test = "1/2/3";
+        assertEquals(test, InputError.checkStringMultipleChoices(test,1,3));
     }
 }
