@@ -6,10 +6,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
 
 import fr.ul.miage.projetResto.Launcher;
+import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
+import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.BookingEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
@@ -127,7 +129,7 @@ public class ButlerController extends RoleMenuController {
 	}
 
 	//Fonction qui demande le service en fonction de la date choisie
-	private MealType choiceMealTypeWithDate(String dateBooking) {
+	public MealType choiceMealTypeWithDate(String dateBooking) {
 		MealType mealTypeBooking = null;
 		
 		//Si la reservation est pour la date du jour et qu'on est au service du diner alors la reservation est impossible
@@ -156,7 +158,7 @@ public class ButlerController extends RoleMenuController {
 	}
 	
 	//FOnction qui permet de définir le service en fonction d l'entrée de l'utilisateur 
-	private MealType choiceMealType(Integer choiceMealType) {
+	public static MealType choiceMealType(Integer choiceMealType) {
 		MealType mealTypeBooking;
 		if (choiceMealType == 0) {
 			mealTypeBooking = MealType.Déjeuner;
@@ -169,7 +171,7 @@ public class ButlerController extends RoleMenuController {
 
 	//Fonction qui permet de savoir si la table existe en focntion de son id et si sont état est correct
 	//Par exemple savoir si le table avec l'id 1 existe et est libre 
-	private boolean isTableIdCorrect(String tableId, TableState state) {
+	public static boolean isTableIdCorrect(String tableId, TableState state) {
 		TableEntity table = Launcher.getBaseService().getTableById(tableId);
 		if (table != null && (state == null || table.getTableState() == state)) {
 			return true;
