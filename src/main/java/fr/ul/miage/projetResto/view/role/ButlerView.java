@@ -2,10 +2,9 @@ package fr.ul.miage.projetResto.view.role;
 
 import java.util.List;
 
-
-import fr.ul.miage.projetResto.Launcher;
 import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.Role;
+import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.BookingEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
@@ -39,18 +38,18 @@ public class ButlerView extends RoleView {
 		}
 	}
 
-	public void displayAllTablesWithNoBooking(List<TableEntity> tables, String date, MealType mealType) {
+	public void displayAllTablesWithNoBooking(List<TableEntity> tables, String date, MealType mealType, BaseService baseService) {
 		for (TableEntity table : tables) {
-			if (tableIsReserved(table, date, mealType) == null) {
+			if (tableIsReserved(table, date, mealType, baseService) == null) {
 				System.out.println(" - Id: " + table.get_id() + " Nb places: " + table.getNbSeats());
 			}
 		}
 	}
 
-	public int displayAllTablesWithBooking(List<TableEntity> tables, String date, MealType mealType) {
+	public int displayAllTablesWithBooking(List<TableEntity> tables, String date, MealType mealType, BaseService baseService) {
 		int nbBooking = 0;
 		for (TableEntity table : tables) {
-			String name = tableIsReserved(table, date, mealType);
+			String name = tableIsReserved(table, date, mealType, baseService);
 			if (name != null) {
 				System.out.println(" - Id: " + table.get_id() + " Nb places: " + table.getNbSeats() + " Nom : " + name);
 				nbBooking++;
@@ -59,8 +58,8 @@ public class ButlerView extends RoleView {
 		return nbBooking;
 	}
 
-	private String tableIsReserved(TableEntity table, String date, MealType mealType) {
-		List<BookingEntity> bookings = Launcher.getBaseService().getAllBooking();
+	private String tableIsReserved(TableEntity table, String date, MealType mealType, BaseService baseService) {
+		List<BookingEntity> bookings = baseService.getAllBooking();
 		for (BookingEntity booking : bookings) {
 			if (table.get_id().equals(booking.getIdTable()) && booking.getMealType().equals(mealType)
 					&& booking.getDate().equals(date)) {
