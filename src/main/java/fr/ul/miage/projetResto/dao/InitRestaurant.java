@@ -20,7 +20,7 @@ public class InitRestaurant {
     private final BaseService baseService;
 
     public void initRestaurant() {
-        InsertData.feedData();
+        InsertData.feedData(baseService);
         deletePastBookings();
         initUncheckedOrder();
         initTableState();

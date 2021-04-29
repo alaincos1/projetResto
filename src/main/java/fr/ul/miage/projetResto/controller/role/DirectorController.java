@@ -1,21 +1,30 @@
 package fr.ul.miage.projetResto.controller.role;
 
+import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
+import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.view.role.DirectorView;
 
 public class DirectorController extends RoleMenuController {
+    private BaseService baseService;
+    private Service service;
     private final DirectorView directorView = new DirectorView();
+
+    public DirectorController(BaseService baseService, Service service){
+        this.baseService = baseService;
+        this.service = service;
+    }
 
     @Override
     public void callAction(Integer action) {
-        ButlerController butlerController = new ButlerController();
-        ServerController serverController = new ServerController();
-        HelperController helperController = new HelperController();
-        CookController cookController = new CookController();
+        ButlerController butlerController = new ButlerController(baseService, service);
+        ServerController serverController = new ServerController(baseService, service);
+        HelperController helperController = new HelperController(baseService, service);
+        CookController cookController = new CookController(baseService, service);
         switch (action) {
             case 0:
-                LogInController logInController = new LogInController();
+                LogInController logInController = new LogInController(baseService, service);
                 logInController.disconnect();
                 break;
             case 1:

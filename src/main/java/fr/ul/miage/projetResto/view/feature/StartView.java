@@ -1,6 +1,6 @@
 package fr.ul.miage.projetResto.view.feature;
 
-import fr.ul.miage.projetResto.Launcher;
+import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.MealType;
 
 public class StartView {
@@ -17,7 +17,7 @@ public class StartView {
         System.out.println("Veuillez choisir la date du service au format  \"AAAA/MM/JJ\" :");
     }
 
-    public void displayService() {
-        System.out.println("Service du jour : " + Launcher.getService().getMealType() + " " + Launcher.getService().getDate());
+    public void displayService(Service service) {
+        System.out.println("Service du jour : " +service.getMealType() + " " + service.getDate());
     }
 }

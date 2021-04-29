@@ -2,6 +2,8 @@ package fr.ul.miage.projetResto.controller.role;
 
 import java.util.List;
 
+import fr.ul.miage.projetResto.appinfo.Service;
+import fr.ul.miage.projetResto.dao.service.BaseService;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
 
@@ -19,7 +21,14 @@ import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.role.ButlerView;
 
 public class ButlerController extends RoleMenuController {
+	private BaseService baseService;
+	private Service service;
 	private final ButlerView butlerView = new ButlerView();
+
+	public ButlerController(BaseService baseService, Service service){
+		this.baseService = baseService;
+		this.service = service;
+	}
 
 	@Override
 	public void callAction(Integer action) {
@@ -27,10 +36,10 @@ public class ButlerController extends RoleMenuController {
 		switch (action) {
 		case 0:
 			if (role.equals(Role.Director)) {
-				DirectorController directorController = new DirectorController();
+				DirectorController directorController = new DirectorController(baseService, service);
 				directorController.launch(Role.Director);
 			} else {
-				LogInController logInController = new LogInController();
+				LogInController logInController = new LogInController(baseService, service);
 				logInController.disconnect();
 			}
 			break;
@@ -50,14 +59,14 @@ public class ButlerController extends RoleMenuController {
 	}
 
 	protected void affectTablesToServer() {
-		List<UserEntity> users = Launcher.getBaseService().getAllUser();
-		List<TableEntity> tables = Launcher.getBaseService().getAllTable();
+		List<UserEntity> users = baseService.getAllUser();
+		List<TableEntity> tables = baseService.getAllTable();
 		butlerView.displayAllTables(tables);
 		butlerView.displayChoiceServer();
 		butlerView.displayServersList(users);
 
 		String choiceUser = InputUtil.getUserIdInput();
-		UserEntity user = Launcher.getBaseService().getUserById(choiceUser);
+		UserEntity user = baseService.getUserById(choiceUser);
 		String choiceTable = "";
 		if (!StringUtils.isBlank(choiceUser) && user == null) {
 			System.out.println("Utilisateur inconnu, veuillez recommencer.");
@@ -68,7 +77,7 @@ public class ButlerController extends RoleMenuController {
 			choiceTable = choiceTableServer(user);
 		}
 
-		TableEntity tableToChange = Launcher.getBaseService().getTableById(choiceTable);
+		TableEntity tableToChange = baseService.getTableById(choiceTable);
 
 		if (user.getRole().equals(Role.Server)) {
 			tableToChange.setIdServer(choiceUser);
@@ -83,7 +92,7 @@ public class ButlerController extends RoleMenuController {
 	}
 
 	protected void affectTablesToClients() {
-		List<TableEntity> tables = Launcher.getBaseService().getAllTable();
+		List<TableEntity> tables = baseService.getAllTable();
 
 		butlerView.displayIsABill();
 
@@ -97,7 +106,7 @@ public class ButlerController extends RoleMenuController {
 			choiceTable = choiceTable(TableState.Free);
 		}
 
-		TableEntity tableToChange = Launcher.getBaseService().getTableById(choiceTable);
+		TableEntity tableToChange = baseService.getTableById(choiceTable);
 		tableToChange.setTableState(TableState.Occupied);
 
 		updateObject(tableToChange);
@@ -113,8 +122,8 @@ public class ButlerController extends RoleMenuController {
 		butlerView.displayBookingName();
 		String nameBooking = InputUtil.getStringInput();
 
-		List<TableEntity> tables = Launcher.getBaseService().getAllTable();
-		butlerView.displayAllTablesWithNoBooking(tables, dateBooking, mealTypeBooking);
+		List<TableEntity> tables = baseService.getAllTable();
+		butlerView.displayAllTablesWithNoBooking(tables, dateBooking, mealTypeBooking, baseService);
 		butlerView.displayChoiceTableClient();
 		String choiceTable = choiceTable(null);
 
@@ -133,13 +142,13 @@ public class ButlerController extends RoleMenuController {
 		MealType mealTypeBooking = null;
 		
 		//Si la reservation est pour la date du jour et qu'on est au service du diner alors la reservation est impossible
-		if (dateBooking.equals(Launcher.getService().getDate())
-				&& Launcher.getService().getMealType() == MealType.Dîner) {
+		if (dateBooking.equals(service.getDate())
+				&& service.getMealType() == MealType.Dîner) {
 			butlerView.displayBookingImpossible();
 			launch(Role.Butler);
 		} 
 		//Si la reservation est pour le jour et qu'on est au service du dejeuner alors la reservation est automatique pour le soir
-		else if (dateBooking.equals(Launcher.getService().getDate())) {
+		else if (dateBooking.equals(service.getDate())) {
 			butlerView.displayBookingDiner();
 			Integer correct = InputUtil.getIntegerInput(0, 1);
 			if (correct == 0) {
@@ -203,7 +212,7 @@ public class ButlerController extends RoleMenuController {
 
 	
 	private boolean isTableIdCorrectServer(String tableId, UserEntity user) {
-		TableEntity table = Launcher.getBaseService().getTableById(tableId);
+		TableEntity table = baseService.getTableById(tableId);
 		if (table != null && !table.getIdServer().equals(user.get_id()) && !table.getIdHelper().equals(user.get_id())) {
 			return true;
 		}
@@ -215,8 +224,8 @@ public class ButlerController extends RoleMenuController {
 	private String choiceReservation(List<TableEntity> tables, Integer reservation) {
 		String choiceTable = null;
 		if (reservation == 1) {
-			if (butlerView.displayAllTablesWithBooking(tables, Launcher.getService().getDate(),
-					Launcher.getService().getMealType()) != 0) {
+			if (butlerView.displayAllTablesWithBooking(tables, service.getDate(),
+					service.getMealType(), baseService) != 0) {
 				butlerView.displayChoiceTableClient();
 				choiceTable = choiceTable(TableState.Booked);
 			} else {
@@ -228,7 +237,7 @@ public class ButlerController extends RoleMenuController {
 
 	//Mettre à jour un objet (table...)
 	private void updateObject(Object o) {
-		if (Launcher.getBaseService().update(o)) {
+		if (baseService.update(o)) {
 			butlerView.displayActionSucceded();
 		} else {
 			butlerView.displayActionFailed();
@@ -238,7 +247,7 @@ public class ButlerController extends RoleMenuController {
 
 	//Insere un objet (facture, réservation..)
 	private void saveObject(Object o) {
-		if (Launcher.getBaseService().save(o)) {
+		if (baseService.save(o)) {
 			butlerView.displayActionSucceded();
 		} else {
 			butlerView.displayActionFailed();

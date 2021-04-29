@@ -159,8 +159,8 @@ public class TestInputError {
 	@Test
     @DisplayName("Date : Vérifier que la méthode retourne la bonne date sous forme de string si elle est correcte")
     void checkInputDate() {
-		String test = "2021/03/30";
-		assertEquals("2021/03/30", InputError.checkDate(test));
+		String test = "2022/03/30";
+		assertEquals("2022/03/30", InputError.checkDate(test));
     }
 
     @Test

@@ -1,11 +1,13 @@
 package fr.ul.miage.projetResto.controller.role;
 
 import fr.ul.miage.projetResto.Launcher;
+import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.DishType;
 import fr.ul.miage.projetResto.constants.InfoRestaurant;
 import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
+import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.CategoryEntity;
 import fr.ul.miage.projetResto.model.entity.DishEntity;
 import fr.ul.miage.projetResto.model.entity.OrderEntity;
@@ -18,7 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CookController extends RoleMenuController {
+    private BaseService baseService;
+    private Service service;
     CookView cookView = new CookView();
+
+    public CookController(BaseService baseService, Service service){
+        this.baseService = baseService;
+        this.service = service;
+    }
 
     @Override
     public void callAction(Integer action) {
@@ -26,10 +35,10 @@ public class CookController extends RoleMenuController {
         switch (action) {
             case 0:
                 if (role.equals(Role.Director)) {
-                    DirectorController directorController = new DirectorController();
+                    DirectorController directorController = new DirectorController(baseService, service);
                     directorController.launch(Role.Director);
                 } else {
-                    LogInController logInController = new LogInController();
+                    LogInController logInController = new LogInController(baseService, service);
                     logInController.disconnect();
                 }
                 break;
@@ -50,8 +59,8 @@ public class CookController extends RoleMenuController {
         }
     }
 
-    protected void viewOrdersList() {
-        List<OrderEntity> orders = Launcher.getBaseService().getNotPreparedOrders();
+    public void viewOrdersList() {
+        List<OrderEntity> orders = baseService.getNotPreparedOrders();
         if (orders.isEmpty()) {
             cookView.displayNoOrderToPrepare();
             launch(Role.Cook);
@@ -62,14 +71,14 @@ public class CookController extends RoleMenuController {
     }
 
     protected void setOrderReady() {
-        List<OrderEntity> orders = Launcher.getBaseService().getNotPreparedOrders();
+        List<OrderEntity> orders = baseService.getNotPreparedOrders();
         if (!orders.isEmpty()) {
             cookView.displayOrdersList(orders);
             cookView.displayWhichOrderPrepared();
-            Integer input = InputUtil.getIntegerInput(0, orders.size()) - 1;
+            int input = InputUtil.getIntegerInput(0, orders.size()) - 1;
             if (input != -1) {
                 orders.get(input).setOrderState(OrderState.Prepared);
-                Launcher.getBaseService().update(orders.get(input));
+                baseService.update(orders.get(input));
                 cookView.displayOrderPrepared(orders.get(input).getIdTable());
                 if (doAgain()) {
                     setOrderReady();
@@ -86,7 +95,7 @@ public class CookController extends RoleMenuController {
         boolean modify = false;
         cookView.displayAskInput("le nom du plat", "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
         String name = InputUtil.getStringInput();
-        if (Launcher.getBaseService().getDishById(name) != null) {
+        if (baseService.getDishById(name) != null) {
             cookView.displayModifyOrCancel();
             Integer choice = InputUtil.getIntegerInput(0, 1);
             if (choice == 0) {
@@ -125,7 +134,7 @@ public class CookController extends RoleMenuController {
 
     private String getDishCategory() {
         cookView.displayAskInput("la catégorie du plat", StringUtils.EMPTY);
-        List<CategoryEntity> categories = Launcher.getBaseService().getAllCategoriesAsList();
+        List<CategoryEntity> categories = baseService.getAllCategoriesAsList();
         cookView.displayCategories(categories);
         Integer input = InputUtil.getIntegerInput(0, categories.size());
         if (input == 0) {
@@ -137,7 +146,7 @@ public class CookController extends RoleMenuController {
     }
 
     private List<String> getDishProducts() {
-        List<ProductEntity> productEntities = Launcher.getBaseService().getAllProductsAsList();
+        List<ProductEntity> productEntities = baseService.getAllProductsAsList();
         cookView.displayAskInput("les produits du plat", "ex : 1/6/8, maximum " + InfoRestaurant.MAX_CHOICES.getValue() + " produits");
         cookView.displayProducts(productEntities);
         List<ProductEntity> selection = parseToSelectedProducts(productEntities, InputUtil.getStringMultipleChoices(1, productEntities.size()));
@@ -161,12 +170,10 @@ public class CookController extends RoleMenuController {
     private List<ProductEntity> parseToSelectedProducts(List<ProductEntity> productEntities, String stringMultipleChoices) {
         String[] selection = stringMultipleChoices.replace(" ", "").split("/");
         List<ProductEntity> selectedProducts = new ArrayList<>();
-        int i = 0;
         for (String sel : selection) {
             if (selectedProducts.stream().noneMatch(x -> x.equals(productEntities.get(Integer.parseInt(sel) - 1)))){
                 selectedProducts.add(productEntities.get(Integer.parseInt(sel) - 1));
             }
-            i++;
         }
         return selectedProducts;
     }
@@ -175,19 +182,19 @@ public class CookController extends RoleMenuController {
         boolean done1 = true;
         boolean done2 = true;
         if (modify) {
-            if (!Launcher.getBaseService().update(newDish)) {
+            if (!baseService.update(newDish)) {
                 done1 = false;
             }
         } else {
-            if (!Launcher.getBaseService().save(newDish)) {
+            if (!baseService.save(newDish)) {
                 done1 = false;
             }
         }
 
-        if (Launcher.getBaseService().getCategoryById(newDish.getIdCategory()) == null) {
+        if (baseService.getCategoryById(newDish.getIdCategory()) == null) {
             CategoryEntity cat = new CategoryEntity();
             cat.set_id(newDish.getIdCategory());
-            if (!Launcher.getBaseService().save(cat)) {
+            if (!baseService.save(cat)) {
                 done2 = false;
             }
         }
@@ -195,11 +202,11 @@ public class CookController extends RoleMenuController {
     }
 
     protected void endCooking() {
-        if (!Launcher.getService().isEndNewClients()) {
+        if (!service.isEndNewClients()) {
             cookView.displayAskEndCooking();
             Integer input = InputUtil.getIntegerInput(0, 1);
             if (input == 1) {
-                Launcher.getService().setEndNewClients(true);
+                service.setEndNewClients(true);
                 cookView.displayEnded();
             }
         } else {

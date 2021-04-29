@@ -18,7 +18,7 @@ public class Launcher {
     public static void main(String[] args) {
         ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("org.mongodb.driver").setLevel(Level.OFF);
         initBaseService();
-        StartController startController = new StartController();
+        StartController startController = new StartController(baseService, service);
         startController.launch();
     }
 

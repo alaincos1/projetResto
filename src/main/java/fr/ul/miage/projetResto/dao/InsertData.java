@@ -2,7 +2,7 @@ package fr.ul.miage.projetResto.dao;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.ul.miage.projetResto.Launcher;
+import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 public class InsertData {
 
-    public static void feedData() {
+    public static void feedData(BaseService baseService) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<UserEntity> users = null;
         List<BillEntity> bills = null;
@@ -38,14 +38,14 @@ public class InsertData {
         } catch (IOException exception) {
             log.error(exception.getMessage());
         }
-        users.forEach(Launcher.getBaseService()::save);
-        bills.forEach(Launcher.getBaseService()::save);
-        bookings.forEach(Launcher.getBaseService()::save);
-        categories.forEach(Launcher.getBaseService()::save);
-        orders.forEach(Launcher.getBaseService()::save);
-        performances.forEach(Launcher.getBaseService()::save);
-        products.forEach(Launcher.getBaseService()::save);
-        tables.forEach(Launcher.getBaseService()::save);
-        dishes.forEach(Launcher.getBaseService()::save);
+        users.forEach(baseService::save);
+        bills.forEach(baseService::save);
+        bookings.forEach(baseService::save);
+        categories.forEach(baseService::save);
+        orders.forEach(baseService::save);
+        performances.forEach(baseService::save);
+        products.forEach(baseService::save);
+        tables.forEach(baseService::save);
+        dishes.forEach(baseService::save);
     }
 }
