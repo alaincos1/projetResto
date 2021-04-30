@@ -11,7 +11,7 @@ import fr.ul.miage.projetResto.view.feature.StartView;
 public class StartController {
     StartView startView;
     private final BaseService baseService;
-    private final Service service;
+    private Service service;
     private InitRestaurant initRestaurant;
     private MealType mealType;
     private String date;
@@ -43,6 +43,7 @@ public class StartController {
     }
 
     public void createService() {
+        service = new Service();
         service.setMealType(mealType);
         service.setDate(date);
         startView.displayService(service);
