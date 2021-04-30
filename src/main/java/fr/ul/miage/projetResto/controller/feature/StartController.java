@@ -7,7 +7,9 @@ import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.feature.StartView;
+import lombok.Data;
 
+@Data
 public class StartController {
     StartView startView;
     private final BaseService baseService;
@@ -28,7 +30,7 @@ public class StartController {
         createService();
         initRestaurant = new InitRestaurant(service, baseService);
         initRestaurant.initRestaurant();
-        launchLoginView();
+        launchLogin();
     }
 
     public void askMealType() {
@@ -38,7 +40,7 @@ public class StartController {
     }
 
     public void askMealDate() {
-        startView.displayDate();
+        startView.displayAskDate();
         date = getDateInput();
     }
 
@@ -49,7 +51,7 @@ public class StartController {
         startView.displayService(service);
     }
 
-    public void launchLoginView() {
+    public void launchLogin() {
         LogInController logInController = new LogInController(baseService, service, new LogInView());
         logInController.launch();
     }

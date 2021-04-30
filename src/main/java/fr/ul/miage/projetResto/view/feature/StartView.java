@@ -13,7 +13,7 @@ public class StartView {
         }
     }
 
-    public void displayDate() {
+    public void displayAskDate() {
         System.out.println("Veuillez choisir la date du service au format  \"AAAA/MM/JJ\" :");
     }
 
