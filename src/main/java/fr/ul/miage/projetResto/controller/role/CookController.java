@@ -68,7 +68,7 @@ public class CookController extends RoleMenuController {
         }
     }
 
-    protected void setOrderReady() {
+    public void setOrderReady() {
         List<OrderEntity> orders = baseService.getNotPreparedOrders();
         if (!orders.isEmpty()) {
             cookView.displayOrdersList(orders);
@@ -102,10 +102,11 @@ public class CookController extends RoleMenuController {
             }
             modify = true;
         }
+
         newDish.set_id(name);
         newDish.setPrice(getPriceDish());
         newDish.setDishType(getDishType());
-        newDish.setIdCategory(getDishCategory());
+        newDish.setIdCategory(getDishCategory(newDish.getDishType()));
         newDish.setIdsProduct(getDishProducts());
         newDish.setOnTheMenu(false);
 
@@ -118,32 +119,37 @@ public class CookController extends RoleMenuController {
         launch(Role.Cook);
     }
 
-    private Integer getPriceDish() {
+    protected Integer getPriceDish() {
         cookView.displayAskInput("le prix", "<=" + InfoRestaurant.MAX_PRICE.getValue() + " €");
         return getIntegerInput(1, InfoRestaurant.MAX_PRICE.getValue());
     }
 
-    private DishType getDishType() {
+    protected DishType getDishType() {
         cookView.displayAskInput("le type de plat", StringUtils.EMPTY);
         cookView.displayDishType();
         Integer input = getIntegerInput(1, DishType.values().length);
         return DishType.values()[input - 1];
     }
 
-    private String getDishCategory() {
+    protected String getDishCategory(DishType dishType) {
         cookView.displayAskInput("la catégorie du plat", StringUtils.EMPTY);
-        List<CategoryEntity> categories = baseService.getAllCategoriesAsList();
+        List<CategoryEntity> categories = baseService.getCategoriesWithDishTypeAsList(dishType);
         cookView.displayCategories(categories);
         Integer input = getIntegerInput(0, categories.size());
         if (input == 0) {
             cookView.displayAskInput("la nouvelle catégorie du plat", "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
-            return getStringInput();
+            String newCat = getStringInput();
+            while(baseService.getCategoryById(newCat) != null){
+                cookView.displayAskInput("une catégorie de plat qui n'est pas déjà définie dans un autre type de plat que "+dishType.getDish(), "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
+                newCat = getStringInput();
+            }
+            return newCat;
         } else {
             return categories.get(input - 1).get_id();
         }
     }
 
-    private List<String> getDishProducts() {
+    protected List<String> getDishProducts() {
         List<ProductEntity> productEntities = baseService.getAllProductsAsList();
         cookView.displayAskInput("les produits du plat", "ex : 1/6/8, maximum " + InfoRestaurant.MAX_CHOICES.getValue() + " produits");
         cookView.displayProducts(productEntities);
@@ -157,7 +163,7 @@ public class CookController extends RoleMenuController {
         }
     }
 
-    private List<String> parseToIdProducts(List<ProductEntity> selection) {
+    protected List<String> parseToIdProducts(List<ProductEntity> selection) {
         List<String> listId = new ArrayList<>();
         for (ProductEntity product : selection) {
             listId.add(product.get_id());
@@ -165,7 +171,7 @@ public class CookController extends RoleMenuController {
         return listId;
     }
 
-    private List<ProductEntity> parseToSelectedProducts(List<ProductEntity> productEntities, String stringMultipleChoices) {
+    protected List<ProductEntity> parseToSelectedProducts(List<ProductEntity> productEntities, String stringMultipleChoices) {
         String[] selection = stringMultipleChoices.replace(" ", "").split("/");
         List<ProductEntity> selectedProducts = new ArrayList<>();
         for (String sel : selection) {
@@ -176,7 +182,7 @@ public class CookController extends RoleMenuController {
         return selectedProducts;
     }
 
-    private void saveDish(DishEntity newDish, boolean modify) {
+    protected void saveDish(DishEntity newDish, boolean modify) {
         boolean done1 = true;
         boolean done2 = true;
         if (modify) {
@@ -192,6 +198,7 @@ public class CookController extends RoleMenuController {
         if (baseService.getCategoryById(newDish.getIdCategory()) == null) {
             CategoryEntity cat = new CategoryEntity();
             cat.set_id(newDish.getIdCategory());
+            cat.setDishType(newDish.getDishType());
             if (!baseService.save(cat)) {
                 done2 = false;
             }

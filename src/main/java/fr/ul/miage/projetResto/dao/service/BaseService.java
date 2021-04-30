@@ -1,5 +1,6 @@
 package fr.ul.miage.projetResto.dao.service;
 
+import fr.ul.miage.projetResto.constants.DishType;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.model.entity.*;
 
@@ -125,8 +126,8 @@ public class BaseService {
         bookingCollection.deletePastBookings(date);
     }
 
-    public List<CategoryEntity> getAllCategoriesAsList() {
-        return categoryCollection.getAllCategoriesAsList();
+    public List<CategoryEntity> getCategoriesWithDishTypeAsList(DishType dishType) {
+        return categoryCollection.getCategoriesWithDishTypeAsList(dishType);
     }
 
     public List<ProductEntity> getAllProductsAsList() {
