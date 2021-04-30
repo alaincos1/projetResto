@@ -4,27 +4,25 @@ import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.dao.service.BaseService;
-import fr.ul.miage.projetResto.view.role.DirectorView;
+import fr.ul.miage.projetResto.view.feature.LogInView;
+import fr.ul.miage.projetResto.view.role.*;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class DirectorController extends RoleMenuController {
-    private BaseService baseService;
-    private Service service;
-    private final DirectorView directorView = new DirectorView();
-
-    public DirectorController(BaseService baseService, Service service){
-        this.baseService = baseService;
-        this.service = service;
-    }
+    private final BaseService baseService;
+    private final Service service;
+    private final DirectorView directorView;
 
     @Override
     public void callAction(Integer action) {
-        ButlerController butlerController = new ButlerController(baseService, service);
-        ServerController serverController = new ServerController(baseService, service);
-        HelperController helperController = new HelperController(baseService, service);
-        CookController cookController = new CookController(baseService, service);
+        ButlerController butlerController = new ButlerController(baseService, service, new ButlerView());
+        ServerController serverController = new ServerController(baseService, service, new ServerView());
+        HelperController helperController = new HelperController(baseService, service, new HelperView());
+        CookController cookController = new CookController(baseService, service, new CookView());
         switch (action) {
             case 0:
-                LogInController logInController = new LogInController(baseService, service);
+                LogInController logInController = new LogInController(baseService, service, new LogInView());
                 logInController.disconnect();
                 break;
             case 1:

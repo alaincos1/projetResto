@@ -47,4 +47,28 @@ public class RoleMenuController {
     public boolean doAgain() {
         return InputUtil.getIntegerInput(0, 1) == 1;
     }
+
+    public Integer getIntegerInput(Integer min, Integer max) {
+        return InputUtil.getIntegerInput(min, max);
+    }
+
+    public String getDateInput() {
+        return InputUtil.getDateInput();
+    }
+
+    public String getUserIdInput() {
+        return InputUtil.getUserIdInput();
+    }
+
+    public String getStringCommandInput(Integer min, Integer max) {
+        return InputUtil.getStringCommandInput(min, max);
+    }
+
+    public String getStringInput() {
+        return InputUtil.getStringInput();
+    }
+
+    public String getStringMultipleChoices(Integer min, Integer max) {
+        return InputUtil.getStringMultipleChoices(min, max);
+    }
 }
