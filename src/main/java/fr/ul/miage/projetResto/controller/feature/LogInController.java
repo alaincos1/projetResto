@@ -20,24 +20,24 @@ public class LogInController {
 
     public void launch() {
         askUserId();
-        connectUserAccordingRole();
+        Role role = Launcher.getLoggedUser().getRole();
+        RoleMenuController controller = null;
+        connectUserAccordingRole(controller, role);
     }
 
     public void askUserId() {
         logInView.displayLogIn();
         String input = getUserIdInput();
         UserEntity user = baseService.getUserById(input);
-        if (!StringUtils.isBlank(input) && user == null) {
+        if (user == null) {
             logInView.displayLogInError();
             askUserId();
-        } else if (user != null) {
+        } else {
             Launcher.setLoggedUser(user);
         }
     }
 
-    private void connectUserAccordingRole() {
-        RoleMenuController controller = null;
-        Role role = Launcher.getLoggedUser().getRole();
+    protected void connectUserAccordingRole(RoleMenuController controller, Role role) {
         switch (role) {
             case Director:
                 controller = new DirectorController(baseService, service, new DirectorView());
