@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.or;
+
 public class TableCollection extends MongoAccess {
     MongoCollection<Document> collection = database.getCollection("tables");
 
@@ -27,6 +30,12 @@ public class TableCollection extends MongoAccess {
 
     public List<TableEntity> getAll() {
         return collection.find().into(new ArrayList<Document>()).stream()
+                .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<TableEntity> getAllTableByServerOrHelper(String user) {
+        return collection.find(or(eq("idServer",user), eq("idHelper",user))).into(new ArrayList<Document>()).stream()
                 .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
                 .collect(Collectors.toList());
     }

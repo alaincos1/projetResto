@@ -133,4 +133,8 @@ public class BaseService {
     public List<ProductEntity> getAllProductsAsList() {
         return productCollection.getAllProductsAsList();
     }
+
+    public List<TableEntity> getAllTableByServerOrHelper(String user) {
+        return tableCollection.getAllTableByServerOrHelper(user);
+    }
 }
