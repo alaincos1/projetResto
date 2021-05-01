@@ -177,7 +177,6 @@ public class ButlerController extends RoleMenuController {
     //Par exemple savoir si le table avec l'id 1 existe et est libre
     protected boolean isTableIdCorrect(String tableId, TableState state) {
         TableEntity table = baseService.getTableById(tableId);
-        System.out.println(table);
 		return table != null && (state == null || table.getTableState() == state);
 	}
 
@@ -214,15 +213,11 @@ public class ButlerController extends RoleMenuController {
     protected String choiceReservation(List<TableEntity> tables, Integer reservation) {
         String choiceTable = null;
         if (reservation == 1) {
-        	System.out.println("test");
             if (butlerView.displayAllTablesWithBooking(tables, service.getDate(),
                     service.getMealType(), baseService) != 0) {
-            	System.out.println("iii");
                 butlerView.displayChoiceTableClient();
-                System.out.println("dezfezfze");
                 choiceTable = choiceTable(TableState.Booked);
             } else {
-            	System.out.println("fnerjfrifnrefnreiuuiuhyi");
                 butlerView.displayAnyBooking();
             }
         }
