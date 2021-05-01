@@ -1,6 +1,7 @@
 package fr.ul.miage.projetResto.dao.repository;
 
 import com.mongodb.client.MongoCollection;
+import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import org.bson.Document;
 
@@ -8,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.or;
+import static com.mongodb.client.model.Filters.*;
 
 public class TableCollection extends MongoAccess {
     MongoCollection<Document> collection = database.getCollection("tables");
@@ -36,6 +36,12 @@ public class TableCollection extends MongoAccess {
 
     public List<TableEntity> getAllTableByServerOrHelper(String user) {
         return collection.find(or(eq("idServer", user), eq("idHelper", user))).into(new ArrayList<Document>()).stream()
+                .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<TableEntity> getAllTableByServerOrHelperAndState(String user, TableState state) {
+        return collection.find(and(eq("tableState", state.toString()),or(eq("idServer", user), eq("idHelper", user)))).into(new ArrayList<Document>()).stream()
                 .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
                 .collect(Collectors.toList());
     }
