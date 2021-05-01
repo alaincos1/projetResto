@@ -46,7 +46,13 @@ public class HelperController extends RoleMenuController {
     }
 
     protected void viewTables(UserEntity user) {
-        List<TableEntity> tables = baseService.getAllTableByServerOrHelper(user.get_id());
+        List<TableEntity> tables;
+        if (Role.Director.equals(user.getRole())) {
+            tables = baseService.getAllTable();
+        } else {
+            tables = baseService.getAllTableByServerOrHelper(user.get_id());
+        }
+
         if (tables.isEmpty()) {
             helperView.displayNoTablesAffected();
         } else {
@@ -56,15 +62,21 @@ public class HelperController extends RoleMenuController {
     }
 
     protected void cleanTables(UserEntity user) {
-        List<TableEntity> tablestoClean = baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.Dirty);
-        if (tablestoClean.isEmpty()) {
+        List<TableEntity> tablesToClean;
+        if (Role.Director.equals(user.getRole())) {
+            tablesToClean = baseService.getAllTableByState(TableState.Dirty);
+        } else {
+            tablesToClean = baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.Dirty);
+        }
+
+        if (tablesToClean.isEmpty()) {
             helperView.displayNoTablesToClean();
         } else {
-            helperView.displayTablesToClean(tablestoClean);
-            int choice = getIntegerInput(0, tablestoClean.size()) - 1;
+            helperView.displayTablesToClean(tablesToClean);
+            int choice = getIntegerInput(0, tablesToClean.size()) - 1;
             if (choice != -1) {
-                tablestoClean.get(choice).setTableState(TableState.Free);
-                if (baseService.update(tablestoClean.get(choice))) {
+                tablesToClean.get(choice).setTableState(TableState.Free);
+                if (baseService.update(tablesToClean.get(choice))) {
                     helperView.displayTableCleanedDoAgain();
                     if (doAgain()) {
                         cleanTables(user);

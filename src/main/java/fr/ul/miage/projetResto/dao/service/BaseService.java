@@ -142,4 +142,8 @@ public class BaseService {
     public List<TableEntity> getAllTableByServerOrHelperAndState(String user, TableState state) {
         return tableCollection.getAllTableByServerOrHelperAndState(user, state);
     }
+
+    public List<TableEntity> getAllTableByState(TableState state) {
+        return tableCollection.getAllTableByState(state);
+    }
 }

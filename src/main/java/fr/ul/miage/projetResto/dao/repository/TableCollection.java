@@ -45,4 +45,10 @@ public class TableCollection extends MongoAccess {
                 .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
                 .collect(Collectors.toList());
     }
+
+    public List<TableEntity> getAllTableByState(TableState state) {
+        return collection.find(eq("tableState", state.toString())).into(new ArrayList<Document>()).stream()
+                .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
+                .collect(Collectors.toList());
+    }
 }

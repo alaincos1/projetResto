@@ -10,4 +10,12 @@ public class TableEntity {
     private Integer nbSeats;
     private String idServer;
     private String idHelper;
+
+    @Override
+    public String toString() {
+        StringBuilder toString = new StringBuilder();
+        toString.append("Table n°").append(_id).append(", nombre de places: ").append(nbSeats).append(", état: ").append(tableState.getState());
+        toString.append("\n    -> serveur: ").append(idServer).append(", assistant: ").append(idHelper);
+        return toString.toString();
+    }
 }
