@@ -12,8 +12,8 @@ public class ServerView extends RoleView {
 
     public void displayTablesAffected(List<TableEntity> tables) {
         int i = 1;
-        for(TableEntity table : tables){
-            System.out.println(" "+i+") Table n°"+table.get_id()+", état: "+table.getTableState().getState());
+        for (TableEntity table : tables) {
+            System.out.println(" " + i + ") Table n°" + table.get_id() + ", état: " + table.getTableState().getState());
             i++;
         }
     }

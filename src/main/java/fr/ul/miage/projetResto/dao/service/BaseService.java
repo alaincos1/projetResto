@@ -117,7 +117,7 @@ public class BaseService {
     public List<OrderEntity> getAllNotCheckedOrder() {
         return orderCollection.getAllNotChecked();
     }
-    
+
     public List<UserEntity> getAllUser() {
         return userCollection.getAll();
     }

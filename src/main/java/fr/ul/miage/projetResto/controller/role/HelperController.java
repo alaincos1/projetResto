@@ -5,10 +5,15 @@ import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.dao.service.BaseService;
+import fr.ul.miage.projetResto.model.entity.TableEntity;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.DirectorView;
 import fr.ul.miage.projetResto.view.role.HelperView;
+import fr.ul.miage.projetResto.view.role.ServerView;
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 public class HelperController extends RoleMenuController {
@@ -30,7 +35,7 @@ public class HelperController extends RoleMenuController {
                 }
                 break;
             case 1:
-                viewTables();
+                viewTables(Launcher.getLoggedUser());
                 break;
             case 2:
                 cleanTables();
@@ -38,7 +43,14 @@ public class HelperController extends RoleMenuController {
         }
     }
 
-    protected void viewTables() {
+    protected void viewTables(UserEntity user) {
+        List<TableEntity> tables = baseService.getAllTableByServerOrHelper(user.get_id());
+        if(tables.isEmpty()){
+            helperView.displayNoTablesAffected();
+        }else{
+            helperView.displayTablesAffected(tables);
+        }
+        askMainMenu();
     }
 
     protected void cleanTables() {
