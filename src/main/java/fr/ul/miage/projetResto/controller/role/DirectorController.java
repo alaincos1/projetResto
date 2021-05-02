@@ -55,24 +55,38 @@ public class DirectorController extends RoleMenuController {
             case 10:
                 cookController.launch(Role.Cook);
                 break;
+            default:
+                break;
         }
     }
 
-    private void manageEmployees() {
+    public void manageEmployees() {
     }
 
-    private void manageDayMenu() {
+    public void manageDayMenu() {
     }
 
-    private void manageStocks() {
+    public void manageStocks() {
     }
 
-    private void analysesIncomes() {
+    public void analysesIncomes() {
     }
 
-    private void analysesPerformances() {
+    public void analysesPerformances() {
     }
 
-    private void endService() {
+    public void endService() {
+        if (!service.isEndService()) {
+            directorView.displayAskEndService();
+            Integer input = getIntegerInput(0, 1);
+            if (input == 1) {
+                service.setEndNewClients(true);
+                service.setEndService(true);
+                directorView.displayEnded();
+            }
+        } else {
+            directorView.displayAlreadyEnded();
+        }
+        launch(Role.Director);
     }
 }

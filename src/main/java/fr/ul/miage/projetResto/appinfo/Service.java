@@ -10,10 +10,12 @@ public class Service {
     private MealType mealType;
     private String date;
     private boolean endNewClients;
+    private boolean endService;
 
     public Service(MealType mealType, String date) {
         this.mealType = mealType;
         this.date = date;
         this.endNewClients = false;
+        this.endService = false;
     }
 }
