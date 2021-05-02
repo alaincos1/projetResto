@@ -205,7 +205,7 @@ public class ButlerController extends RoleMenuController {
 
     protected boolean isTableIdCorrectServer(String tableId, UserEntity user) {
         TableEntity table = baseService.getTableById(tableId);
-		return table != null && (table.getIdServer().equals(user.get_id()) || table.getIdHelper().equals(user.get_id()));
+		return table != null && !table.getIdServer().equals(user.get_id()) && !table.getIdHelper().equals(user.get_id());
 	}
 
     //retourne l'id de la table qui correspond à l'entrée de l'utilisateur

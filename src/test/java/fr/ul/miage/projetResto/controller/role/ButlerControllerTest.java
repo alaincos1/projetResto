@@ -201,7 +201,7 @@ public class ButlerControllerTest {
 	}
 	
 	@Test
-	@DisplayName("choix de la table correct avec id serveur false")
+	@DisplayName("choix de la table incorrect avec id serveur false")
 	void choiceTableServerCorrectServerFalse() {
 		UserEntity user = new UserEntity();
 		user.set_id("hel1");
@@ -216,12 +216,31 @@ public class ButlerControllerTest {
 
         verify(butlerView, times(1)).displayInputIncorrect();
         verify(butlerController, times(2)).choiceTableServer(user);
+	}	
+	
+	@Test 
+	@DisplayName("choix de la table incorrect avec id helper false")
+	void isTableIdCorrectServerTestReturnFalseHelper() {
+		UserEntity user = new UserEntity();
+		user.set_id("hel1");
+		user.setRole(Role.Helper);
+
+		TableEntity table = new TableEntity();
+		table.set_id("1");
+		table.setIdHelper("hel1");
+		table.setIdServer("ser1");
+		table.setNbSeats(2);
+		table.setTableState(TableState.Free);
+		
+		doReturn(table).when(baseService).getTableById(anyString());
+		
+		assertFalse(butlerController.isTableIdCorrectServer("1", user));
 	}
 	
 	@Test 
 	void isTableIdCorrectServerTestReturnTrueServer() {
 		UserEntity user = new UserEntity();
-		user.set_id("ser1");
+		user.set_id("test");
 		user.setRole(Role.Server);
 
 		TableEntity table = new TableEntity();
@@ -239,9 +258,9 @@ public class ButlerControllerTest {
 	@Test 
 	void isTableIdCorrectServerTestReturnTrueHelper() {
 		UserEntity user = new UserEntity();
-		user.set_id("hel1");
+		user.set_id("test");
 		user.setRole(Role.Helper);
-
+		
 		TableEntity table = new TableEntity();
 		table.set_id("1");
 		table.setIdHelper("hel1");
@@ -257,7 +276,7 @@ public class ButlerControllerTest {
 	@Test 
 	void isTableIdCorrectServerTestReturnFalseServer() {
 		UserEntity user = new UserEntity();
-		user.set_id("test");
+		user.set_id("ser1");
 		user.setRole(Role.Server);
 
 		TableEntity table = new TableEntity();
@@ -268,17 +287,6 @@ public class ButlerControllerTest {
 		table.setTableState(TableState.Free);
 		
 		doReturn(table).when(baseService).getTableById(anyString());
-		
-		assertFalse(butlerController.isTableIdCorrectServer("1", user));
-	}
-	
-	@Test 
-	void isTableIdCorrectServerTestReturnFalseTable() {
-		UserEntity user = new UserEntity();
-		user.set_id("test");
-		user.setRole(Role.Server);
-		
-		doReturn(null).when(baseService).getTableById(anyString());
 		
 		assertFalse(butlerController.isTableIdCorrectServer("1", user));
 	}
