@@ -68,7 +68,7 @@ class ServerControllerTest {
         user.set_id("ser1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
-        tables.get(0).setTableState(TableState.Occupied);
+        tables.get(0).setTableState(TableState.Starter);
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
         doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(serverController).launch(Role.Server);
@@ -102,7 +102,7 @@ class ServerControllerTest {
         user.set_id("ser1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
-        tables.get(0).setTableState(TableState.Occupied);
+        tables.get(0).setTableState(TableState.Starter);
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
         doReturn(0).when(serverController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(serverController).launch(Role.Server);
@@ -111,6 +111,6 @@ class ServerControllerTest {
 
         verify(serverView, times(1)).displayTablesToDirty(anyList());
         verify(baseService, times(0)).update(any(TableEntity.class));
-        assertEquals(TableState.Occupied, tables.get(0).getTableState());
+        assertEquals(TableState.Starter, tables.get(0).getTableState());
     }
 }

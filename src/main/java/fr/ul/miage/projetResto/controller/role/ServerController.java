@@ -13,6 +13,7 @@ import fr.ul.miage.projetResto.view.role.DirectorView;
 import fr.ul.miage.projetResto.view.role.ServerView;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -68,11 +69,15 @@ public class ServerController extends RoleMenuController {
     }
 
     protected void setTablesDirty(UserEntity user) {
-        List<TableEntity> tablesToDirty;
+        List<TableEntity> tablesToDirty = new ArrayList<>();
         if (Role.Director.equals(user.getRole())) {
-            tablesToDirty = baseService.getAllTableByState(TableState.Occupied);
+            tablesToDirty.addAll(baseService.getAllTableByState(TableState.Starter));
+            tablesToDirty.addAll(baseService.getAllTableByState(TableState.MainCourse));
+            tablesToDirty.addAll(baseService.getAllTableByState(TableState.Dessert));
         } else {
-            tablesToDirty = baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.Occupied);
+            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.Starter));
+            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.MainCourse));
+            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.Dessert));
         }
 
         if (tablesToDirty.isEmpty()) {

@@ -15,6 +15,9 @@ public enum TableState implements EnumInBase {
     Free("Libre"),
     Booked("Réservée"),
     Occupied("Occupée"),
+    Starter("Entrée"),
+    MainCourse("Plat"),
+    Dessert("Dessert"),
     Dirty("Sâle");
 
     private final String state;
