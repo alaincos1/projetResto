@@ -122,4 +122,8 @@ public class ButlerView extends RoleView {
         System.out.println("Entrée incorrecte, veuillez recommencer.");
     }
 
+	public void displayEndNewClient() {
+		System.out.println("Malheureusement nous n'acceptons plus de nouveaux clients mais vous pouvez réserver ou alors revenir demain :)");
+	}
+
 }
