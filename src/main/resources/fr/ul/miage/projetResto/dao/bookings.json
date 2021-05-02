@@ -1,23 +1,23 @@
 [
   {
-    "_id" : "1",
-    "idTable" : "1",
-    "reservationName" : "resa1",
-    "mealType" : "Dîner",
-    "date" : "2021/05/05"
+    "_id": "1",
+    "idTable": "1",
+    "reservationName": "resa1",
+    "mealType": "Dîner",
+    "date": "2021/05/05"
   },
   {
-    "_id" : "2",
-    "idTable" : "2",
-    "reservationName" : "resa2",
-    "mealType" : "Déjeuner",
-    "date" : "2021/05/05"
+    "_id": "2",
+    "idTable": "2",
+    "reservationName": "resa2",
+    "mealType": "Déjeuner",
+    "date": "2021/05/05"
   },
   {
-    "_id" : "3",
-    "idTable" : "6",
-    "reservationName" : "resa3",
-    "mealType" : "Déjeuner",
-    "date" : "2021/05/05"
+    "_id": "3",
+    "idTable": "6",
+    "reservationName": "resa3",
+    "mealType": "Déjeuner",
+    "date": "2021/05/05"
   }
 ]

@@ -1,32 +1,35 @@
 [
   {
-    "_id" : "1",
-    "orderState" : "Checked",
-    "childOrder" : false,
-    "idTable" : "1",
-    "rank" : 1,
-    "idsDish" : [
-      "Salade de sardines","Beignet de banane"
+    "_id": "1",
+    "orderState": "Checked",
+    "childOrder": false,
+    "idTable": "1",
+    "rank": 1,
+    "idsDish": [
+      "Salade de sardines",
+      "Beignet de banane"
     ]
   },
   {
-    "_id" : "2",
-    "orderState" : "Checked",
-    "childOrder" : true,
-    "idTable" : "1",
-    "rank" : 2,
-    "idsDish" : [
-      "Patates sautées et légumes","Salade caesar"
+    "_id": "2",
+    "orderState": "Checked",
+    "childOrder": true,
+    "idTable": "1",
+    "rank": 2,
+    "idsDish": [
+      "Patates sautées et légumes",
+      "Salade caesar"
     ]
   },
   {
-    "_id" : "3",
-    "orderState" : "Checked",
-    "childOrder" : false,
-    "idTable" : "5",
-    "rank" : 3,
-    "idsDish" : [
-      "Boeuf et légumes","Banana Split"
+    "_id": "3",
+    "orderState": "Checked",
+    "childOrder": false,
+    "idTable": "5",
+    "rank": 3,
+    "idsDish": [
+      "Boeuf et légumes",
+      "Banana Split"
     ]
   }
 ]

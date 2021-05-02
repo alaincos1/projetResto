@@ -167,7 +167,7 @@ public class ButlerController extends RoleMenuController {
 		return mealTypeBooking;
 	}
 
-	// FOnction qui permet de définir le service en fonction d l'entrée de
+	// Fonction qui permet de définir le service en fonction d l'entrée de
 	// l'utilisateur
 	protected MealType choiceMealType(Integer choiceMealType) {
 		MealType mealTypeBooking;
@@ -185,8 +185,8 @@ public class ButlerController extends RoleMenuController {
 	// Par exemple savoir si le table avec l'id 1 existe et est libre
 	protected boolean isTableIdCorrect(String tableId, TableState state) {
 		TableEntity table = baseService.getTableById(tableId);
-		return table != null && (state == null || table.getTableState() == state);
-	}
+        return table != null && (state == null || table.getTableState() == state);
+    }
 
 	// Retourne l'id de la table si elle existe et est correcte d'apres l'entrée de
 	// l'utilisateur en fonction de l'etat de la table
@@ -216,7 +216,7 @@ public class ButlerController extends RoleMenuController {
 		TableEntity table = baseService.getTableById(tableId);
 		return table != null && !table.getIdServer().equals(user.get_id())
 				&& !table.getIdHelper().equals(user.get_id());
-	}
+    }
 
 	// retourne l'id de la table qui correspond à l'entrée de l'utilisateur
 	// la table est une table réservée

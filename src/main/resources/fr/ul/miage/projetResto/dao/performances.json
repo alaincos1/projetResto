@@ -1,9 +1,9 @@
 [
   {
-    "_id" : "1",
-    "minServiceTime" : 120,
-    "nbCustomers" : 4,
-    "minPreparationTime" : 110,
-    "nbDish" : 6
+    "_id": "1",
+    "minServiceTime": 120,
+    "nbCustomers": 4,
+    "minPreparationTime": 110,
+    "nbDish": 6
   }
 ]

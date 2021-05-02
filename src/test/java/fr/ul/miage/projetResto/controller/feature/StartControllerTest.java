@@ -3,7 +3,6 @@ package fr.ul.miage.projetResto.controller.feature;
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.dao.service.BaseService;
-import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.view.feature.StartView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,13 +13,12 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @DisplayName("StartController")
 @ExtendWith(MockitoExtension.class)
-class StartControllerTest {@Mock
+class StartControllerTest {
+    @Mock
     StartView startView;
     @Mock
     BaseService baseService;

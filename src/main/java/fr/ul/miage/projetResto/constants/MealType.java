@@ -13,5 +13,5 @@ import lombok.Getter;
 @JsonDeserialize(converter = MealTypeDeserializer.class)
 public enum MealType implements EnumInBase {
     Déjeuner,
-    Dîner;
+    Dîner
 }

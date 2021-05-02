@@ -1,15 +1,12 @@
 package fr.ul.miage.projetResto.dao.repository;
 
 import com.mongodb.client.MongoCollection;
-
-import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
+import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.bson.Document;
 
 public class UserCollection extends MongoAccess {
     MongoCollection<Document> collection = database.getCollection("users");
@@ -27,7 +24,7 @@ public class UserCollection extends MongoAccess {
         Document doc = getDocumentById(id, collection);
         return doc == null ? null : (UserEntity) Mapper.toObject(doc, UserEntity.class);
     }
-    
+
     public List<UserEntity> getAll() {
         return collection.find().into(new ArrayList<Document>()).stream()
                 .map(doc -> (UserEntity) Mapper.toObject(doc, UserEntity.class))

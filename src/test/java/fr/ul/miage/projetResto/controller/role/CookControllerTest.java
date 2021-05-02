@@ -21,7 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @DisplayName("CookController")
@@ -72,7 +72,7 @@ class CookControllerTest {
         }
 
         when(baseService.getNotPreparedOrders()).thenReturn(orders);
-        doReturn(1).when(cookController).getIntegerInput(anyInt(),anyInt());
+        doReturn(1).when(cookController).getIntegerInput(anyInt(), anyInt());
         doReturn(false).when(cookController).doAgain();
         doNothing().when(cookController).launch(any(Role.class));
 
@@ -108,7 +108,7 @@ class CookControllerTest {
         }
 
         when(baseService.getNotPreparedOrders()).thenReturn(orders);
-        doReturn(0).when(cookController).getIntegerInput(anyInt(),anyInt());
+        doReturn(0).when(cookController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(cookController).launch(any(Role.class));
 
         cookController.setOrderReady();
@@ -130,7 +130,7 @@ class CookControllerTest {
         }
 
         when(baseService.getNotPreparedOrders()).thenReturn(orders);
-        doReturn(1).when(cookController).getIntegerInput(anyInt(),anyInt());
+        doReturn(1).when(cookController).getIntegerInput(anyInt(), anyInt());
         doReturn(true).doReturn(false).when(cookController).doAgain();
         doNothing().when(cookController).launch(any(Role.class));
 
@@ -152,13 +152,13 @@ class CookControllerTest {
         List<String> idsProducts = new ArrayList<>();
         idsProducts.add("1");
         doReturn(idsProducts).when(cookController).getDishProducts();
-        doReturn(1).when(cookController).getIntegerInput(anyInt(),anyInt());
-        doNothing().when(cookController).saveDish(any(DishEntity.class),anyBoolean());
+        doReturn(1).when(cookController).getIntegerInput(anyInt(), anyInt());
+        doNothing().when(cookController).saveDish(any(DishEntity.class), anyBoolean());
         doNothing().when(cookController).launch(any(Role.class));
 
         cookController.createDish();
 
-        verify(cookController, times(1)).saveDish(any(DishEntity.class),anyBoolean());
+        verify(cookController, times(1)).saveDish(any(DishEntity.class), anyBoolean());
     }
 
     @Test
@@ -172,13 +172,13 @@ class CookControllerTest {
         List<String> idsProducts = new ArrayList<>();
         idsProducts.add("1");
         doReturn(idsProducts).when(cookController).getDishProducts();
-        doReturn(1).when(cookController).getIntegerInput(anyInt(),anyInt());
-        doNothing().when(cookController).saveDish(any(DishEntity.class),anyBoolean());
+        doReturn(1).when(cookController).getIntegerInput(anyInt(), anyInt());
+        doNothing().when(cookController).saveDish(any(DishEntity.class), anyBoolean());
         doNothing().when(cookController).launch(any(Role.class));
 
         cookController.createDish();
 
-        verify(cookController, times(1)).saveDish(any(DishEntity.class),eq(true));
+        verify(cookController, times(1)).saveDish(any(DishEntity.class), eq(true));
     }
 
     @Test
@@ -191,12 +191,12 @@ class CookControllerTest {
         List<String> idsProducts = new ArrayList<>();
         idsProducts.add("1");
         doReturn(idsProducts).when(cookController).getDishProducts();
-        doReturn(0).when(cookController).getIntegerInput(anyInt(),anyInt());
+        doReturn(0).when(cookController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(cookController).launch(any(Role.class));
 
         cookController.createDish();
 
-        verify(cookController, times(0)).saveDish(any(DishEntity.class),anyBoolean());
+        verify(cookController, times(0)).saveDish(any(DishEntity.class), anyBoolean());
         verify(cookView, times(1)).displaySaveOrNot(false);
     }
 
@@ -207,7 +207,7 @@ class CookControllerTest {
 
         DishType dishtype = cookController.getDishType();
 
-        assertEquals(DishType.Starter,dishtype);
+        assertEquals(DishType.Starter, dishtype);
     }
 
     @Test
@@ -216,7 +216,7 @@ class CookControllerTest {
         List<CategoryEntity> catList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             CategoryEntity cat = new CategoryEntity();
-            cat.set_id(""+i);
+            cat.set_id("" + i);
             cat.setDishType(DishType.Dessert);
             catList.add(cat);
         }
@@ -234,7 +234,7 @@ class CookControllerTest {
         List<CategoryEntity> catList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             CategoryEntity cat = new CategoryEntity();
-            cat.set_id(""+i);
+            cat.set_id("" + i);
             cat.setDishType(DishType.Dessert);
             catList.add(cat);
         }
@@ -253,10 +253,10 @@ class CookControllerTest {
         List<ProductEntity> prodList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             ProductEntity prod = new ProductEntity();
-            prod.set_id(""+i);
+            prod.set_id("" + i);
             prodList.add(prod);
         }
-        doReturn(prodList).when(cookController).parseToSelectedProducts(anyList(),anyString());
+        doReturn(prodList).when(cookController).parseToSelectedProducts(anyList(), anyString());
         doReturn("1").when(cookController).getStringMultipleChoices(anyInt(), anyInt());
         doReturn(1).when(cookController).getIntegerInput(anyInt(), anyInt());
 
@@ -271,10 +271,10 @@ class CookControllerTest {
         List<ProductEntity> prodList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             ProductEntity prod = new ProductEntity();
-            prod.set_id(""+i);
+            prod.set_id("" + i);
             prodList.add(prod);
         }
-        doReturn(prodList).when(cookController).parseToSelectedProducts(anyList(),anyString());
+        doReturn(prodList).when(cookController).parseToSelectedProducts(anyList(), anyString());
         doReturn("1").when(cookController).getStringMultipleChoices(anyInt(), anyInt());
         doReturn(0).doReturn(1).when(cookController).getIntegerInput(anyInt(), anyInt());
 
@@ -289,15 +289,15 @@ class CookControllerTest {
         List<ProductEntity> prodList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             ProductEntity prod = new ProductEntity();
-            prod.set_id(""+i);
+            prod.set_id("" + i);
             prodList.add(prod);
         }
-        List <String> prodString1 = new ArrayList<>();
+        List<String> prodString1 = new ArrayList<>();
         prodString1.add("0");
         prodString1.add("1");
-        List <String> prodString2 = cookController.parseToIdProducts(prodList);
+        List<String> prodString2 = cookController.parseToIdProducts(prodList);
 
-        assertEquals(prodString1,prodString2);
+        assertEquals(prodString1, prodString2);
     }
 
     @Test
@@ -306,19 +306,19 @@ class CookControllerTest {
         List<ProductEntity> prodList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             ProductEntity prod = new ProductEntity();
-            prod.set_id(""+i);
+            prod.set_id("" + i);
             prodList.add(prod);
         }
         String multipleChoices = "1/2/4";
 
-        List <ProductEntity> prodList2 = new ArrayList<>();
+        List<ProductEntity> prodList2 = new ArrayList<>();
         prodList2.add(prodList.get(0));
         prodList2.add(prodList.get(1));
         prodList2.add(prodList.get(3));
 
-        List <ProductEntity> result = cookController.parseToSelectedProducts(prodList, multipleChoices);
+        List<ProductEntity> result = cookController.parseToSelectedProducts(prodList, multipleChoices);
 
-        assertEquals(prodList2,result);
+        assertEquals(prodList2, result);
     }
 
     @Test
@@ -338,7 +338,7 @@ class CookControllerTest {
         cat.set_id("dish");
         when(baseService.getCategoryById(anyString())).thenReturn(cat);
 
-        cookController.saveDish(dish,false);
+        cookController.saveDish(dish, false);
 
         verify(baseService, times(1)).save(dish);
         verify(cookView, times(1)).displaySaveOrNot(anyBoolean());
@@ -361,7 +361,7 @@ class CookControllerTest {
         cat.set_id("dish");
         when(baseService.getCategoryById(anyString())).thenReturn(cat);
 
-        cookController.saveDish(dish,true);
+        cookController.saveDish(dish, true);
 
         verify(baseService, times(1)).update(dish);
         verify(cookView, times(1)).displaySaveOrNot(anyBoolean());
@@ -384,7 +384,7 @@ class CookControllerTest {
         cat.set_id("dish");
         when(baseService.getCategoryById(anyString())).thenReturn(null);
 
-        cookController.saveDish(dish,false);
+        cookController.saveDish(dish, false);
 
         verify(baseService, times(1)).save(any(DishEntity.class));
         verify(baseService, times(1)).save(any(CategoryEntity.class));

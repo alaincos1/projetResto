@@ -139,8 +139,8 @@ public class CookController extends RoleMenuController {
         if (input == 0) {
             cookView.displayAskInput("la nouvelle catégorie du plat", "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
             String newCat = getStringInput();
-            while(baseService.getCategoryById(newCat) != null){
-                cookView.displayAskInput("une catégorie de plat qui n'est pas déjà définie dans un autre type de plat que "+dishType.getDish(), "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
+            while (baseService.getCategoryById(newCat) != null) {
+                cookView.displayAskInput("une catégorie de plat qui n'est pas déjà définie dans un autre type de plat que " + dishType.getDish(), "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
                 newCat = getStringInput();
             }
             return newCat;

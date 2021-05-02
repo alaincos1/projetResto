@@ -47,10 +47,10 @@ public class InputError {
             return null;
         }
 
-        Date auj = new Date();        
-        if (d.before(auj) && !format.format(auj).equals(format.format(d)) ) {
-        	System.out.println("La date ne peut pas être dans le passé.");
-        	return null;
+        Date auj = new Date();
+        if (d.before(auj) && !format.format(auj).equals(format.format(d))) {
+            System.out.println("La date ne peut pas être dans le passé.");
+            return null;
         }
         return format.format(d);
     }

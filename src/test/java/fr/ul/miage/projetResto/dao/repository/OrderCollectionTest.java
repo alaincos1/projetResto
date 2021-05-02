@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderCollectionTest {
-    private OrderCollection orderCollection = new OrderCollection();
+    private final OrderCollection orderCollection = new OrderCollection();
 
     @Test
-    public void getOrdersEntityListChildrenOrderFirstTest(){
+    public void getOrdersEntityListChildrenOrderFirstTest() {
         List<Document> childOrdersDocuments = new ArrayList<>();
         childOrdersDocuments.add(Document.parse("{\n" +
                 "    \"_id\" : \"2\",\n" +
@@ -49,15 +49,15 @@ public class OrderCollectionTest {
                 "    \"idTable\" : \"1\"\n" +
                 "}"));
 
-        OrderEntity order1 = (OrderEntity) Mapper.toObject(childOrdersDocuments.get(0),OrderEntity.class);
-        OrderEntity order2 = (OrderEntity) Mapper.toObject(orderDocuments.get(0),OrderEntity.class);
-        OrderEntity order3 = (OrderEntity) Mapper.toObject(orderDocuments.get(1),OrderEntity.class);
+        OrderEntity order1 = (OrderEntity) Mapper.toObject(childOrdersDocuments.get(0), OrderEntity.class);
+        OrderEntity order2 = (OrderEntity) Mapper.toObject(orderDocuments.get(0), OrderEntity.class);
+        OrderEntity order3 = (OrderEntity) Mapper.toObject(orderDocuments.get(1), OrderEntity.class);
         List<OrderEntity> orderActual = new ArrayList<>();
         orderActual.add(order1);
         orderActual.add(order2);
         orderActual.add(order3);
 
-        List<OrderEntity> ordersTest =  orderCollection.getOrdersEntityListChildrenOrderFirst(childOrdersDocuments, orderDocuments);
+        List<OrderEntity> ordersTest = orderCollection.getOrdersEntityListChildrenOrderFirst(childOrdersDocuments, orderDocuments);
 
         Assertions.assertEquals(ordersTest, orderActual);
     }
