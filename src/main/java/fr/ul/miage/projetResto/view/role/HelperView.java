@@ -25,7 +25,7 @@ public class HelperView extends RoleView {
                 "\n 0) Annuler");
         int i = 1;
         for (TableEntity table : tablestoClean) {
-            System.out.println(" " + i + ") "+ table.toString());
+            System.out.println(" " + i + ") " + table.toString());
             i++;
         }
     }

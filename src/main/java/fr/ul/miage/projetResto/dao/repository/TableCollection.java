@@ -41,7 +41,7 @@ public class TableCollection extends MongoAccess {
     }
 
     public List<TableEntity> getAllTableByServerOrHelperAndState(String user, TableState state) {
-        return collection.find(and(eq("tableState", state.toString()),or(eq("idServer", user), eq("idHelper", user)))).into(new ArrayList<Document>()).stream()
+        return collection.find(and(eq("tableState", state.toString()), or(eq("idServer", user), eq("idHelper", user)))).into(new ArrayList<Document>()).stream()
                 .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
                 .collect(Collectors.toList());
     }

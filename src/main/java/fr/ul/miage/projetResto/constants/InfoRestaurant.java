@@ -10,5 +10,5 @@ public enum InfoRestaurant {
     MAX_CHOICES(10),
     MAX_LENGTH_NAME(30);
 
-    private int value;
+    private final int value;
 }

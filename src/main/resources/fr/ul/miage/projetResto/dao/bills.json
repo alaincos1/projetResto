@@ -1,19 +1,20 @@
 [
   {
-    "_id" : "1",
-    "totalPrice" : 43,
-    "date" : "2020/05/05",
-    "mealType" : "Dîner",
-    "idsOrder" : [
-      "1","2"
+    "_id": "1",
+    "totalPrice": 43,
+    "date": "2020/05/05",
+    "mealType": "Dîner",
+    "idsOrder": [
+      "1",
+      "2"
     ]
   },
   {
-    "_id" : "2",
-    "totalPrice" : 25,
-    "date" : "2020/05/05",
-    "mealType" : "Déjeuner",
-    "idsOrder" : [
+    "_id": "2",
+    "totalPrice": 25,
+    "date": "2020/05/05",
+    "mealType": "Déjeuner",
+    "idsOrder": [
       "3"
     ]
   }

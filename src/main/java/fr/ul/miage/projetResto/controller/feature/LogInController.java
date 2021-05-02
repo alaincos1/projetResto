@@ -10,7 +10,6 @@ import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.*;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 
 @AllArgsConstructor
 public class LogInController {

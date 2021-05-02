@@ -11,8 +11,8 @@ import lombok.Data;
 
 @Data
 public class StartController {
-    StartView startView;
     private final BaseService baseService;
+    StartView startView;
     private Service service;
     private InitRestaurant initRestaurant;
     private MealType mealType;

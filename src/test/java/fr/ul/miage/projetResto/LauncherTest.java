@@ -11,26 +11,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class LauncherTest {
 
     @Test
-    void testSetService(){
+    void testSetService() {
         Launcher.setService(MealType.Dîner, "2021/04/20");
         assertEquals(Launcher.getService().getMealType(), MealType.Dîner);
         assertEquals(Launcher.getService().getDate(), "2021/04/20");
     }
 
     @Test
-    void testGetService(){
+    void testGetService() {
         Launcher.setService(MealType.Déjeuner, "2020/04/20");
         assertEquals(Launcher.getService(), new Service(MealType.Déjeuner, "2020/04/20"));
     }
 
     @Test
-    void testSetLoggedUser(){
+    void testSetLoggedUser() {
         Launcher.setLoggedUser(new UserEntity("admin", Role.Director));
-        assertEquals(Launcher.getLoggedUser(),new UserEntity("admin", Role.Director));
+        assertEquals(Launcher.getLoggedUser(), new UserEntity("admin", Role.Director));
     }
 
     @Test
-    void testGetLoggedUser(){
+    void testGetLoggedUser() {
         Launcher.setLoggedUser(new UserEntity("admin", Role.Butler));
         assertEquals(Launcher.getLoggedUser(), new UserEntity("admin", Role.Butler));
     }

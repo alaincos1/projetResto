@@ -1,62 +1,66 @@
 [
   {
-    "_id" : "Salade de sardines",
-    "price" : 12,
-    "dishType" : "Starter",
-    "idsProduct" : [
-      "Salades","Sardines"
+    "_id": "Salade de sardines",
+    "price": 12,
+    "dishType": "Starter",
+    "idsProduct": [
+      "Salades",
+      "Sardines"
     ],
-    "idCategory" : "Salade",
-    "onTheMenu" : true
+    "idCategory": "Salade",
+    "onTheMenu": true
   },
   {
-    "_id" : "Salade caesar",
-    "price" : 8,
-    "dishType" : "Starter",
-    "idsProduct" : [
+    "_id": "Salade caesar",
+    "price": 8,
+    "dishType": "Starter",
+    "idsProduct": [
       "Salades"
     ],
-    "idCategory" : "Salade",
-    "onTheMenu" : true
+    "idCategory": "Salade",
+    "onTheMenu": true
   },
   {
-    "_id" : "Patates sautées et légumes",
-    "price" : 19,
-    "dishType" : "MainCourse",
-    "idsProduct" : [
-      "Pommes de terre","Haricots"
+    "_id": "Patates sautées et légumes",
+    "price": 19,
+    "dishType": "MainCourse",
+    "idsProduct": [
+      "Pommes de terre",
+      "Haricots"
     ],
-    "idCategory" : "Légumes",
-    "onTheMenu" : true
+    "idCategory": "Légumes",
+    "onTheMenu": true
   },
   {
-    "_id" : "Boeuf et légumes",
-    "price" : 22,
-    "dishType" : "MainCourse",
-    "idsProduct" : [
-      "Boeuf","Haricots"
+    "_id": "Boeuf et légumes",
+    "price": 22,
+    "dishType": "MainCourse",
+    "idsProduct": [
+      "Boeuf",
+      "Haricots"
     ],
-    "idCategory" : "Viande",
-    "onTheMenu" : true
+    "idCategory": "Viande",
+    "onTheMenu": true
   },
   {
-    "_id" : "Banana Split",
-    "price" : 3,
-    "dishType" : "Dessert",
-    "idsProduct" : [
-      "Bananes","Glace à la vanille"
+    "_id": "Banana Split",
+    "price": 3,
+    "dishType": "Dessert",
+    "idsProduct": [
+      "Bananes",
+      "Glace à la vanille"
     ],
-    "idCategory" : "Glace",
-    "onTheMenu" : true
+    "idCategory": "Glace",
+    "onTheMenu": true
   },
   {
-    "_id" : "Beignet de banane",
-    "price" : 4,
-    "dishType" : "Dessert",
-    "idsProduct" : [
+    "_id": "Beignet de banane",
+    "price": 4,
+    "dishType": "Dessert",
+    "idsProduct": [
       "Bananes"
     ],
-    "idCategory" : "Gâteau",
-    "onTheMenu" : true
+    "idCategory": "Gâteau",
+    "onTheMenu": true
   }
 ]
