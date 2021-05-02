@@ -5,6 +5,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.model.entity.OrderEntity;
+import fr.ul.miage.projetResto.model.entity.TableEntity;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -57,6 +58,13 @@ public class OrderCollection extends MongoAccess {
 
     public List<OrderEntity> getAllNotChecked() {
         Bson doc = Filters.ne("orderState", OrderState.Checked.toString());
+        return collection.find(doc).into(new ArrayList<Document>()).stream()
+                .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderEntity> getPreparedOrders() {
+        Bson doc = Filters.eq("orderState", OrderState.Prepared.toString());
         return collection.find(doc).into(new ArrayList<Document>()).stream()
                 .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
                 .collect(Collectors.toList());

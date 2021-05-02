@@ -2,10 +2,12 @@ package fr.ul.miage.projetResto.controller.role;
 
 import fr.ul.miage.projetResto.Launcher;
 import fr.ul.miage.projetResto.appinfo.Service;
+import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.dao.service.BaseService;
+import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.view.feature.LogInView;
@@ -42,10 +44,10 @@ public class ServerController extends RoleMenuController {
                 setTablesDirty(Launcher.getLoggedUser());
                 break;
             case 3:
-                takeOrders();
+                takeOrders(Launcher.getLoggedUser());
                 break;
             case 4:
-                serveOrders();
+                serveOrders(Launcher.getLoggedUser());
                 break;
             default:
                 break;
@@ -100,9 +102,46 @@ public class ServerController extends RoleMenuController {
         launch(Role.Server);
     }
 
-    protected void takeOrders() {
+    protected void takeOrders(UserEntity user) {
     }
 
-    private void serveOrders() {
+    public void serveOrders(UserEntity user) {
+        List<OrderEntity> orders = baseService.getPreparedOrders();
+        if (!Role.Director.equals(user.getRole())) {
+            List<TableEntity> tables = baseService.getAllTableByServerOrHelper(user.get_id());
+            orders = getOnlyServerOrders(orders, tables);
+        }
+
+        if (orders.isEmpty()) {
+            serverView.displayNoOrdersToServe();
+        } else {
+            serverView.displayOrdersToServe(orders);
+            int choice = getIntegerInput(0, orders.size()) - 1;
+            if (choice != -1) {
+                orders.get(choice).setOrderState(OrderState.Served);
+                TableEntity table = baseService.getTableById(orders.get(choice).getIdTable());
+                table.setTableState(orders.get(choice).getDishType(baseService));
+
+                if (baseService.update(orders.get(choice)) && baseService.update(table)) {
+                    serverView.displayOrderServeAgain();
+                    if (doAgain()) {
+                        serveOrders(user);
+                    }
+                } else {
+                    serverView.displayError();
+                }
+            }
+        }
+        launch(Role.Server);
+    }
+
+    public List<OrderEntity> getOnlyServerOrders(List<OrderEntity> orders, List<TableEntity> tables) {
+        for (int i = orders.size() - 1; i >= 0; i--) {
+            int finalI = i;
+            if (tables.stream().noneMatch(tableEntity -> tableEntity.get_id().equals(orders.get(finalI).getIdTable()))) {
+                orders.remove(i);
+            }
+        }
+        return orders;
     }
 }
