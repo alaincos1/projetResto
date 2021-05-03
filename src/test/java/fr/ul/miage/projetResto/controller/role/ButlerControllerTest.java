@@ -1,13 +1,18 @@
 package fr.ul.miage.projetResto.controller.role;
 
 import fr.ul.miage.projetResto.appinfo.Service;
+import fr.ul.miage.projetResto.constants.DishType;
 import fr.ul.miage.projetResto.constants.MealType;
+import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.dao.service.BaseService;
+import fr.ul.miage.projetResto.model.entity.DishEntity;
+import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.view.role.ButlerView;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -216,7 +222,7 @@ public class ButlerControllerTest {
     }
 
     @Test
-    @DisplayName("choix de la table incorrect avec id helper false")
+    @DisplayName("Vérifier que la méthode retourne false quand l'utilisateur choisit une table incorrecte car le assistant est deja assigné à la table ")
     void isTableIdCorrectServerTestReturnFalseHelper() {
         UserEntity user = new UserEntity();
         user.set_id("hel1");
@@ -235,6 +241,7 @@ public class ButlerControllerTest {
     }
 
     @Test
+    @DisplayName("Vérifier que la méthode retourne true quand l'utilisateur choisit une table correcte avec serveur")
     void isTableIdCorrectServerTestReturnTrueServer() {
         UserEntity user = new UserEntity();
         user.set_id("test");
@@ -253,6 +260,7 @@ public class ButlerControllerTest {
     }
 
     @Test
+    @DisplayName("Vérifier que la méthode retourne true quand l'utilisateur choisit une table correcte avec assistant")
     void isTableIdCorrectServerTestReturnTrueHelper() {
         UserEntity user = new UserEntity();
         user.set_id("test");
@@ -271,6 +279,7 @@ public class ButlerControllerTest {
     }
 
     @Test
+    @DisplayName("Vérifier que la méthode retourne false quand l'utilisateur choisit une table incorrecte car le serveur est deja assigné à la table ")
     void isTableIdCorrectServerTestReturnFalseServer() {
         UserEntity user = new UserEntity();
         user.set_id("ser1");
@@ -322,4 +331,114 @@ public class ButlerControllerTest {
         assertEquals("1", test);
     }
 
+    @Test 
+    @DisplayName("Verifier la taille de la liste retournée return 2")
+    void listDishestTestOneOrder() {
+    	OrderEntity order = new OrderEntity();
+    	order.set_id("1");
+    	order.setChildOrder(false);
+    	order.setIdTable("1");
+    	order.setOrderState(OrderState.Served);
+    	order.setRank(1);
+    	List<String> list = new ArrayList<>();
+    	list.add("1");
+    	list.add("2");
+    	order.setIdsDish(list);
+    	
+    	OrderEntity order1 = new OrderEntity();
+    	order1.set_id("2");
+    	order1.setChildOrder(false);
+    	order1.setIdTable("2");
+    	order1.setOrderState(OrderState.Served);
+    	order1.setRank(1);
+    	order1.setIdsDish(list);
+    	
+    	TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.Dessert);
+    	
+        List<OrderEntity> listOrder = new ArrayList<>();
+        listOrder.add(order);
+        listOrder.add(order1);
+
+        when(baseService.getServedOrders()).thenReturn(listOrder);
+        
+        assertEquals(2, butlerController.listDishes(table).size());
+    }
+    
+    @Test 
+    @DisplayName("Verifier la taille de la liste retournée return 4")
+    void listDishestTestTwoOrders() {
+    	OrderEntity order = new OrderEntity();
+    	order.set_id("1");
+    	order.setChildOrder(false);
+    	order.setIdTable("1");
+    	order.setOrderState(OrderState.Served);
+    	order.setRank(1);
+    	List<String> list = new ArrayList<>();
+    	list.add("1");
+    	list.add("2");
+    	order.setIdsDish(list);
+    	
+    	OrderEntity order1 = new OrderEntity();
+    	order1.set_id("2");
+    	order1.setChildOrder(false);
+    	order1.setIdTable("1");
+    	order1.setOrderState(OrderState.Served);
+    	order1.setRank(1);
+    	List<String> list1 = new ArrayList<>();
+    	list1.add("1");
+    	order1.setIdsDish(list1);
+    	
+    	TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.Dessert);
+    	
+        List<OrderEntity> listOrder = new ArrayList<>();
+        listOrder.add(order);
+        listOrder.add(order1);
+
+        when(baseService.getServedOrders()).thenReturn(listOrder);
+        
+        assertEquals(3, butlerController.listDishes(table).size());
+    }
+    
+    @Test
+    @DisplayName("Calculer le prix d'un facture : 20")
+    void priceBillTest20() {
+    	List<String> listProducts = new ArrayList<>();
+    	listProducts.add("1");
+    	listProducts.add("2");
+    	DishEntity dish1 = new DishEntity();
+    	dish1.set_id("1");
+    	dish1.setDishType(DishType.Dessert);
+    	dish1.setIdCategory("Viande");
+    	dish1.setIdsProduct(listProducts);
+    	dish1.setOnTheMenu(true);
+    	dish1.setPrice(15);
+
+    	DishEntity dish2 = new DishEntity();
+    	dish2.set_id("2");
+    	dish2.setDishType(DishType.Dessert);
+    	dish2.setIdCategory("Boisson");
+    	dish2.setIdsProduct(listProducts);
+    	dish2.setOnTheMenu(true);
+    	dish2.setPrice(5);
+    	
+    	List<String> listDish = new ArrayList<>();
+    	listDish.add("1");
+    	listDish.add("2");
+    	
+    	when(baseService.getDishById("1")).thenReturn(dish1);
+    	when(baseService.getDishById("2")).thenReturn(dish2);
+    	doNothing().when(butlerView).displayDishes(anyString(), anyInt());
+    	
+    	assertEquals(20, butlerController.priceBill(listDish));
+    }
 }
