@@ -1,12 +1,16 @@
 package fr.ul.miage.projetResto.controller.role;
 
 import fr.ul.miage.projetResto.appinfo.Service;
+import fr.ul.miage.projetResto.constants.InfoRestaurant;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.dao.service.BaseService;
+import fr.ul.miage.projetResto.model.entity.ProductEntity;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.*;
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 public class DirectorController extends RoleMenuController {
@@ -60,22 +64,79 @@ public class DirectorController extends RoleMenuController {
         }
     }
 
-    public void manageEmployees() {
+    protected void manageEmployees() {
     }
 
-    public void manageDayMenu() {
+    protected void manageDayMenu() {
     }
 
-    public void manageStocks() {
+    //permet de voir les stocks de tous les produits du restaurant
+    protected void manageStocks() {
+        List<ProductEntity> products = baseService.getAllProducts();
+        directorView.displayStock(products);
+        ProductEntity product;
+        int input = getIntegerInput(0, products.size() + 2) - 2;
+        if (input == -1) {
+            product = createProduct();
+            saveProduct(product);
+        } else if (input >= 0) {
+            product = addStockProduct(products, input);
+            saveProduct(product);
+        }
+        launch(Role.Director);
     }
 
-    public void analysesIncomes() {
+    //Créé un nouveau produit et son stock
+    protected ProductEntity createProduct() {
+        ProductEntity product = new ProductEntity();
+        directorView.displayAskNameProduct();
+        String name = getStringInput();
+        while (baseService.getProductById(name) != null) {
+            directorView.displayProductAlreadyExist();
+            name = getStringInput();
+        }
+        product.set_id(name);
+        directorView.displayAskAddStock(0, InfoRestaurant.MAX_STOCK.getValue());
+        product.setStock(getIntegerInput(0, InfoRestaurant.MAX_STOCK.getValue()));
+        return product;
     }
 
-    public void analysesPerformances() {
+    //Ajoute du stock à un produit existant
+    protected ProductEntity addStockProduct(List<ProductEntity> products, Integer input) {
+        ProductEntity product = products.get(input);
+        while (product.getStock() == InfoRestaurant.MAX_STOCK.getValue()) {
+            directorView.displayStockMax();
+            input = getIntegerInput(1, products.size()) - 1;
+            product = products.get(input);
+        }
+        directorView.displayAskAddStock(1, InfoRestaurant.MAX_STOCK.getValue() - product.getStock());
+        int addStock = getIntegerInput(1, InfoRestaurant.MAX_STOCK.getValue() - product.getStock());
+        products.get(input).setStock(product.getStock() + addStock);
+
+        return product;
     }
 
-    public void endService() {
+    //Sauvegarde le produit mis à jour ou créé
+    protected void saveProduct(ProductEntity product) {
+        if (baseService.update(product) || baseService.save(product)) {
+            directorView.displayProductSave();
+        } else {
+            directorView.displayError();
+        }
+        directorView.displayManageStockAgain();
+        if (doAgain()) {
+            manageStocks();
+        }
+    }
+
+    protected void analysesIncomes() {
+    }
+
+    protected void analysesPerformances() {
+    }
+
+    //Met fin à la prise des commandes, fin de service
+    protected void endService() {
         if (!service.isEndService()) {
             directorView.displayAskEndService();
             Integer input = getIntegerInput(0, 1);

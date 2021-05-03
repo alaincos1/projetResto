@@ -1,5 +1,9 @@
 package fr.ul.miage.projetResto.view.role;
 
+import fr.ul.miage.projetResto.model.entity.ProductEntity;
+
+import java.util.List;
+
 public class DirectorView extends RoleView {
     public void displayAskEndService() {
         System.out.println("Souhaitez vous annoncer la fin du service (des prises des commandes) ? Choix définitif." +
@@ -13,5 +17,42 @@ public class DirectorView extends RoleView {
 
     public void displayAlreadyEnded() {
         System.out.println("La fin du service (des prises des commandes) a déjà été annoncée.");
+    }
+
+    public void displayStock(List<ProductEntity> products) {
+        System.out.println("Sélectionner le produit auquel ajouter du stock: " +
+                "\n 0) Annuler" +
+                "\n 1) Nouveau produit");
+        int i = 2;
+        for (ProductEntity product : products) {
+            System.out.println(" " + i + ") " + product.get_id() + ", Stock: " + product.getStock());
+            i++;
+        }
+    }
+
+    public void displayManageStockAgain() {
+        System.out.println("Souhaitez vous ajouter du stock à un autre produit ?" +
+                "\n O) Non" +
+                "\n 1) Oui");
+    }
+
+    public void displayProductSave() {
+        System.out.println("Le produit et son stock sont sauvegardés.");
+    }
+
+    public void displayAskAddStock(int min, int max) {
+        System.out.println("Entrez le stock à ajouter au stock initial. Entre " + min + " et " + max + ": ");
+    }
+
+    public void displayStockMax() {
+        System.out.println("Stock maximal pour ce produit. Entrez un autre produit.");
+    }
+
+    public void displayProductAlreadyExist() {
+        System.out.println("Ce produit existe déjà, entrez un autre intitulé.");
+    }
+
+    public void displayAskNameProduct() {
+        System.out.println("Entrez le nom du produit.");
     }
 }
