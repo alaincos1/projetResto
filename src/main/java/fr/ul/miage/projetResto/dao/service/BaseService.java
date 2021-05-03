@@ -150,4 +150,8 @@ public class BaseService {
     public List<OrderEntity> getPreparedOrders() {
         return orderCollection.getPreparedOrders();
     }
+    
+    public List<OrderEntity> getServedOrders() {
+        return orderCollection.getServedOrders();
+    }
 }
