@@ -56,6 +56,8 @@ public class ButlerController extends RoleMenuController {
 		case 4:
 			takeBookings();
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -80,7 +82,7 @@ public class ButlerController extends RoleMenuController {
 
 		TableEntity tableToChange = baseService.getTableById(choiceTable);
 
-		if (user.getRole().equals(Role.Server)) {
+		if (Role.Server.equals(user.getRole())) {
 			tableToChange.setIdServer(choiceUser);
 		} else {
 			tableToChange.setIdHelper(choiceUser);

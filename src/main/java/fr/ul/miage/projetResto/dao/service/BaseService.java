@@ -1,7 +1,6 @@
 package fr.ul.miage.projetResto.dao.service;
 
 import fr.ul.miage.projetResto.constants.DishType;
-import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.model.entity.*;
@@ -132,8 +131,8 @@ public class BaseService {
         return categoryCollection.getCategoriesWithDishTypeAsList(dishType);
     }
 
-    public List<ProductEntity> getAllProductsAsList() {
-        return productCollection.getAllProductsAsList();
+    public List<ProductEntity> getAllProducts() {
+        return productCollection.getAllProducts();
     }
 
     public List<TableEntity> getAllTableByServerOrHelper(String user) {

@@ -24,7 +24,7 @@ public class ProductCollection extends MongoAccess {
         return doc == null ? null : (ProductEntity) Mapper.toObject(doc, ProductEntity.class);
     }
 
-    public List<ProductEntity> getAllProductsAsList() {
+    public List<ProductEntity> getAllProducts() {
         List<Document> productDoc = collection.find()
                 .into(new ArrayList<>());
         List<ProductEntity> productEntities = new ArrayList<>();

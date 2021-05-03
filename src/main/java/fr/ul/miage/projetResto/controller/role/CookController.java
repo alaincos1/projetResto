@@ -150,7 +150,7 @@ public class CookController extends RoleMenuController {
     }
 
     protected List<String> getDishProducts() {
-        List<ProductEntity> productEntities = baseService.getAllProductsAsList();
+        List<ProductEntity> productEntities = baseService.getAllProducts();
         cookView.displayAskInput("les produits du plat", "ex : 1/6/8, maximum " + InfoRestaurant.MAX_CHOICES.getValue() + " produits");
         cookView.displayProducts(productEntities);
         List<ProductEntity> selection = parseToSelectedProducts(productEntities, getStringMultipleChoices(1, productEntities.size()));
