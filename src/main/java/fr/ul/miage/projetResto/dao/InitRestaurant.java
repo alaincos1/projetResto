@@ -73,12 +73,14 @@ public class InitRestaurant {
 
     //Si aucun utilisateur est en base, en insère un avec le role Director et l'identifiant admin
     protected void initUsers() {
-        if(baseService.getAllUsers().isEmpty()){
+        List<UserEntity> users = baseService.getAllUsers();
+        boolean directorHere = users.stream().noneMatch(userEntity -> userEntity.getRole().equals(Role.Director));
+        if(directorHere){
             UserEntity admin = new UserEntity();
             admin.set_id("admin");
             admin.setRole(Role.Director);
             baseService.save(admin);
-            System.out.println("Un seul utilisateur disponible : admin");
+            System.out.println("Nouvel utilisateur disponible en tant que Directeur : admin");
         }
     }
 }
