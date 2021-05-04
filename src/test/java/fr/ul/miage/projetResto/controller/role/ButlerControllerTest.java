@@ -441,4 +441,63 @@ public class ButlerControllerTest {
     	
     	assertEquals(20, butlerController.priceBill(listDish));
     }
+    
+//    @Test
+//    @DisplayName("Vérifier que l'édition d'une facture s'éffectue")
+//    void editBillsCorrect() {
+//    	TableEntity table = new TableEntity();
+//        table.set_id("1");
+//        table.setIdHelper("hel1");
+//        table.setIdServer("ser1");
+//        table.setNbSeats(2);
+//        table.setTableState(TableState.Dessert);
+//        
+//        List<TableEntity> list = new ArrayList<>();
+//        list.add(table);
+//        
+//        doReturn(2).when(butlerView).displayAllTablesForBill(anyList(), baseService);
+//    	when(butlerView.orderServed(table, baseService)).thenReturn(true);
+//    	when(butlerView.stateForBill(table)).thenReturn(true);
+//    	doNothing().when(butlerView).displayChoiceTableForBill();
+//    	doReturn("1").when(butlerController).getStringInput();
+//    	when(baseService.getTableById(anyString())).thenReturn(table);
+//    	doNothing().when(butlerController).saveObject(new BillEntity());
+//    	
+//    	butlerController.editBills();
+//    	
+//    	verify(butlerController, times(1)).saveObject(new BillEntity());
+//    }
+//    * Editer une facture
+//	 */
+//	protected void editBills() {
+//		List<TableEntity> tables = baseService.getAllTable();
+//		if (butlerView.displayAllTablesForBill(tables, baseService) != 0) {
+//			butlerView.displayChoiceTableForBill();
+//
+//			String choiceTable = getStringInput();
+//			TableEntity tableChoice = baseService.getTableById(choiceTable);
+//
+//			if (tableChoice == null || !butlerView.orderUnchecked(tableChoice, baseService)
+//					|| !butlerView.stateForBill(tableChoice)) {
+//				butlerView.displayInputIncorrect();
+//				editBills();
+//			} else {
+//				List<String> listIdDishes = listDishes(tableChoice);
+//				Integer priceTotal = priceBill(listIdDishes);
+//				butlerView.displayPriveBill(priceTotal);
+//				BillEntity bill = new BillEntity();
+//				bill.set_id(new ObjectId().toString());
+//				bill.setDate(service.getDate());
+//				bill.setMealType(service.getMealType());
+//				bill.setTotalPrice(priceTotal);
+//				bill.setIdsOrder(listIdDishes);
+//				saveObject(bill);
+//			}
+//			
+//		}else {
+//			butlerView.displayBillImpossible();
+//		}
+//
+//		launch(Role.Butler);
+//	}
 }
