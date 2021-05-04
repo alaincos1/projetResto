@@ -2,11 +2,13 @@ package fr.ul.miage.projetResto.dao;
 
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.OrderState;
+import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.BookingEntity;
 import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +26,7 @@ public class InitRestaurant {
         deletePastBookings();
         initUncheckedOrder();
         initTableState();
+        initUsers();
     }
 
     public void deletePastBookings() {
@@ -65,6 +68,17 @@ public class InitRestaurant {
 
                 baseService.update(table);
             });
+        }
+    }
+
+    //Si aucun utilisateur est en base, en insère un avec le role Director et l'identifiant admin
+    protected void initUsers() {
+        if(baseService.getAllUsers().isEmpty()){
+            UserEntity admin = new UserEntity();
+            admin.set_id("admin");
+            admin.setRole(Role.Director);
+            baseService.save(admin);
+            System.out.println("Un seul utilisateur disponible : admin");
         }
     }
 }
