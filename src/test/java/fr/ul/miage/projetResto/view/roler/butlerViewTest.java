@@ -26,8 +26,8 @@ public class butlerViewTest {
 	@Mock
 	BaseService baseService;
 	
-	ButlerView butlerView;
-
+	ButlerView butlerView = new ButlerView();
+	
 	@Test
 	@DisplayName("Retourne true car état de la table est correcte")
 	void stateForBillTestReturnTrue() {
@@ -50,12 +50,12 @@ public class butlerViewTest {
 		table.setIdServer("ser1");
 		table.setNbSeats(2);
 		table.setTableState(TableState.Free);
-
+		
 		assertFalse(butlerView.stateForBill(table));
 	}
 
 	@Test
-	@DisplayName("Retourne true car état de la table est incorrecte")
+	@DisplayName("Retourne true car état de la table est correct, des commandes ont été servi")
 	void orderServedTestReturnTrue() {
 		TableEntity table = new TableEntity();
 		table.set_id("1");
@@ -95,7 +95,7 @@ public class butlerViewTest {
 	}
 
 	@Test
-	@DisplayName("Retourne false car état de la table est incorrecte")
+	@DisplayName("Retourne false car état de la table est incorrecte, aucun commande n'a été servi")
 	void orderServedTestReturnFalse() {
 		TableEntity table = new TableEntity();
 		table.set_id("1");
@@ -103,31 +103,8 @@ public class butlerViewTest {
 		table.setIdServer("ser1");
 		table.setNbSeats(2);
 		table.setTableState(TableState.Free);
-		
-    	OrderEntity order = new OrderEntity();
-    	order.set_id("1");
-    	order.setChildOrder(false);
-    	order.setIdTable("1");
-    	order.setOrderState(OrderState.Prepared);
-    	order.setRank(1);
-    	List<String> list = new ArrayList<>();
-    	list.add("1");
-    	list.add("2");
-    	order.setIdsDish(list);
-    	
-    	OrderEntity order1 = new OrderEntity();
-    	order1.set_id("2");
-    	order1.setChildOrder(false);
-    	order1.setIdTable("1");
-    	order1.setOrderState(OrderState.Ordered);
-    	order1.setRank(1);
-    	List<String> list1 = new ArrayList<>();
-    	list1.add("1");
-    	order1.setIdsDish(list1);
     	
 		List<OrderEntity> listOrder = new ArrayList<>();
-		listOrder.add(order);
-		listOrder.add(order1);
 
 		when(baseService.getServedOrders()).thenReturn(listOrder);
 

@@ -109,6 +109,7 @@ public class ButlerController extends RoleMenuController {
 			String choiceTable = getStringInput();
 			TableEntity tableChoice = baseService.getTableById(choiceTable);
 
+			System.out.println(tableChoice);
 			if (tableChoice == null || !butlerView.orderServed(tableChoice, baseService)
 					|| !butlerView.stateForBill(tableChoice)) {
 				butlerView.displayInputIncorrect();
@@ -123,7 +124,6 @@ public class ButlerController extends RoleMenuController {
 				bill.setMealType(service.getMealType());
 				bill.setTotalPrice(priceTotal);
 				bill.setIdsOrder(listIdDishes);
-				System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE ");
 				saveObject(bill);
 			}
 			
@@ -344,7 +344,6 @@ public class ButlerController extends RoleMenuController {
 	 */
 	public List<String> listDishes(TableEntity table) {
 		List<OrderEntity> orders = baseService.getServedOrders();
-		System.out.println(orders);
 		List<String> dishes = new ArrayList<>();
 		for (OrderEntity order : orders) {
 			if (order.getIdTable().equals(table.get_id())) {
@@ -361,7 +360,6 @@ public class ButlerController extends RoleMenuController {
 	 */
 	public Integer priceBill(List<String> listIdDishes) {
 		Integer priceOrderDouble = 0;
-		System.out.println("Plats de la facture : ");
 		for (String idDish : listIdDishes) {
 			DishEntity dish = baseService.getDishById(idDish);
 			butlerView.displayDishes(dish.get_id(), dish.getPrice());

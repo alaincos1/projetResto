@@ -9,7 +9,6 @@ import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class ButlerView extends RoleView {
@@ -162,12 +161,12 @@ public class ButlerView extends RoleView {
 	 * @param table
 	 * @return bollean 
 	 */
-	public boolean stateForBill(TableEntity table) {
-		if (table.getTableState() != TableState.Booked && table.getTableState() != TableState.Free
-				&& table.getTableState() != TableState.Occupied) {
-			return true;
+	public Boolean stateForBill(TableEntity table) {
+		if (table.getTableState() == TableState.Booked || table.getTableState() == TableState.Free
+				|| table.getTableState() == TableState.Occupied) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	/**
@@ -176,7 +175,7 @@ public class ButlerView extends RoleView {
 	 * @param baseService
 	 * @return boolean
 	 */
-	public boolean orderServed(TableEntity table, BaseService baseService) {
+	public Boolean orderServed(TableEntity table, BaseService baseService) {
 		List<OrderEntity> orders = baseService.getServedOrders();
 		for (OrderEntity order : orders) {
 			if (order.getIdTable().equals(table.get_id())) {
