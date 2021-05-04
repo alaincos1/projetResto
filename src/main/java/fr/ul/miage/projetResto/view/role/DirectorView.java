@@ -1,8 +1,10 @@
 package fr.ul.miage.projetResto.view.role;
 
 import fr.ul.miage.projetResto.constants.InfoRestaurant;
+import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 
 import java.util.List;
 
@@ -105,5 +107,40 @@ public class DirectorView extends RoleView {
 
     public void displayNoTableCanBeRemoved() {
         System.out.println("Aucune table est supprimable (Clients attablés, réservations, etc...)");
+    }
+
+    public void displayManageEmployeesMenu(List<String> actions) {
+        System.out.println("Selectionnez une action.");
+        System.out.println("0) Annuler");
+        int i = 0;
+        for (i = 0; i < actions.size(); i++) {
+            System.out.println((i + 1) + ") " + actions.get(i) + " un employé");
+        }
+
+    }
+
+    public void displayEmployees(String action, List<UserEntity> users) {
+        System.out.println("Selectionnez l'employé à " + action.toLowerCase());
+        System.out.println("0) Annuler");
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println((i + 1) + ") " + users.get(i).get_id());
+        }
+    }
+
+    public void displayIdChoice() {
+        System.out.println("Renseignez l'identifiant de l'employé.");
+    }
+
+    public void displayRoleChoice() {
+        System.out.println("Selectionnez le role de l'employé.");
+        for (int i = 0; i < Role.values().length; i++) {
+            System.out.println(i + ") " + Role.values()[i]);
+        }
+    }
+
+    public void displayDirectionRole() {
+        System.out.println("Selectionnez le role de l'employé.");
+        System.out.println("0) " + Role.Director);
+        System.out.println("1) " + Role.Butler);
     }
 }

@@ -4,8 +4,10 @@ import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.view.role.DirectorView;
+import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +27,8 @@ import static org.mockito.Mockito.*;
 @DisplayName("DirectorController")
 @ExtendWith(MockitoExtension.class)
 class DirectorControllerTest {
+    EasyRandom easyRandom = new EasyRandom();
+
     @Mock
     DirectorView directorView;
     @Mock
@@ -218,6 +222,188 @@ class DirectorControllerTest {
         directorController.manageStocks();
 
         verify(directorController, times(0)).saveProduct(any(ProductEntity.class));
+    }
+
+    @Test
+    public void testManageEmployeeAddEmployee() {
+        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).addEmployee();
+
+        directorController.manageEmployees();
+
+        verify(directorController, times(1)).addEmployee();
+    }
+
+    @Test
+    public void testManageEmployeeWithReturn() {
+        doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
+        doNothing().when(directorController).launch(Role.Director);
+
+        directorController.manageEmployees();
+
+        verify(directorController, times(1)).launch(any(Role.class));
+    }
+
+    @Test
+    public void testManageEmployeeUpdateEmployee() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+        List<UserEntity> users = new ArrayList<>();
+        users.add(user);
+
+        doReturn(2).doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).updateEmployee(any(UserEntity.class));
+        when(baseService.getAllUsers()).thenReturn(users);
+
+        directorController.manageEmployees();
+
+        verify(directorController, times(1)).updateEmployee(any(UserEntity.class));
+    }
+
+    @Test
+    public void testManageEmployeeDeleteEmployee() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+        List<UserEntity> users = new ArrayList<>();
+        users.add(user);
+
+        doReturn(3).doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).deleteEmployee(any(UserEntity.class));
+        when(baseService.getAllUsers()).thenReturn(users);
+
+        directorController.manageEmployees();
+
+        verify(directorController, times(1)).deleteEmployee(any(UserEntity.class));
+    }
+
+    @Test
+    public void testManageEmployeePromoteEmployee() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+        List<UserEntity> users = new ArrayList<>();
+        users.add(user);
+
+        doReturn(4).doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).promoteEmployee(any(UserEntity.class));
+        when(baseService.getAllUsers()).thenReturn(users);
+
+        directorController.manageEmployees();
+
+        verify(directorController, times(1)).promoteEmployee(any(UserEntity.class));
+    }
+
+    @Test
+    public void testPromoteEmployeeToButtler() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+
+        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        when(baseService.promoteUser(any(UserEntity.class), any(Role.class))).thenReturn(true);
+
+        directorController.promoteEmployee(user);
+
+        verify(directorView, times(1)).displaySuccess();
+        verify(directorController, times(0)).callAction(anyInt());
+    }
+
+    @Test
+    public void testPromoteEmployeeToDirector() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+
+        doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
+        doNothing().when(directorController).callAction(anyInt());
+
+        when(baseService.promoteUser(any(UserEntity.class), any(Role.class))).thenReturn(true);
+
+        directorController.promoteEmployee(user);
+
+        verify(directorView, times(1)).displaySuccess();
+    }
+
+    @Test
+    public void testPromoteEmployeeToWithError() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+
+        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        when(baseService.promoteUser(any(UserEntity.class), any(Role.class))).thenReturn(false);
+
+        directorController.promoteEmployee(user);
+
+        verify(directorView, times(1)).displayError();
+    }
+
+    @Test
+    public void testAddEmployee() {
+        doReturn("id").when(directorController).getUserIdInput();
+        doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
+        when(baseService.save(any(UserEntity.class))).thenReturn(true);
+
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+
+        directorController.addEmployee();
+
+        verify(directorView, times(1)).displaySuccess();
+    }
+
+    @Test
+    public void testAddEmployeeWithError() {
+        doReturn("id").when(directorController).getUserIdInput();
+        doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
+        when(baseService.save(any(UserEntity.class))).thenReturn(false);
+
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+
+        directorController.addEmployee();
+
+        verify(directorView, times(1)).displayError();
+    }
+
+    @Test
+    public void testUpdateEmployee() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+        doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        when(baseService.update(any(UserEntity.class))).thenReturn(true);
+
+        directorController.updateEmployee(user);
+
+        verify(directorView, times(1)).displaySuccess();
+    }
+
+    @Test
+    public void testUpdateEmployeeWithError() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+        doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        when(baseService.update(any(UserEntity.class))).thenReturn(false);
+
+        directorController.updateEmployee(user);
+
+        verify(directorView, times(1)).displayError();
+    }
+
+    @Test
+    public void testDeleteEmployee() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+
+        when(baseService.safeDeleteUser(any(UserEntity.class))).thenReturn(true);
+
+        directorController.deleteEmployee(user);
+
+        verify(directorView, times(1)).displaySuccess();
+    }
+
+    @Test
+    public void testDeleteEmployeeWithError() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+
+        when(baseService.safeDeleteUser(any(UserEntity.class))).thenReturn(false);
+
+        directorController.deleteEmployee(user);
+
+        verify(directorView, times(1)).displayError();
     }
 
     @Test

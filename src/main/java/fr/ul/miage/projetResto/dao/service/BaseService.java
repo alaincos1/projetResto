@@ -1,6 +1,7 @@
 package fr.ul.miage.projetResto.dao.service;
 
 import fr.ul.miage.projetResto.constants.DishType;
+import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.model.entity.*;
@@ -62,6 +63,9 @@ public class BaseService {
 
     public boolean update(Object o) {
         if (map.containsKey(o.getClass())) {
+            if (o instanceof UserEntity) {
+                return updateUser((UserEntity) o);
+            }
             return map.get(o.getClass()).update(o);
         }
         return false;
@@ -150,7 +154,7 @@ public class BaseService {
     public List<OrderEntity> getPreparedOrders() {
         return orderCollection.getPreparedOrders();
     }
-    
+
     public List<OrderEntity> getServedOrders() {
         return orderCollection.getServedOrders();
     }
@@ -161,5 +165,55 @@ public class BaseService {
 
     public List<TableEntity> getAllRemovableTables() {
         return tableCollection.getAllRemovableTables();
+    }
+
+    public boolean safeDeleteUser(UserEntity user) {
+        if (userCollection.delete(user, false)) {
+            removeUserFromAllTable(user);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean promoteUser(UserEntity user, Role role) {
+        if (user.getRole() == role || user.getRole() == Role.Director || role != Role.Director && role != Role.Butler) {
+            return false;
+        }
+
+        UserEntity previous = userCollection.getDirectionUser(role);
+
+        if (previous != null) {
+            userCollection.delete(previous, true);
+        }
+
+        removeUserFromAllTable(user);
+        user.setRole(role);
+
+        return update(user);
+    }
+
+    protected boolean updateUser(UserEntity user) {
+        if (userCollection.update(user)) {
+            removeUserFromAllTable(user);
+            return true;
+        }
+        return false;
+    }
+
+    protected void removeUserFromAllTable(UserEntity user) {
+        if (user.getRole() != Role.Server && user.getRole() != Role.Helper) {
+            return;
+        }
+
+        List<TableEntity> tables = getAllTableByServerOrHelper(user.get_id());
+
+        tables.forEach(table -> {
+            if (user.getRole() == Role.Server) {
+                table.setIdServer("");
+            } else {
+                table.setIdHelper("");
+            }
+            save(table);
+        });
     }
 }
