@@ -159,7 +159,7 @@ public class DirectorController extends RoleMenuController {
     }
 
     //ajoute une table
-    private void addTable(List<TableEntity> tables) {
+    protected void addTable(List<TableEntity> tables) {
         TableEntity tableToAdd = new TableEntity();
         tableToAdd.set_id(getFreeNumberTable(tables));
         tableToAdd.setTableState(TableState.Free);
@@ -173,7 +173,7 @@ public class DirectorController extends RoleMenuController {
     }
 
     //supprime une table
-    private void removeTable() {
+    protected void removeTable() {
         List<TableEntity> tables = baseService.getAllRemovableTables();
         if (tables.isEmpty()) {
             directorView.displayNoTableCanBeRemoved();
@@ -190,7 +190,7 @@ public class DirectorController extends RoleMenuController {
     }
 
     //trouve le premier numéro de table libre de 1 à 100;
-    public String getFreeNumberTable(List<TableEntity> tables) {
+    protected String getFreeNumberTable(List<TableEntity> tables) {
         List<Integer> tableId = new ArrayList<>();
         tables.forEach(tableEntity -> tableId.add(Integer.parseInt(tableEntity.get_id())));
         int i = 1;
