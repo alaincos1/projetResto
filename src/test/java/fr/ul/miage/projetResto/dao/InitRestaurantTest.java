@@ -8,8 +8,10 @@ import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.BookingEntity;
 import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jeasy.random.EasyRandom;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -204,5 +206,28 @@ public class InitRestaurantTest {
         tableEntity.setTableState(TableState.Free);
 
         return tableEntity;
+    }
+
+    @DisplayName("Aucun utilisateur en base, création de l'admin")
+    @Test
+    public void checkInitUsers() {
+        when(baseService.getAllUsers()).thenReturn(new ArrayList<UserEntity>());
+
+        initRestaurant.initUsers();
+
+        verify(baseService, times(1)).save(any(UserEntity.class));
+    }
+
+    @DisplayName("Utilisateurs en base, pas de création de l'admin")
+    @Test
+    public void checkInitUsersNoAdmin() {
+        List<UserEntity> users = new ArrayList<>();
+        users.add(new UserEntity());
+        users.add(new UserEntity());
+        when(baseService.getAllUsers()).thenReturn(users);
+
+        initRestaurant.initUsers();
+
+        verify(baseService, times(0)).save(any(UserEntity.class));
     }
 }

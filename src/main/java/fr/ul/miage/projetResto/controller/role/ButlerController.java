@@ -69,7 +69,7 @@ public class ButlerController extends RoleMenuController {
 	 * Affecter un serveur/assistant à une table
 	 */
 	protected void affectTablesToServer() {
-		List<UserEntity> users = baseService.getAllUser();
+		List<UserEntity> users = baseService.getAllUsers();
 		List<TableEntity> tables = baseService.getAllTable();
 		butlerView.displayAllTables(tables);
 		butlerView.displayChoiceServer();
