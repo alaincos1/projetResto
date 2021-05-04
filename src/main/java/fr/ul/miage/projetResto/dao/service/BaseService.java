@@ -107,7 +107,7 @@ public class BaseService {
         return orderCollection.getNotPreparedOrders();
     }
 
-    public List<TableEntity> getAllTable() {
+    public List<TableEntity> getAllTables() {
         return tableCollection.getAll();
     }
 
@@ -153,5 +153,13 @@ public class BaseService {
     
     public List<OrderEntity> getServedOrders() {
         return orderCollection.getServedOrders();
+    }
+
+    public boolean deleteTable(String idtable) {
+        return tableCollection.delete(idtable);
+    }
+
+    public List<TableEntity> getAllRemovableTables() {
+        return tableCollection.getAllRemovableTables();
     }
 }

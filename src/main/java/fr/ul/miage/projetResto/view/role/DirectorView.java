@@ -1,6 +1,8 @@
 package fr.ul.miage.projetResto.view.role;
 
+import fr.ul.miage.projetResto.constants.InfoRestaurant;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
+import fr.ul.miage.projetResto.model.entity.TableEntity;
 
 import java.util.List;
 
@@ -54,5 +56,54 @@ public class DirectorView extends RoleView {
 
     public void displayAskNameProduct() {
         System.out.println("Entrez le nom du produit.");
+    }
+
+    public void displayNoTables() {
+        System.out.println("Il n'y a aucune table.");
+    }
+
+    public void displayTables(List<TableEntity> tables) {
+        int i = 1;
+        for (TableEntity table : tables) {
+            System.out.println(" " + i + ") " + table.toString());
+            i++;
+        }
+    }
+
+    public void displayAskAddRemoveTable() {
+        System.out.println("Souhaitez vous ajouter ou supprimer une table ?" +
+                "\n O) Annuler" +
+                "\n 1) Ajouter" +
+                "\n 2) Supprimer");
+    }
+
+    public void displayAskAddTable() {
+        System.out.println("Souhaitez vous ajouter une table ?" +
+                "\n O) Annuler" +
+                "\n 1) Ajouter");
+    }
+
+    public void displayEnoughTables() {
+        System.out.println("Il y a déjà le maximum de tables possible: " + InfoRestaurant.MAX_TABLES.getValue());
+    }
+
+    public void displayTableAdded() {
+        System.out.println("Table ajoutée !");
+    }
+
+    public void displayTableRemoved() {
+        System.out.println("Table supprimée !");
+    }
+
+    public void displayAskNumberSeats() {
+        System.out.println("Entrez un nombre de place pour cette table entre 1 et " + InfoRestaurant.MAX_SEATS.getValue() + " ");
+    }
+
+    public void displayAskTableToRemove() {
+        System.out.println("Quelle table souhaitez vous supprimer ?");
+    }
+
+    public void displayNoTableCanBeRemoved() {
+        System.out.println("Aucune table est supprimable (Clients attablés, réservations, etc...)");
     }
 }

@@ -308,11 +308,11 @@ public class ButlerControllerTest {
     void choiceReservationTestReturn0() {
         service.setDate("2021/04/29");
         service.setMealType(MealType.Dîner);
-        List<TableEntity> tables = baseService.getAllTable();
+        List<TableEntity> tables = baseService.getAllTables();
         when(butlerView.displayAllTablesWithBooking(tables, service.getDate(), service.getMealType(), baseService)).thenReturn(0);
         doNothing().when(butlerView).displayAnyBooking();
 
-        butlerController.choiceReservation(baseService.getAllTable(), 1);
+        butlerController.choiceReservation(baseService.getAllTables(), 1);
 
         verify(butlerView, times(1)).displayAnyBooking();
     }
@@ -322,12 +322,12 @@ public class ButlerControllerTest {
     void choiceReservationTestReturnId() {
         service.setDate("2021/04/29");
         service.setMealType(MealType.Dîner);
-        List<TableEntity> tables = baseService.getAllTable();
+        List<TableEntity> tables = baseService.getAllTables();
         when(butlerView.displayAllTablesWithBooking(tables, service.getDate(), service.getMealType(), baseService)).thenReturn(1);
         doNothing().when(butlerView).displayChoiceTableClient();
         doReturn("1").when(butlerController).choiceTable(any(TableState.class));
 
-        String test = butlerController.choiceReservation(baseService.getAllTable(), 1);
+        String test = butlerController.choiceReservation(baseService.getAllTables(), 1);
         assertEquals("1", test);
     }
 

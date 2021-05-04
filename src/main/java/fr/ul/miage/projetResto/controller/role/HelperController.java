@@ -48,7 +48,7 @@ public class HelperController extends RoleMenuController {
     protected void viewTables(UserEntity user) {
         List<TableEntity> tables;
         if (Role.Director.equals(user.getRole())) {
-            tables = baseService.getAllTable();
+            tables = baseService.getAllTables();
         } else {
             tables = baseService.getAllTableByServerOrHelper(user.get_id());
         }

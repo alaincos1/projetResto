@@ -70,7 +70,7 @@ public class ButlerController extends RoleMenuController {
 	 */
 	protected void affectTablesToServer() {
 		List<UserEntity> users = baseService.getAllUsers();
-		List<TableEntity> tables = baseService.getAllTable();
+		List<TableEntity> tables = baseService.getAllTables();
 		butlerView.displayAllTables(tables);
 		butlerView.displayChoiceServer();
 		butlerView.displayServersList(users);
@@ -102,7 +102,7 @@ public class ButlerController extends RoleMenuController {
 	 * Editer une facture
 	 */
 	protected void editBills() {
-		List<TableEntity> tables = baseService.getAllTable();
+		List<TableEntity> tables = baseService.getAllTables();
 		if (butlerView.displayAllTablesForBill(tables, baseService) != 0) {
 			butlerView.displayChoiceTableForBill();
 
@@ -138,7 +138,7 @@ public class ButlerController extends RoleMenuController {
 	 * Affecter les clients qui arrivent dans le restaurant à une table
 	 */
 	protected void affectTablesToClients() {
-		List<TableEntity> tables = baseService.getAllTable();
+		List<TableEntity> tables = baseService.getAllTables();
 
 		butlerView.displayIsABill();
 
@@ -170,7 +170,7 @@ public class ButlerController extends RoleMenuController {
 		butlerView.displayBookingName();
 		String nameBooking = getStringInput();
 
-		List<TableEntity> tables = baseService.getAllTable();
+		List<TableEntity> tables = baseService.getAllTables();
 		butlerView.displayAllTablesWithNoBooking(tables, dateBooking, mealTypeBooking, baseService);
 		butlerView.displayChoiceTableClient();
 		String choiceTable = choiceTable(null);

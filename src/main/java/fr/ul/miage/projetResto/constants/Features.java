@@ -13,6 +13,7 @@ public enum Features {
     EMPLOYEES("Gérer les employés", Role.Director),
     DAY_MENU("Gérer la carte du jour", Role.Director),
     STOCKS("Gérer les stocks", Role.Director),
+    TABLES("Gérer les tables", Role.Director),
     INCOMES("Analyser les ventes", Role.Director),
     PERFORMANCES("Analyser les performances", Role.Director),
     END_SERVICE("Arrêter le service", Role.Director),

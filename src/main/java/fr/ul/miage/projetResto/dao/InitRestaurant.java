@@ -45,7 +45,7 @@ public class InitRestaurant {
     }
 
     public void initTableState() {
-        List<TableEntity> tableEntities = baseService.getAllTable();
+        List<TableEntity> tableEntities = baseService.getAllTables();
         List<BookingEntity> bookingEntities = baseService.getAllBooking();
 
         if (CollectionUtils.isEmpty(bookingEntities) || CollectionUtils.isEmpty(tableEntities)) {

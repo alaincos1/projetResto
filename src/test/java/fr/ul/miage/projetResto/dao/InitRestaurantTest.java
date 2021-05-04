@@ -83,7 +83,7 @@ class InitRestaurantTest {
         bookingEntities.add(createBookingEntity(mealType, date, idTable2));
         bookingEntities.add(createBookingEntity(mealType, date2, idTable1));
 
-        when(baseService.getAllTable()).thenReturn(tableEntities);
+        when(baseService.getAllTables()).thenReturn(tableEntities);
         when(baseService.getAllBooking()).thenReturn(bookingEntities);
         when(service.getMealType()).thenReturn(mealType);
         when(service.getDate()).thenReturn(date);
@@ -103,7 +103,7 @@ class InitRestaurantTest {
         tableEntities.add(createTableEntity(idTable1));
         tableEntities.add(createTableEntity(idTable2));
 
-        when(baseService.getAllTable()).thenReturn(tableEntities);
+        when(baseService.getAllTables()).thenReturn(tableEntities);
         when(baseService.getAllBooking()).thenReturn(bookingEntities);
 
         initRestaurant.initTableState();
@@ -125,7 +125,7 @@ class InitRestaurantTest {
         bookingEntities.add(createBookingEntity(mealType, date, idTable2));
         bookingEntities.add(createBookingEntity(mealType, date2, idTable1));
 
-        when(baseService.getAllTable()).thenReturn(tableEntities);
+        when(baseService.getAllTables()).thenReturn(tableEntities);
         when(baseService.getAllBooking()).thenReturn(bookingEntities);
 
         initRestaurant.initTableState();
@@ -150,7 +150,7 @@ class InitRestaurantTest {
         bookingEntities.add(createBookingEntity(mealType, date2, idTable2));
         bookingEntities.add(createBookingEntity(mealType, date2, idTable1));
 
-        when(baseService.getAllTable()).thenReturn(tableEntities);
+        when(baseService.getAllTables()).thenReturn(tableEntities);
         when(baseService.getAllBooking()).thenReturn(bookingEntities);
         when(service.getDate()).thenReturn(date);
 
@@ -177,7 +177,7 @@ class InitRestaurantTest {
         bookingEntities.add(createBookingEntity(mealType, date, idTable2));
         bookingEntities.add(createBookingEntity(mealType, date2, idTable1));
 
-        when(baseService.getAllTable()).thenReturn(tableEntities);
+        when(baseService.getAllTables()).thenReturn(tableEntities);
         when(baseService.getAllBooking()).thenReturn(bookingEntities);
         when(service.getDate()).thenReturn(date);
         when(service.getMealType()).thenReturn(mealType2);

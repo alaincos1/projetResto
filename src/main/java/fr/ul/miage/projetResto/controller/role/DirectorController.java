@@ -3,13 +3,16 @@ package fr.ul.miage.projetResto.controller.role;
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.InfoRestaurant;
 import fr.ul.miage.projetResto.constants.Role;
+import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
+import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.*;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -39,24 +42,27 @@ public class DirectorController extends RoleMenuController {
                 manageStocks();
                 break;
             case 4:
-                analysesIncomes();
+                manageTables();
                 break;
             case 5:
-                analysesPerformances();
+                analysesIncomes();
                 break;
             case 6:
-                endService();
+                analysesPerformances();
                 break;
             case 7:
-                butlerController.launch(Role.Butler);
+                endService();
                 break;
             case 8:
-                serverController.launch(Role.Server);
+                butlerController.launch(Role.Butler);
                 break;
             case 9:
-                helperController.launch(Role.Helper);
+                serverController.launch(Role.Server);
                 break;
             case 10:
+                helperController.launch(Role.Helper);
+                break;
+            case 11:
                 cookController.launch(Role.Cook);
                 break;
             default:
@@ -127,6 +133,71 @@ public class DirectorController extends RoleMenuController {
         if (doAgain()) {
             manageStocks();
         }
+    }
+
+    //gère les tables du restaurant
+    protected void manageTables() {
+        List<TableEntity> tables = baseService.getAllTables();
+        Integer i;
+        if (tables.isEmpty()) {
+            directorView.displayNoTables();
+            directorView.displayAskAddTable();
+            i = getIntegerInput(0, 1);
+        } else {
+            directorView.displayTables(tables);
+            directorView.displayAskAddRemoveTable();
+            i = getIntegerInput(0, 2);
+        }
+        if (i == 1 && tables.size() == InfoRestaurant.MAX_TABLES.getValue()) {
+            directorView.displayEnoughTables();
+        } else if (i == 1) {
+            addTable(tables);
+        } else if (i == 2) {
+            removeTable();
+        }
+        launch(Role.Director);
+    }
+
+    //ajoute une table
+    private void addTable(List<TableEntity> tables) {
+        TableEntity tableToAdd = new TableEntity();
+        tableToAdd.set_id(getFreeNumberTable(tables));
+        tableToAdd.setTableState(TableState.Free);
+        directorView.displayAskNumberSeats();
+        tableToAdd.setNbSeats(getIntegerInput(1, InfoRestaurant.MAX_SEATS.getValue()));
+        if (baseService.save(tableToAdd)) {
+            directorView.displayTableAdded();
+        } else {
+            directorView.displayError();
+        }
+    }
+
+    //supprime une table
+    private void removeTable() {
+        List<TableEntity> tables = baseService.getAllRemovableTables();
+        if (tables.isEmpty()) {
+            directorView.displayNoTableCanBeRemoved();
+        } else {
+            directorView.displayAskTableToRemove();
+            directorView.displayTables(tables);
+            int choice = getIntegerInput(1, tables.size()) - 1;
+            if (baseService.deleteTable(tables.get(choice).get_id())) {
+                directorView.displayTableRemoved();
+            } else {
+                directorView.displayError();
+            }
+        }
+    }
+
+    //trouve le premier numéro de table libre de 1 à 100;
+    public String getFreeNumberTable(List<TableEntity> tables) {
+        List<Integer> tableId = new ArrayList<>();
+        tables.forEach(tableEntity -> tableId.add(Integer.parseInt(tableEntity.get_id())));
+        int i = 1;
+        while (tableId.contains(i) && i <= InfoRestaurant.MAX_TABLES.getValue()) {
+            i++;
+        }
+        return "" + i;
     }
 
     protected void analysesIncomes() {

@@ -63,9 +63,9 @@ public class BaseService_TableTest extends AbstractServiceTest {
             expected.add(easyRandom.nextObject(TableEntity.class));
         }
 
-        when(baseService.getAllTable()).thenReturn(expected);
+        when(baseService.getAllTables()).thenReturn(expected);
 
-        List<TableEntity> actual = baseService.getAllTable();
+        List<TableEntity> actual = baseService.getAllTables();
 
         assertEqual(actual, expected);
     }
