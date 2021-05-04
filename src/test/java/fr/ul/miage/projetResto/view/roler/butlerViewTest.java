@@ -26,6 +26,8 @@ public class butlerViewTest {
 	@Mock
 	BaseService baseService;
 	
+	ButlerView butlerView = new ButlerView();
+	
 	@Test
 	@DisplayName("Retourne true car état de la table est correcte")
 	void stateForBillTestReturnTrue() {
@@ -36,7 +38,7 @@ public class butlerViewTest {
 		table.setNbSeats(2);
 		table.setTableState(TableState.Dessert);
 
-		assertTrue(ButlerView.stateForBill(table));
+		assertTrue(butlerView.stateForBill(table));
 	}
 
 	@Test
@@ -48,25 +50,9 @@ public class butlerViewTest {
 		table.setIdServer("ser1");
 		table.setNbSeats(2);
 		table.setTableState(TableState.Free);
-		System.out.println(table);
 		
-		assertFalse(ButlerView.stateForBill(table));
+		assertFalse(butlerView.stateForBill(table));
 	}
-	
-//	/**
-//	 * Savoir si l'état de la table est correct pour éditer la facture
-//	 * @param table
-//	 * @return bollean 
-//	 */
-//	public boolean stateForBill(TableEntity table) {
-//		if (table.getTableState() != TableState.Booked && table.getTableState() != TableState.Free
-//				&& table.getTableState() != TableState.Occupied) {
-//			return true;
-//		}
-//		return false;
-//	}
-
-
 
 	@Test
 	@DisplayName("Retourne true car état de la table est correct, des commandes ont été servi")
@@ -105,7 +91,7 @@ public class butlerViewTest {
 
 		when(baseService.getServedOrders()).thenReturn(listOrder);
 
-		assertTrue(ButlerView.orderServed(table, baseService));
+		assertTrue(butlerView.orderServed(table, baseService));
 	}
 
 	@Test
@@ -122,7 +108,7 @@ public class butlerViewTest {
 
 		when(baseService.getServedOrders()).thenReturn(listOrder);
 
-		assertFalse(ButlerView.orderServed(table, baseService));
+		assertFalse(butlerView.orderServed(table, baseService));
 	}
 
 }

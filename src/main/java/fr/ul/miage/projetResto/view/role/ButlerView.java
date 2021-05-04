@@ -161,13 +161,11 @@ public class ButlerView extends RoleView {
 	 * @param table
 	 * @return bollean 
 	 */
-	public static boolean stateForBill(TableEntity table) {
-		System.out.println("aloooooo" + table);
+	public Boolean stateForBill(TableEntity table) {
 		if (table.getTableState() == TableState.Booked || table.getTableState() == TableState.Free
 				|| table.getTableState() == TableState.Occupied) {
 			return false;
 		}
-		System.out.println("bhczrfbuielz");
 		return true;
 	}
 
@@ -177,7 +175,7 @@ public class ButlerView extends RoleView {
 	 * @param baseService
 	 * @return boolean
 	 */
-	public static boolean orderServed(TableEntity table, BaseService baseService) {
+	public Boolean orderServed(TableEntity table, BaseService baseService) {
 		List<OrderEntity> orders = baseService.getServedOrders();
 		for (OrderEntity order : orders) {
 			if (order.getIdTable().equals(table.get_id())) {

@@ -7,6 +7,7 @@ import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.dao.service.BaseService;
+import fr.ul.miage.projetResto.model.entity.BillEntity;
 import fr.ul.miage.projetResto.model.entity.DishEntity;
 import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
@@ -442,62 +443,77 @@ public class ButlerControllerTest {
     	assertEquals(20, butlerController.priceBill(listDish));
     }
     
-//    @Test
-//    @DisplayName("Vérifier que l'édition d'une facture s'éffectue")
-//    void editBillsCorrect() {
-//    	TableEntity table = new TableEntity();
-//        table.set_id("1");
-//        table.setIdHelper("hel1");
-//        table.setIdServer("ser1");
-//        table.setNbSeats(2);
-//        table.setTableState(TableState.Dessert);
-//        
-//        List<TableEntity> list = new ArrayList<>();
-//        list.add(table);
-//        
-//        doReturn(2).when(butlerView).displayAllTablesForBill(anyList(), baseService);
-//    	when(butlerView.orderServed(table, baseService)).thenReturn(true);
-//    	when(butlerView.stateForBill(table)).thenReturn(true);
-//    	doNothing().when(butlerView).displayChoiceTableForBill();
-//    	doReturn("1").when(butlerController).getStringInput();
-//    	when(baseService.getTableById(anyString())).thenReturn(table);
-//    	doNothing().when(butlerController).saveObject(new BillEntity());
-//    	
-//    	butlerController.editBills();
-//    	
-//    	verify(butlerController, times(1)).saveObject(new BillEntity());
-//    }
-//    * Editer une facture
-//	 */
-//	protected void editBills() {
-//		List<TableEntity> tables = baseService.getAllTable();
-//		if (butlerView.displayAllTablesForBill(tables, baseService) != 0) {
-//			butlerView.displayChoiceTableForBill();
-//
-//			String choiceTable = getStringInput();
-//			TableEntity tableChoice = baseService.getTableById(choiceTable);
-//
-//			if (tableChoice == null || !butlerView.orderUnchecked(tableChoice, baseService)
-//					|| !butlerView.stateForBill(tableChoice)) {
-//				butlerView.displayInputIncorrect();
-//				editBills();
-//			} else {
-//				List<String> listIdDishes = listDishes(tableChoice);
-//				Integer priceTotal = priceBill(listIdDishes);
-//				butlerView.displayPriveBill(priceTotal);
-//				BillEntity bill = new BillEntity();
-//				bill.set_id(new ObjectId().toString());
-//				bill.setDate(service.getDate());
-//				bill.setMealType(service.getMealType());
-//				bill.setTotalPrice(priceTotal);
-//				bill.setIdsOrder(listIdDishes);
-//				saveObject(bill);
-//			}
-//			
-//		}else {
-//			butlerView.displayBillImpossible();
-//		}
-//
-//		launch(Role.Butler);
-//	}
+    @Test
+    @DisplayName("Vérifier que l'édition d'une facture s'effectue")
+    void editBillsCorrect() {
+    	TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.Dessert);
+        
+        List<TableEntity> list = new ArrayList<>();
+        list.add(table);
+        
+        doReturn(2).when(butlerView).displayAllTablesForBill(anyList(), any(BaseService.class));
+    	when(butlerView.orderServed(table, baseService)).thenReturn(true);
+    	when(butlerView.stateForBill(table)).thenReturn(true);
+    	doNothing().when(butlerView).displayChoiceTableForBill();
+    	doReturn("1").when(butlerController).getStringInput();
+    	when(baseService.getTableById(anyString())).thenReturn(table);
+    	doNothing().when(butlerController).saveObject(any(BillEntity.class));
+    	doNothing().when(butlerController).launch(any(Role.class));
+    	
+    	butlerController.editBills();
+    	
+    	verify(butlerController, times(1)).saveObject(any(BillEntity.class));
+    }
+    
+    @Test
+    @DisplayName("Vérifier que l'édition d'une facture ne s'éffectue pas car pas de table au bon état")
+    void editBillsFailedAnyTable() {
+    	TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.Dessert);
+        
+        List<TableEntity> list = new ArrayList<>();
+        list.add(table);
+        
+        doReturn(0).when(butlerView).displayAllTablesForBill(anyList(), any(BaseService.class));
+        doNothing().when(butlerView).displayBillImpossible();
+        doNothing().when(butlerController).launch(any(Role.class));
+    	
+    	butlerController.editBills();
+    	
+    	verify(butlerView, times(1)).displayBillImpossible();
+    }
+    
+    @Test
+    @DisplayName("Vérifier que l'édition d'une facture ne s'éffectue pas car la table entrée est incorrect")
+    void editBillsFailedChoiceTable() {
+       	TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.Dessert);
+        
+        List<TableEntity> list = new ArrayList<>();
+        list.add(table);
+
+    	doReturn("3").when(butlerController).getStringInput();
+    	when(baseService.getTableById(anyString())).thenReturn(null);
+        doReturn(2).when(butlerView).displayAllTablesForBill(anyList(), any(BaseService.class));
+    	doNothing().when(butlerView).displayInputIncorrect();
+    	doNothing().when(butlerController).launch(any(Role.class));
+    	doCallRealMethod().doNothing().when(butlerController).editBills();
+    	
+    	butlerController.editBills();
+    	
+    	verify(butlerView, times(1)).displayInputIncorrect();
+    }
 }
