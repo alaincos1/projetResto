@@ -119,7 +119,7 @@ public class BaseService {
         return orderCollection.getAllNotChecked();
     }
 
-    public List<UserEntity> getAllUser() {
+    public List<UserEntity> getAllUsers() {
         return userCollection.getAll();
     }
 
