@@ -5,6 +5,7 @@ import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
+import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.view.role.DirectorView;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.DisplayName;
@@ -224,18 +225,6 @@ class DirectorControllerTest {
     }
 
     @Test
-    @DisplayName("Ajout d'un employé")
-    public void testManageEmployee() {
-        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
-        doNothing().when(directorController).addEmployee();
-
-        directorController.manageEmployees();
-
-        verify(directorController, times(1)).addEmployee();
-    }
-
-    @Test
     public void testManageEmployeeAddEmployee() {
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(directorController).launch(Role.Director);
@@ -265,7 +254,7 @@ class DirectorControllerTest {
         doReturn(2).doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(directorController).launch(Role.Director);
         doNothing().when(directorController).updateEmployee(any(UserEntity.class));
-        when(baseService.getAllUser()).thenReturn(users);
+        when(baseService.getAllUsers()).thenReturn(users);
 
         directorController.manageEmployees();
 
@@ -281,7 +270,7 @@ class DirectorControllerTest {
         doReturn(3).doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(directorController).launch(Role.Director);
         doNothing().when(directorController).deleteEmployee(any(UserEntity.class));
-        when(baseService.getAllUser()).thenReturn(users);
+        when(baseService.getAllUsers()).thenReturn(users);
 
         directorController.manageEmployees();
 
@@ -297,7 +286,7 @@ class DirectorControllerTest {
         doReturn(4).doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(directorController).launch(Role.Director);
         doNothing().when(directorController).promoteEmployee(any(UserEntity.class));
-        when(baseService.getAllUser()).thenReturn(users);
+        when(baseService.getAllUsers()).thenReturn(users);
 
         directorController.manageEmployees();
 
@@ -415,5 +404,168 @@ class DirectorControllerTest {
         directorController.deleteEmployee(user);
 
         verify(directorView, times(1)).displayError();
+    }
+
+    @Test
+    @DisplayName("Manage les tables uniquement ajout et Trop de tables")
+    void checkManageTablesTooManyTables() {
+        List<TableEntity> tables = new ArrayList<>();
+        for (int i = 1; i < 101; i++) {
+            TableEntity table = new TableEntity();
+            table.set_id("" + i);
+            tables.add(table);
+        }
+
+        when(baseService.getAllTables()).thenReturn(tables);
+        doReturn(1).when(directorController).getIntegerInput(anyInt(),anyInt());
+        doNothing().when(directorController).launch(Role.Director);
+
+        directorController.manageTables();
+
+        verify(directorView, times(1)).displayEnoughTables();
+    }
+
+    @Test
+    @DisplayName("Manage les tables uniquement ajout")
+    void checkManageTablesAddTable() {
+        List<TableEntity> tables = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            TableEntity table = new TableEntity();
+            table.set_id("" + i);
+            tables.add(table);
+        }
+
+        when(baseService.getAllTables()).thenReturn(tables);
+        doReturn(1).when(directorController).getIntegerInput(anyInt(),anyInt());
+        doNothing().when(directorController).launch(Role.Director);
+
+        directorController.manageTables();
+
+        verify(directorController, times(1)).addTable(anyList());
+    }
+
+    @Test
+    @DisplayName("Manage les tables uniquement suppression")
+    void checkManageTablesRemoveTable() {
+        List<TableEntity> tables = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            TableEntity table = new TableEntity();
+            table.set_id("" + i);
+            tables.add(table);
+        }
+
+        when(baseService.getAllTables()).thenReturn(tables);
+        doReturn(2).when(directorController).getIntegerInput(anyInt(),anyInt());
+        doNothing().when(directorController).launch(Role.Director);
+
+        directorController.manageTables();
+
+        verify(directorController, times(1)).removeTable();
+    }
+
+    @Test
+    @DisplayName("Manage les tables annuler")
+    void checkManageTablesCancel() {
+        List<TableEntity> tables = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            TableEntity table = new TableEntity();
+            table.set_id("" + i);
+            tables.add(table);
+        }
+
+        when(baseService.getAllTables()).thenReturn(tables);
+        doReturn(0).when(directorController).getIntegerInput(anyInt(),anyInt());
+        doNothing().when(directorController).launch(Role.Director);
+
+        directorController.manageTables();
+
+        verify(directorController, times(0)).addTable(anyList());
+        verify(directorController, times(0)).removeTable();
+        verify(directorView, times(0)).displayEnoughTables();
+    }
+
+    @Test
+    @DisplayName("Ajoute une table")
+    void checkAddTable() {
+        doReturn("1").when(directorController).getFreeNumberTable(anyList());
+        doReturn(4).when(directorController).getIntegerInput(anyInt(),anyInt());
+
+        directorController.addTable(new ArrayList<>());
+
+        verify(baseService, times(1)).save(any(TableEntity.class));
+    }
+
+    @Test
+    @DisplayName("Retire une table")
+    void checkRemoveTable() {
+        List<TableEntity> tables = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            TableEntity table = new TableEntity();
+            table.set_id("" + i);
+            tables.add(table);
+        }
+
+        when(baseService.getAllRemovableTables()).thenReturn(tables);
+        doReturn(1).when(directorController).getIntegerInput(anyInt(),anyInt());
+
+        directorController.removeTable();
+
+        verify(baseService, times(1)).deleteTable(anyString());
+    }
+
+    @Test
+    @DisplayName("Retire une table mais liste des tables vide")
+    void checkRemoveTableEmptyList() {
+        List<TableEntity> tables = new ArrayList<>();
+
+        when(baseService.getAllRemovableTables()).thenReturn(tables);
+
+        directorController.removeTable();
+
+        verify(directorView, times(1)).displayNoTableCanBeRemoved();
+    }
+
+    @Test
+    @DisplayName("Récupère le numéro libre d'une table")
+    void checkGetFreeNumberTable() {
+        List<TableEntity> tables = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            TableEntity table = new TableEntity();
+            table.set_id("" + i);
+            tables.add(table);
+        }
+
+        String result = directorController.getFreeNumberTable(tables);
+
+        assertEquals("5", result);
+    }
+
+    @Test
+    @DisplayName("Récupère le numéro libre d'une table sur une suite de nombre non linéaire")
+    void checkGetFreeNumberTableNoLinear() {
+        List<TableEntity> tables = new ArrayList<>();
+        for (int i = 1; i < 3; i++) {
+            TableEntity table = new TableEntity();
+            table.set_id("" + i);
+            tables.add(table);
+        }
+
+        TableEntity table = new TableEntity();
+        table.set_id("5");
+        tables.add(table);
+
+        String result = directorController.getFreeNumberTable(tables);
+
+        assertEquals("3", result);
+    }
+
+    @Test
+    @DisplayName("Récupère le numéro 1 car aucune table n'est présente en base")
+    void checkGetFreeNumberTableNoTables() {
+        List<TableEntity> tables = new ArrayList<>();
+
+        String result = directorController.getFreeNumberTable(tables);
+
+        assertEquals("1", result);
     }
 }

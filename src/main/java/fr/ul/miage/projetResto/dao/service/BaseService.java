@@ -111,7 +111,7 @@ public class BaseService {
         return orderCollection.getNotPreparedOrders();
     }
 
-    public List<TableEntity> getAllTable() {
+    public List<TableEntity> getAllTables() {
         return tableCollection.getAll();
     }
 
@@ -123,7 +123,7 @@ public class BaseService {
         return orderCollection.getAllNotChecked();
     }
 
-    public List<UserEntity> getAllUser() {
+    public List<UserEntity> getAllUsers() {
         return userCollection.getAll();
     }
 
@@ -153,6 +153,18 @@ public class BaseService {
 
     public List<OrderEntity> getPreparedOrders() {
         return orderCollection.getPreparedOrders();
+    }
+
+    public List<OrderEntity> getServedOrders() {
+        return orderCollection.getServedOrders();
+    }
+
+    public boolean deleteTable(String idtable) {
+        return tableCollection.delete(idtable);
+    }
+
+    public List<TableEntity> getAllRemovableTables() {
+        return tableCollection.getAllRemovableTables();
     }
 
     public boolean safeDeleteUser(UserEntity user) {

@@ -3,13 +3,16 @@ package fr.ul.miage.projetResto.dao;
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.OrderState;
+import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.BookingEntity;
 import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jeasy.random.EasyRandom;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class InitRestaurantTest {
+class InitRestaurantTest {
     EasyRandom easyRandom = new EasyRandom();
 
     @Mock
@@ -36,7 +39,7 @@ public class InitRestaurantTest {
     InitRestaurant initRestaurant;
 
     @Test
-    public void testInitUncheckedOrder() {
+    void testInitUncheckedOrder() {
         List<OrderEntity> uncheckedOrders = new ArrayList<>();
 
         for (int i = 0; i < 2; i++) {
@@ -52,7 +55,7 @@ public class InitRestaurantTest {
     }
 
     @Test
-    public void testInitUncheckedOrderWithEmptyOrders() {
+    void testInitUncheckedOrderWithEmptyOrders() {
         List<OrderEntity> uncheckedOrders = new ArrayList<>();
 
         when(baseService.getAllNotCheckedOrder()).thenReturn(uncheckedOrders);
@@ -64,7 +67,7 @@ public class InitRestaurantTest {
 
 
     @Test
-    public void testInitTableState() {
+    void testInitTableState() {
         List<TableEntity> tableEntities = new ArrayList<>();
         List<BookingEntity> bookingEntities = new ArrayList<>();
         MealType mealType = MealType.Déjeuner;
@@ -80,7 +83,7 @@ public class InitRestaurantTest {
         bookingEntities.add(createBookingEntity(mealType, date, idTable2));
         bookingEntities.add(createBookingEntity(mealType, date2, idTable1));
 
-        when(baseService.getAllTable()).thenReturn(tableEntities);
+        when(baseService.getAllTables()).thenReturn(tableEntities);
         when(baseService.getAllBooking()).thenReturn(bookingEntities);
         when(service.getMealType()).thenReturn(mealType);
         when(service.getDate()).thenReturn(date);
@@ -91,19 +94,16 @@ public class InitRestaurantTest {
     }
 
     @Test
-    public void testInitTableStateWithoutBooking() {
+    void testInitTableStateWithoutBooking() {
         List<TableEntity> tableEntities = new ArrayList<>();
         List<BookingEntity> bookingEntities = new ArrayList<>();
-        MealType mealType = MealType.Déjeuner;
-        String date = "2021/04/25";
-        String date2 = "2021/04/26";
         String idTable1 = "idTable1";
         String idTable2 = "idTable2";
 
         tableEntities.add(createTableEntity(idTable1));
         tableEntities.add(createTableEntity(idTable2));
 
-        when(baseService.getAllTable()).thenReturn(tableEntities);
+        when(baseService.getAllTables()).thenReturn(tableEntities);
         when(baseService.getAllBooking()).thenReturn(bookingEntities);
 
         initRestaurant.initTableState();
@@ -112,7 +112,7 @@ public class InitRestaurantTest {
     }
 
     @Test
-    public void testInitTableStateWithoutTable() {
+    void testInitTableStateWithoutTable() {
         List<TableEntity> tableEntities = new ArrayList<>();
         List<BookingEntity> bookingEntities = new ArrayList<>();
         MealType mealType = MealType.Déjeuner;
@@ -125,7 +125,7 @@ public class InitRestaurantTest {
         bookingEntities.add(createBookingEntity(mealType, date, idTable2));
         bookingEntities.add(createBookingEntity(mealType, date2, idTable1));
 
-        when(baseService.getAllTable()).thenReturn(tableEntities);
+        when(baseService.getAllTables()).thenReturn(tableEntities);
         when(baseService.getAllBooking()).thenReturn(bookingEntities);
 
         initRestaurant.initTableState();
@@ -134,7 +134,7 @@ public class InitRestaurantTest {
     }
 
     @Test
-    public void testInitTableStateWithoutMatchingBookingDate() {
+    void testInitTableStateWithoutMatchingBookingDate() {
         List<TableEntity> tableEntities = new ArrayList<>();
         List<BookingEntity> bookingEntities = new ArrayList<>();
         MealType mealType = MealType.Déjeuner;
@@ -150,7 +150,7 @@ public class InitRestaurantTest {
         bookingEntities.add(createBookingEntity(mealType, date2, idTable2));
         bookingEntities.add(createBookingEntity(mealType, date2, idTable1));
 
-        when(baseService.getAllTable()).thenReturn(tableEntities);
+        when(baseService.getAllTables()).thenReturn(tableEntities);
         when(baseService.getAllBooking()).thenReturn(bookingEntities);
         when(service.getDate()).thenReturn(date);
 
@@ -160,7 +160,7 @@ public class InitRestaurantTest {
     }
 
     @Test
-    public void testInitTableStateWithoutMatchingBookingMealType() {
+    void testInitTableStateWithoutMatchingBookingMealType() {
         List<TableEntity> tableEntities = new ArrayList<>();
         List<BookingEntity> bookingEntities = new ArrayList<>();
         MealType mealType = MealType.Déjeuner;
@@ -177,7 +177,7 @@ public class InitRestaurantTest {
         bookingEntities.add(createBookingEntity(mealType, date, idTable2));
         bookingEntities.add(createBookingEntity(mealType, date2, idTable1));
 
-        when(baseService.getAllTable()).thenReturn(tableEntities);
+        when(baseService.getAllTables()).thenReturn(tableEntities);
         when(baseService.getAllBooking()).thenReturn(bookingEntities);
         when(service.getDate()).thenReturn(date);
         when(service.getMealType()).thenReturn(mealType2);
@@ -204,5 +204,49 @@ public class InitRestaurantTest {
         tableEntity.setTableState(TableState.Free);
 
         return tableEntity;
+    }
+
+    @DisplayName("Aucun utilisateur en base, création de l'admin")
+    @Test
+    void checkInitUsers() {
+        when(baseService.getAllUsers()).thenReturn(new ArrayList<>());
+
+        initRestaurant.initUsers();
+
+        verify(baseService, times(1)).save(any(UserEntity.class));
+    }
+
+    @DisplayName("Directeur en base, pas de création de l'admin")
+    @Test
+    void checkInitUsersDirectorHere() {
+        List<UserEntity> users = new ArrayList<>();
+        UserEntity user1 = new UserEntity();
+        user1.setRole(Role.Helper);
+        UserEntity user2 = new UserEntity();
+        user2.setRole(Role.Director);
+        users.add(user1);
+        users.add(user2);
+        when(baseService.getAllUsers()).thenReturn(users);
+
+        initRestaurant.initUsers();
+
+        verify(baseService, times(0)).save(any(UserEntity.class));
+    }
+
+    @DisplayName("Utilisateurs en base, mais pas de directeur, création de l'admin")
+    @Test
+    void checkInitUsersNoDirectorButUsers() {
+        List<UserEntity> users = new ArrayList<>();
+        UserEntity user1 = new UserEntity();
+        user1.setRole(Role.Helper);
+        UserEntity user2 = new UserEntity();
+        user2.setRole(Role.Cook);
+        users.add(user1);
+        users.add(user2);
+        when(baseService.getAllUsers()).thenReturn(users);
+
+        initRestaurant.initUsers();
+
+        verify(baseService, times(1)).save(any(UserEntity.class));
     }
 }

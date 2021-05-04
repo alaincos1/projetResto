@@ -69,4 +69,11 @@ public class OrderCollection extends MongoAccess {
                 .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
                 .collect(Collectors.toList());
     }
+    
+    public List<OrderEntity> getServedOrders() {
+        Bson doc = Filters.eq("orderState", OrderState.Served.toString());
+        return collection.find(doc).into(new ArrayList<Document>()).stream()
+                .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
+                .collect(Collectors.toList());
+    }
 }

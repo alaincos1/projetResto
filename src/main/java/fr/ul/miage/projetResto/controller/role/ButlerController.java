@@ -7,7 +7,10 @@ import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.dao.service.BaseService;
+import fr.ul.miage.projetResto.model.entity.BillEntity;
 import fr.ul.miage.projetResto.model.entity.BookingEntity;
+import fr.ul.miage.projetResto.model.entity.DishEntity;
+import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.view.feature.LogInView;
@@ -17,6 +20,7 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -61,9 +65,12 @@ public class ButlerController extends RoleMenuController {
 		}
 	}
 
+	/**
+	 * Affecter un serveur/assistant à une table
+	 */
 	protected void affectTablesToServer() {
-		List<UserEntity> users = baseService.getAllUser();
-		List<TableEntity> tables = baseService.getAllTable();
+		List<UserEntity> users = baseService.getAllUsers();
+		List<TableEntity> tables = baseService.getAllTables();
 		butlerView.displayAllTables(tables);
 		butlerView.displayChoiceServer();
 		butlerView.displayServersList(users);
@@ -91,11 +98,47 @@ public class ButlerController extends RoleMenuController {
 		updateObject(tableToChange);
 	}
 
+	/**
+	 * Editer une facture
+	 */
 	protected void editBills() {
+		List<TableEntity> tables = baseService.getAllTables();
+		if (butlerView.displayAllTablesForBill(tables, baseService) != 0) {
+			butlerView.displayChoiceTableForBill();
+
+			String choiceTable = getStringInput();
+			TableEntity tableChoice = baseService.getTableById(choiceTable);
+
+			System.out.println(tableChoice);
+			if (tableChoice == null || !butlerView.orderServed(tableChoice, baseService)
+					|| !butlerView.stateForBill(tableChoice)) {
+				butlerView.displayInputIncorrect();
+				editBills();
+			} else {
+				List<String> listIdDishes = listDishes(tableChoice);
+				Integer priceTotal = priceBill(listIdDishes);
+				butlerView.displayPriveBill(priceTotal);
+				BillEntity bill = new BillEntity();
+				bill.set_id(new ObjectId().toString());
+				bill.setDate(service.getDate());
+				bill.setMealType(service.getMealType());
+				bill.setTotalPrice(priceTotal);
+				bill.setIdsOrder(listIdDishes);
+				saveObject(bill);
+			}
+			
+		}else {
+			butlerView.displayBillImpossible();
+		}
+
+		launch(Role.Butler);
 	}
 
+	/**
+	 * Affecter les clients qui arrivent dans le restaurant à une table
+	 */
 	protected void affectTablesToClients() {
-		List<TableEntity> tables = baseService.getAllTable();
+		List<TableEntity> tables = baseService.getAllTables();
 
 		butlerView.displayIsABill();
 
@@ -115,6 +158,9 @@ public class ButlerController extends RoleMenuController {
 		updateObject(tableToChange);
 	}
 
+	/**
+	 * Prendre une réservation
+	 */
 	protected void takeBookings() {
 		butlerView.displayBookingDate();
 		String dateBooking = getDateInput();
@@ -124,7 +170,7 @@ public class ButlerController extends RoleMenuController {
 		butlerView.displayBookingName();
 		String nameBooking = getStringInput();
 
-		List<TableEntity> tables = baseService.getAllTable();
+		List<TableEntity> tables = baseService.getAllTables();
 		butlerView.displayAllTablesWithNoBooking(tables, dateBooking, mealTypeBooking, baseService);
 		butlerView.displayChoiceTableClient();
 		String choiceTable = choiceTable(null);
@@ -139,7 +185,11 @@ public class ButlerController extends RoleMenuController {
 		saveObject(booking);
 	}
 
-	// Fonction qui demande le service en fonction de la date choisie
+	/**
+	 * Affectation du mealtype possible pour une réservation en fonction de la date
+	 * @param dateBooking date souhaité de la réservation
+	 * @return MealType
+	 */
 	protected MealType choiceMealTypeWithDate(String dateBooking) {
 		MealType mealTypeBooking = null;
 
@@ -169,8 +219,11 @@ public class ButlerController extends RoleMenuController {
 		return mealTypeBooking;
 	}
 
-	// Fonction qui permet de définir le service en fonction d l'entrée de
-	// l'utilisateur
+	/**
+	 * Fonction qui permet de définir le service en fonction d l'entrée de l'utilisateur
+	 * @param choiceMealType
+	 * @return Entrée de l'utilsiateur (0/1)
+	 */
 	protected MealType choiceMealType(Integer choiceMealType) {
 		MealType mealTypeBooking;
 		if (choiceMealType == 0) {
@@ -181,17 +234,12 @@ public class ButlerController extends RoleMenuController {
 		}
 		return mealTypeBooking;
 	}
-
-	// Fonction qui permet de savoir si la table existe en focntion de son id et si
-	// sont état est correct
-	// Par exemple savoir si le table avec l'id 1 existe et est libre
-	protected boolean isTableIdCorrect(String tableId, TableState state) {
-		TableEntity table = baseService.getTableById(tableId);
-        return table != null && (state == null || table.getTableState() == state);
-    }
-
-	// Retourne l'id de la table si elle existe et est correcte d'apres l'entrée de
-	// l'utilisateur en fonction de l'etat de la table
+	
+	/**
+	 * Retourne l'id de la table entrée par l'utilisateur si elle est correcte et correspond à l'état voulu
+	 * @param state l'état voulu
+	 * @return Id de la table
+	 */
 	protected String choiceTable(TableState state) {
 		String choiceTable = getStringInput();
 
@@ -202,8 +250,24 @@ public class ButlerController extends RoleMenuController {
 		return choiceTable;
 	}
 
-	// Retourne l'id de la table si elle existe et est correct vis à vis du
-	// serveur/assistant en charge de celle ci
+	/**
+	 * Savoir si une table existe en fonction de son id et de son état
+	 *  Par exemple savoir si le table avec l'id 1 existe et est libre
+	 * @param tableId id de la table
+	 * @param state état souhaité
+	 * @return boolean
+	 */
+	protected boolean isTableIdCorrect(String tableId, TableState state) {
+		TableEntity table = baseService.getTableById(tableId);
+		return table != null && (state == null || table.getTableState() == state);
+	}
+
+	/** 
+	 * Retourne l'id de la table entrée par l'utilisateur si elle existe et que l'user 
+	 * en parametre n'est ni son serveur ni son assistant
+	 * @param user
+	 * @return id de la table
+	 */
 	protected String choiceTableServer(UserEntity user) {
 		String choiceTable = getStringInput();
 
@@ -214,14 +278,25 @@ public class ButlerController extends RoleMenuController {
 		return choiceTable;
 	}
 
+	/**
+	 * Savoir si une table existe en fonction de son id et d'un user
+	 *  Par exemple savoir si le table avec l'id 1 existe et que "ser" n'est ni son serveur ni son assistant
+	 * @param tableId
+	 * @param user
+	 * @return boolean
+	 */
 	protected boolean isTableIdCorrectServer(String tableId, UserEntity user) {
 		TableEntity table = baseService.getTableById(tableId);
 		return table != null && !table.getIdServer().equals(user.get_id())
 				&& !table.getIdHelper().equals(user.get_id());
-    }
+	}
 
-	// retourne l'id de la table qui correspond à l'entrée de l'utilisateur
-	// la table est une table réservée
+	/**
+	 * Retourne l'id de la table qui correspond à l'entrée de l'utilisateur si le client avait réservé
+	 * @param tables liste de tables
+	 * @param reservation entrée pour savoir si c'est une réservation ou pas (0/1)
+	 * @return id de la table
+	 */
 	protected String choiceReservation(List<TableEntity> tables, Integer reservation) {
 		String choiceTable = null;
 		if (reservation == 1) {
@@ -236,7 +311,10 @@ public class ButlerController extends RoleMenuController {
 		return choiceTable;
 	}
 
-	// Mettre à jour un objet (table...)
+	/**
+	 * Mettre à jour un objet (table...)
+	 * @param o
+	 */
 	protected void updateObject(Object o) {
 		if (baseService.update(o)) {
 			butlerView.displayActionSucceded();
@@ -246,7 +324,10 @@ public class ButlerController extends RoleMenuController {
 		launch(Role.Butler);
 	}
 
-	// Insere un objet (facture, réservation..)
+	/**
+	 * Insere un objet (facture, réservation..)
+	 * @param o
+	 */
 	protected void saveObject(Object o) {
 		if (baseService.save(o)) {
 			butlerView.displayActionSucceded();
@@ -255,4 +336,36 @@ public class ButlerController extends RoleMenuController {
 		}
 		launch(Role.Butler);
 	}
+	
+	/**
+	 * retourne la liste des plats d'une table (toutes les commandes servies)
+	 * @param table 
+	 * @return la liste des id des plats
+	 */
+	public List<String> listDishes(TableEntity table) {
+		List<OrderEntity> orders = baseService.getServedOrders();
+		List<String> dishes = new ArrayList<>();
+		for (OrderEntity order : orders) {
+			if (order.getIdTable().equals(table.get_id())) {
+				dishes.addAll(order.getIdsDish());
+			}
+		}
+		return dishes;
+	}
+
+	/**
+	 * Calculer le prix total des plats de la liste en parametre
+	 * @param listIdDishes liste deplat
+	 * @return le prix total
+	 */
+	public Integer priceBill(List<String> listIdDishes) {
+		Integer priceOrderDouble = 0;
+		for (String idDish : listIdDishes) {
+			DishEntity dish = baseService.getDishById(idDish);
+			butlerView.displayDishes(dish.get_id(), dish.getPrice());
+			priceOrderDouble += dish.getPrice();
+		}
+		return priceOrderDouble;
+	}
+
 }
