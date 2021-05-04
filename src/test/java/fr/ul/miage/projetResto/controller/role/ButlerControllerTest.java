@@ -516,4 +516,144 @@ public class ButlerControllerTest {
     	
     	verify(butlerView, times(1)).displayInputIncorrect();
     }
+    
+    @Test
+    @DisplayName("Vérifier que la table se met pas à jour quand le user choisi n'existe pas")
+    void affectTablesToServerTestIncorrect() {
+       	TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.Dessert);
+        
+        List<TableEntity> listTable = new ArrayList<>();
+        listTable.add(table);
+        
+        UserEntity user = new UserEntity();
+        user.set_id("ser1");
+        user.setRole(Role.Server);
+
+        List<UserEntity> listUser = new ArrayList<>();
+        listUser.add(user);
+        
+        when(baseService.getAllUsers()).thenReturn(listUser);
+        when(baseService.getAllTables()).thenReturn(listTable);
+    	doNothing().when(butlerView).displayAllTables(listTable);
+    	doNothing().when(butlerView).displayChoiceServer();
+    	doNothing().when(butlerView).displayServersList(listUser);
+    	doReturn("test").when(butlerController).getUserIdInput();
+        when(baseService.getUserById(anyString())).thenReturn(null);
+        doNothing().when(butlerView).displayInputIncorrect();
+        doCallRealMethod().doNothing().when(butlerController).affectTablesToServer();
+        when(baseService.getTableById(anyString())).thenReturn(table);
+        doNothing().when(butlerController).updateObject(any(TableEntity.class));
+        
+    	butlerController.affectTablesToServer();
+    	
+    	verify(butlerView, times(1)).displayInputIncorrect();
+    }
+    
+    @Test
+    @DisplayName("Vérifier que la table se met à jour avec le nouveau serveur/assistant")
+    void affectTablesToServerTestCorrect() {
+       	TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.Dessert);
+        
+        List<TableEntity> listTable = new ArrayList<>();
+        listTable.add(table);
+        
+        UserEntity user = new UserEntity();
+        user.set_id("ser2");
+        user.setRole(Role.Server);
+
+        List<UserEntity> listUser = new ArrayList<>();
+        listUser.add(user);
+        
+        when(baseService.getAllUsers()).thenReturn(listUser);
+        when(baseService.getAllTables()).thenReturn(listTable);
+    	doNothing().when(butlerView).displayAllTables(listTable);
+    	doNothing().when(butlerView).displayChoiceServer();
+    	doNothing().when(butlerView).displayServersList(listUser);
+    	doReturn("ser2").when(butlerController).getUserIdInput();
+        when(baseService.getUserById(anyString())).thenReturn(user);
+    	doNothing().when(butlerView).displayChoiceTableServer(anyString());
+    	doReturn(1).when(butlerView).displayTablesList(listTable, "ser2", null);
+    	doReturn("1").when(butlerController).choiceTableServer(user);
+        
+        when(baseService.getTableById(anyString())).thenReturn(table);
+        doNothing().when(butlerController).updateObject(any(TableEntity.class));
+        
+    	butlerController.affectTablesToServer();
+
+    	verify(butlerView, times(0)).displayInputIncorrect();
+    	verify(butlerController, times(1)).updateObject(any(TableEntity.class));
+    }
+    
+    @Test
+    @DisplayName("Vérifier que l'affectation des clients se fait")
+    void affectTablesToCLientsTestCorrect() {
+       	TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.Dessert);
+        
+        List<TableEntity> listTable = new ArrayList<>();
+        listTable.add(table);
+        
+        when(baseService.getAllTables()).thenReturn(listTable);
+    	doNothing().when(butlerView).displayIsABill();
+    	
+    	doReturn(0).when(butlerController).getIntegerInput(anyInt(), anyInt());
+    	doReturn("1").when(butlerController).choiceReservation(listTable, 0);
+    	doReturn(2).when(butlerView).displayTablesList(listTable, null, "Libre");
+    	doNothing().when(butlerView).displayChoiceTableClient();
+    	doReturn("1").when(butlerController).choiceTable(any(TableState.class));
+
+        when(baseService.getTableById(anyString())).thenReturn(table);
+        doNothing().when(butlerController).updateObject(any(TableEntity.class));
+        
+    	butlerController.affectTablesToClients();
+
+    	verify(butlerView, times(1)).displayChoiceTableClient();
+    	verify(butlerController, times(1)).updateObject(any(TableEntity.class));
+    }
+    
+    @Test
+    @DisplayName("Vérifier que l'affectation des clients ne se fait pas si il n'y a pas de tables")
+    void affectTablesToCLientsTestIncorrect() {
+       	TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.Dessert);
+        
+        List<TableEntity> listTable = new ArrayList<>();
+        
+        when(baseService.getAllTables()).thenReturn(listTable);
+    	doNothing().when(butlerView).displayIsABill();
+    	
+    	doReturn(0).when(butlerController).getIntegerInput(anyInt(), anyInt());
+    	doReturn("1").when(butlerController).choiceReservation(listTable, 0);
+    	doReturn(0).when(butlerView).displayTablesList(listTable, null, "Libre");
+    	doNothing().when(butlerView).displayAnyTableFree();
+    	doNothing().when(butlerController).launch(any(Role.class));
+
+        when(baseService.getTableById(anyString())).thenReturn(table);
+        doNothing().when(butlerController).updateObject(any(TableEntity.class));
+        
+    	butlerController.affectTablesToClients();
+
+    	verify(butlerView, times(0)).displayChoiceTableClient();
+    	verify(butlerView, times(1)).displayAnyTableFree();
+    	verify(butlerController, times(1)).launch(any(Role.class));
+    	
+    }
 }

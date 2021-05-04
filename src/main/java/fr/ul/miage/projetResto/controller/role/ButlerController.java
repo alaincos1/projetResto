@@ -79,7 +79,7 @@ public class ButlerController extends RoleMenuController {
 		UserEntity user = baseService.getUserById(choiceUser);
 		String choiceTable = "";
 		if (!StringUtils.isBlank(choiceUser) && user == null) {
-			System.out.println("Utilisateur inconnu, veuillez recommencer.");
+			butlerView.displayInputIncorrect();
 			affectTablesToServer();
 		} else {
 			butlerView.displayChoiceTableServer(choiceUser);
@@ -89,10 +89,12 @@ public class ButlerController extends RoleMenuController {
 
 		TableEntity tableToChange = baseService.getTableById(choiceTable);
 
-		if (Role.Server.equals(user.getRole())) {
-			tableToChange.setIdServer(choiceUser);
-		} else {
-			tableToChange.setIdHelper(choiceUser);
+		if (user != null) {
+			if (Role.Server.equals(user.getRole())) {
+				tableToChange.setIdServer(choiceUser);
+			} else {
+				tableToChange.setIdHelper(choiceUser);
+			}
 		}
 
 		updateObject(tableToChange);
@@ -109,7 +111,6 @@ public class ButlerController extends RoleMenuController {
 			String choiceTable = getStringInput();
 			TableEntity tableChoice = baseService.getTableById(choiceTable);
 
-			System.out.println(tableChoice);
 			if (tableChoice == null || !butlerView.orderServed(tableChoice, baseService)
 					|| !butlerView.stateForBill(tableChoice)) {
 				butlerView.displayInputIncorrect();
@@ -126,8 +127,8 @@ public class ButlerController extends RoleMenuController {
 				bill.setIdsOrder(listIdDishes);
 				saveObject(bill);
 			}
-			
-		}else {
+
+		} else {
 			butlerView.displayBillImpossible();
 		}
 
@@ -147,9 +148,13 @@ public class ButlerController extends RoleMenuController {
 
 		// si il ne veut pas de réservation ou qu'il n'y en a pas pour ce jour
 		if ((reservation == 1 && choiceTable == null) || reservation == 0) {
-			butlerView.displayTablesList(tables, null, TableState.Free.getState());
-			butlerView.displayChoiceTableClient();
-			choiceTable = choiceTable(TableState.Free);
+			if(butlerView.displayTablesList(tables, null, TableState.Free.getState()) != 0) {
+				butlerView.displayChoiceTableClient();
+				choiceTable = choiceTable(TableState.Free);
+			}else {
+				butlerView.displayAnyTableFree();
+				launch(Role.Butler);
+			}
 		}
 
 		TableEntity tableToChange = baseService.getTableById(choiceTable);
@@ -187,6 +192,7 @@ public class ButlerController extends RoleMenuController {
 
 	/**
 	 * Affectation du mealtype possible pour une réservation en fonction de la date
+	 * 
 	 * @param dateBooking date souhaité de la réservation
 	 * @return MealType
 	 */
@@ -220,7 +226,9 @@ public class ButlerController extends RoleMenuController {
 	}
 
 	/**
-	 * Fonction qui permet de définir le service en fonction d l'entrée de l'utilisateur
+	 * Fonction qui permet de définir le service en fonction d l'entrée de
+	 * l'utilisateur
+	 * 
 	 * @param choiceMealType
 	 * @return Entrée de l'utilsiateur (0/1)
 	 */
@@ -234,9 +242,11 @@ public class ButlerController extends RoleMenuController {
 		}
 		return mealTypeBooking;
 	}
-	
+
 	/**
-	 * Retourne l'id de la table entrée par l'utilisateur si elle est correcte et correspond à l'état voulu
+	 * Retourne l'id de la table entrée par l'utilisateur si elle est correcte et
+	 * correspond à l'état voulu
+	 * 
 	 * @param state l'état voulu
 	 * @return Id de la table
 	 */
@@ -251,10 +261,11 @@ public class ButlerController extends RoleMenuController {
 	}
 
 	/**
-	 * Savoir si une table existe en fonction de son id et de son état
-	 *  Par exemple savoir si le table avec l'id 1 existe et est libre
+	 * Savoir si une table existe en fonction de son id et de son état Par exemple
+	 * savoir si le table avec l'id 1 existe et est libre
+	 * 
 	 * @param tableId id de la table
-	 * @param state état souhaité
+	 * @param state   état souhaité
 	 * @return boolean
 	 */
 	protected boolean isTableIdCorrect(String tableId, TableState state) {
@@ -262,9 +273,10 @@ public class ButlerController extends RoleMenuController {
 		return table != null && (state == null || table.getTableState() == state);
 	}
 
-	/** 
-	 * Retourne l'id de la table entrée par l'utilisateur si elle existe et que l'user 
-	 * en parametre n'est ni son serveur ni son assistant
+	/**
+	 * Retourne l'id de la table entrée par l'utilisateur si elle existe et que
+	 * l'user en parametre n'est ni son serveur ni son assistant
+	 * 
 	 * @param user
 	 * @return id de la table
 	 */
@@ -279,8 +291,10 @@ public class ButlerController extends RoleMenuController {
 	}
 
 	/**
-	 * Savoir si une table existe en fonction de son id et d'un user
-	 *  Par exemple savoir si le table avec l'id 1 existe et que "ser" n'est ni son serveur ni son assistant
+	 * Savoir si une table existe en fonction de son id et d'un user Par exemple
+	 * savoir si le table avec l'id 1 existe et que "ser" n'est ni son serveur ni
+	 * son assistant
+	 * 
 	 * @param tableId
 	 * @param user
 	 * @return boolean
@@ -292,8 +306,10 @@ public class ButlerController extends RoleMenuController {
 	}
 
 	/**
-	 * Retourne l'id de la table qui correspond à l'entrée de l'utilisateur si le client avait réservé
-	 * @param tables liste de tables
+	 * Retourne l'id de la table qui correspond à l'entrée de l'utilisateur si le
+	 * client avait réservé
+	 * 
+	 * @param tables      liste de tables
 	 * @param reservation entrée pour savoir si c'est une réservation ou pas (0/1)
 	 * @return id de la table
 	 */
@@ -313,6 +329,7 @@ public class ButlerController extends RoleMenuController {
 
 	/**
 	 * Mettre à jour un objet (table...)
+	 * 
 	 * @param o
 	 */
 	protected void updateObject(Object o) {
@@ -326,6 +343,7 @@ public class ButlerController extends RoleMenuController {
 
 	/**
 	 * Insere un objet (facture, réservation..)
+	 * 
 	 * @param o
 	 */
 	protected void saveObject(Object o) {
@@ -336,10 +354,11 @@ public class ButlerController extends RoleMenuController {
 		}
 		launch(Role.Butler);
 	}
-	
+
 	/**
 	 * retourne la liste des plats d'une table (toutes les commandes servies)
-	 * @param table 
+	 * 
+	 * @param table
 	 * @return la liste des id des plats
 	 */
 	public List<String> listDishes(TableEntity table) {
@@ -355,6 +374,7 @@ public class ButlerController extends RoleMenuController {
 
 	/**
 	 * Calculer le prix total des plats de la liste en parametre
+	 * 
 	 * @param listIdDishes liste deplat
 	 * @return le prix total
 	 */

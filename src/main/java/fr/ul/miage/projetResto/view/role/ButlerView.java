@@ -13,16 +13,20 @@ import java.util.List;
 
 public class ButlerView extends RoleView {
 
-	public void displayTablesList(List<TableEntity> tables, String userId, String tableState) {
+	public int displayTablesList(List<TableEntity> tables, String userId, String tableState) {
+		int nbTables = 0;
 		for (TableEntity table : tables) {
 			if (userId == null && table.getTableState().getState().equals(tableState)) {
 				System.out.println(" - Id: " + table.get_id() + " Nb places: " + table.getNbSeats() + " Serveur : "
 						+ table.getIdServer() + " Assistant : " + table.getIdHelper());
+				nbTables++;
 			} else if (userId != null && !userId.equals(table.getIdServer()) && !userId.equals(table.getIdHelper())) {
 				System.out.println(" - Id: " + table.get_id() + " Nb places: " + table.getNbSeats() + " Serveur : "
 						+ table.getIdServer() + " Assistant : " + table.getIdHelper());
+				nbTables++;
 			}
 		}
+		return nbTables;
 	}
 
 	public void displayServersList(List<UserEntity> users) {
@@ -54,7 +58,7 @@ public class ButlerView extends RoleView {
 		int nbBooking = 0;
 		for (TableEntity table : tables) {
 			String name = tableIsReserved(table, date, mealType, baseService);
-			if (name != null) {
+			if (name != null && table.getTableState().equals(TableState.Booked)) {
 				System.out.println(" - Id: " + table.get_id() + " Nb places: " + table.getNbSeats() + " Nom : " + name);
 				nbBooking++;
 			}
@@ -149,7 +153,7 @@ public class ButlerView extends RoleView {
 	}
 	
 	public void displayBillImpossible() {
-		System.out.println("Aucun facture ne peut-être éditer.");
+		System.out.println("Aucun facture ne peut-être éditée.");
 	}
 	
 	public void displayChoiceTableForBill() {
@@ -187,6 +191,10 @@ public class ButlerView extends RoleView {
 
 	public void displayDishes(String id, Integer price) {
 		System.out.println("- " + id + " : " + price + " euros");
+	}
+
+	public void displayAnyTableFree() {
+		System.out.println("Malheureusement, notre restaurant est complet !");
 	}
 
 }
