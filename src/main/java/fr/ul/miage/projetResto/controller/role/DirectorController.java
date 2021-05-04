@@ -6,10 +6,13 @@ import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.*;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
@@ -65,6 +68,88 @@ public class DirectorController extends RoleMenuController {
     }
 
     protected void manageEmployees() {
+        List<String> actions = new ArrayList<>(Arrays.asList("Ajouter", "Modifier", "Supprimer", "Promouvoir"));
+        directorView.displayManageEmployeesMenu(actions);
+        int choixMenu = getIntegerInput(0, 4);
+
+        if (choixMenu == 1) {
+            addEmployee();
+        } else if (choixMenu > 0) {
+            List<UserEntity> users = baseService.getAllUser();
+            users.removeIf(user -> user.getRole() == Role.Director);
+            directorView.displayEmployees(actions.get((choixMenu - 1)), users);
+            int selected = getIntegerInput(0, users.size() + 1);
+
+            if (selected > 0) {
+                UserEntity selectedUser = users.get(selected - 1);
+
+                if (choixMenu == 2) {
+                    updateEmployee(selectedUser);
+                } else if (choixMenu == 3) {
+                    deleteEmployee(selectedUser);
+                } else if (choixMenu == 4) {
+                    promoteEmployee(selectedUser);
+                }
+            }
+        }
+        launch(Role.Director);
+    }
+
+    protected void promoteEmployee(UserEntity user) {
+        directorView.displayDirectionRole();
+        int choice = getIntegerInput(0, 1);
+        Role newRole = choice == 0 ? Role.Director : Role.Butler;
+
+        if (baseService.promoteUser(user, newRole)) {
+            directorView.displaySuccess();
+
+            if (newRole == Role.Director) {
+                callAction(0);
+            }
+        } else {
+            directorView.displayError();
+        }
+    }
+
+    protected void addEmployee() {
+        directorView.displayIdChoice();
+        String id = getUserIdInput();
+
+        directorView.displayRoleChoice();
+        Integer input = getIntegerInput(0, Role.values().length - 1);
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.set_id(id);
+        userEntity.setRole(Role.values()[input]);
+
+        if (baseService.save(userEntity)) {
+            directorView.displaySuccess();
+        } else {
+            directorView.displayError();
+        }
+    }
+
+    protected void updateEmployee(UserEntity user) {
+        directorView.displayRoleChoice();
+        Integer input = getIntegerInput(0, Role.values().length - 1);
+
+        Role newRole = Role.values()[input];
+
+        user.setRole(newRole);
+
+        if (baseService.update(user)) {
+            directorView.displaySuccess();
+        } else {
+            directorView.displayError();
+        }
+    }
+
+    protected void deleteEmployee(UserEntity user) {
+        if (baseService.safeDeleteUser(user)) {
+            directorView.displaySuccess();
+        } else {
+            directorView.displayError();
+        }
     }
 
     protected void manageDayMenu() {
