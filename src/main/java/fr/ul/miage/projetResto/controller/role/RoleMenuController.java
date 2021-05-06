@@ -7,7 +7,6 @@ import fr.ul.miage.projetResto.view.role.RoleView;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class RoleMenuController {
@@ -17,15 +16,14 @@ public class RoleMenuController {
 
     public void launch(Role role) {
         this.roleTemp = role;
-        setnbActions();
+        setNbActions();
         Integer action = askAction();
         callAction(action);
     }
 
-    public void setnbActions() {
-        nbActions = Arrays.stream(Features.values()).filter(
-                features -> features.getRole().equals(roleTemp))
-                .collect(Collectors.toList()).size();
+    public void setNbActions() {
+        nbActions = (int) Arrays.stream(Features.values()).filter(
+                features -> features.getRole().equals(roleTemp)).count();
     }
 
     public Integer askAction() {

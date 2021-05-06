@@ -133,7 +133,7 @@ public class CookController extends RoleMenuController {
 
     protected String getDishCategory(DishType dishType) {
         cookView.displayAskInput("la catégorie du plat", StringUtils.EMPTY);
-        List<CategoryEntity> categories = baseService.getCategoriesWithDishTypeAsList(dishType);
+        List<CategoryEntity> categories = baseService.getCategoriesByDishType(dishType);
         cookView.displayCategories(categories);
         Integer input = getIntegerInput(0, categories.size());
         if (input == 0) {

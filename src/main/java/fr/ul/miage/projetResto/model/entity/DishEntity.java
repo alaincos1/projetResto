@@ -18,18 +18,15 @@ public class DishEntity {
     @Override
     public String toString() {
         StringBuilder toString = new StringBuilder();
-        toString.append(_id + ", ");
-        toString.append(price + "€, ");
-        toString.append(dishType.getDish() + ", (");
-        toString.append(idCategory + ")\n");
+        toString.append(_id).append(", ").append(price).append("€, ").append(dishType.getDish()).append(", (").append(idCategory).append(")\n");
         for (String product : idsProduct) {
-            toString.append(" - " + product + "\n");
+            toString.append(" - ").append(product).append("\n");
         }
         return toString.toString();
     }
 
     //Retourne true si tous les produits du plat ont le stock suffisant
-    protected boolean checkStock(BaseService baseService) {
+    public boolean checkStock(BaseService baseService) {
         for (String product : idsProduct) {
             if (baseService.getProductById(product).getStock() == 0) {
                 return false;
@@ -39,7 +36,7 @@ public class DishEntity {
     }
 
     //Ajoute 1 au stock de chaque produit si add = true sinon retire 1
-    protected void changeStock(BaseService baseService, boolean add) {
+    public void changeStock(BaseService baseService, boolean add) {
         for (String product : idsProduct) {
             ProductEntity productEntity = baseService.getProductById(product);
             if (add) {
@@ -47,8 +44,7 @@ public class DishEntity {
             } else {
                 productEntity.setStock(productEntity.getStock() - 1);
             }
-            baseService.save(productEntity);
+            baseService.update(productEntity);
         }
     }
-
 }

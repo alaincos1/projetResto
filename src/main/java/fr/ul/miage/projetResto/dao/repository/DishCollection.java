@@ -1,8 +1,19 @@
 package fr.ul.miage.projetResto.dao.repository;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Sorts;
+import fr.ul.miage.projetResto.constants.DishType;
 import fr.ul.miage.projetResto.model.entity.DishEntity;
+import fr.ul.miage.projetResto.model.entity.TableEntity;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
 
 public class DishCollection extends MongoAccess {
     MongoCollection<Document> collection = database.getCollection("dishes");
@@ -19,5 +30,12 @@ public class DishCollection extends MongoAccess {
     public DishEntity getDishById(String id) {
         Document doc = getDocumentById(id, collection);
         return doc == null ? null : (DishEntity) Mapper.toObject(doc, DishEntity.class);
+    }
+
+    public List<DishEntity> getDishOnTheMenuByDishType(DishType dishType) {
+        Bson filter = and(eq("onTheMenu",true), eq("dishType", dishType.toString()));
+        return collection.find(filter).sort(Sorts.ascending("idCategory")).into(new ArrayList<Document>()).stream()
+                .map(doc -> (DishEntity) Mapper.toObject(doc, DishEntity.class))
+                .collect(Collectors.toList());
     }
 }

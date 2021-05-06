@@ -26,4 +26,11 @@ public class OrderEntity {
         }
         return null;
     }
+
+    public void giveStockBack(BaseService baseService) {
+        for(String id : idsDish){
+            DishEntity dishEntity = baseService.getDishById(id);
+            dishEntity.changeStock(baseService, true);
+        }
+    }
 }

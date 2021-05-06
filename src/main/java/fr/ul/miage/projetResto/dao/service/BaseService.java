@@ -6,6 +6,7 @@ import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.model.entity.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -131,8 +132,8 @@ public class BaseService {
         bookingCollection.deletePastBookings(date);
     }
 
-    public List<CategoryEntity> getCategoriesWithDishTypeAsList(DishType dishType) {
-        return categoryCollection.getCategoriesWithDishTypeAsList(dishType);
+    public List<CategoryEntity> getCategoriesByDishType(DishType dishType) {
+        return categoryCollection.getCategoriesByDishType(dishType);
     }
 
     public List<ProductEntity> getAllProducts() {
@@ -215,5 +216,21 @@ public class BaseService {
             }
             save(table);
         });
+    }
+
+    public List<TableEntity> getTablesReadyToOrderByServer(String userId) {
+        return tableCollection.getTablesReadyToOrderByServer(userId);
+    }
+
+    public List<DishEntity> getDestockableDishesByDishType(DishType dishType) {
+        List<DishEntity> rawDishes = dishCollection.getDishOnTheMenuByDishType(dishType);
+        List<DishEntity> result = new ArrayList<>();
+
+        for (DishEntity dish : rawDishes){
+            if(dish.checkStock(this)){
+                result.add(dish);
+            }
+        }
+        return result;
     }
 }

@@ -11,7 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -91,8 +92,8 @@ class DishEntityTest {
         when(baseService.getProductById(anyString())).thenReturn(product1).thenReturn(product2);
 
         dishEntity.changeStock(baseService, true);
-        verify(baseService, times(1)).save(productExpected1);
-        verify(baseService, times(1)).save(productExpected2);
+        verify(baseService, times(1)).update(productExpected1);
+        verify(baseService, times(1)).update(productExpected2);
     }
 
     @Test
@@ -121,7 +122,7 @@ class DishEntityTest {
         when(baseService.getProductById(anyString())).thenReturn(product1).thenReturn(product2);
 
         dishEntity.changeStock(baseService, false);
-        verify(baseService, times(1)).save(productExpected1);
-        verify(baseService, times(1)).save(productExpected2);
+        verify(baseService, times(1)).update(productExpected1);
+        verify(baseService, times(1)).update(productExpected2);
     }
 }

@@ -1,12 +1,14 @@
 package fr.ul.miage.projetResto.dao.repository;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Sorts;
 import fr.ul.miage.projetResto.constants.DishType;
 import fr.ul.miage.projetResto.model.entity.CategoryEntity;
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -27,13 +29,9 @@ public class CategoryCollection extends MongoAccess {
         return doc == null ? null : (CategoryEntity) Mapper.toObject(doc, CategoryEntity.class);
     }
 
-    public List<CategoryEntity> getCategoriesWithDishTypeAsList(DishType dishType) {
-        List<Document> catDocuments = collection.find(eq("dishType", dishType.toString()))
-                .into(new ArrayList<>());
-        List<CategoryEntity> catEntityList = new ArrayList<>();
-        for (Document cat : catDocuments) {
-            catEntityList.add((CategoryEntity) Mapper.toObject(cat, CategoryEntity.class));
-        }
-        return catEntityList;
+    public List<CategoryEntity> getCategoriesByDishType(DishType dishType) {
+        return collection.find(eq("dishType", dishType.toString())).sort(Sorts.ascending("_id"))
+                .into(new ArrayList<Document>()).stream().map(doc -> (CategoryEntity) Mapper.toObject(doc, CategoryEntity.class))
+                .collect(Collectors.toList());
     }
 }

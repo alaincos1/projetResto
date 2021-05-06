@@ -220,7 +220,7 @@ class CookControllerTest {
             cat.setDishType(DishType.Dessert);
             catList.add(cat);
         }
-        when(baseService.getCategoriesWithDishTypeAsList(any(DishType.class))).thenReturn(catList);
+        when(baseService.getCategoriesByDishType(any(DishType.class))).thenReturn(catList);
         doReturn(1).when(cookController).getIntegerInput(anyInt(), anyInt());
 
         String dishCat = cookController.getDishCategory(DishType.Dessert);
@@ -238,7 +238,7 @@ class CookControllerTest {
             cat.setDishType(DishType.Dessert);
             catList.add(cat);
         }
-        when(baseService.getCategoriesWithDishTypeAsList(any(DishType.class))).thenReturn(catList);
+        when(baseService.getCategoriesByDishType(any(DishType.class))).thenReturn(catList);
         doReturn(0).when(cookController).getIntegerInput(anyInt(), anyInt());
         doReturn("newCat").when(cookController).getStringInput();
 
