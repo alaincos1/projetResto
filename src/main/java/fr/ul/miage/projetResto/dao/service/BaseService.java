@@ -8,6 +8,7 @@ import fr.ul.miage.projetResto.model.entity.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BaseService {
     private final BillCollection billCollection;
@@ -190,6 +191,20 @@ public class BaseService {
         user.setRole(role);
 
         return update(user);
+    }
+
+    public List<DishEntity> getAllDishsNotOnTheMenuOrdered() {
+        return dishCollection.getAllDishsNotOnMenu()
+                .stream()
+                .sorted(DishEntity::orderDishByType)
+                .collect(Collectors.toList());
+    }
+
+    public List<DishEntity> getAllDishsOntheMenuOrdered() {
+        return dishCollection.getAllDishsOnTheMenu()
+                .stream()
+                .sorted(DishEntity::orderDishByType)
+                .collect(Collectors.toList());
     }
 
     protected boolean updateUser(UserEntity user) {

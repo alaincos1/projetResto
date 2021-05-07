@@ -6,12 +6,14 @@ import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.dao.service.BaseService;
+import fr.ul.miage.projetResto.model.entity.DishEntity;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.*;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,25 +76,25 @@ public class DirectorController extends RoleMenuController {
 
     protected void manageEmployees() {
         List<String> actions = new ArrayList<>(Arrays.asList("Ajouter", "Modifier", "Supprimer", "Promouvoir"));
-        directorView.displayManageEmployeesMenu(actions);
-        int choixMenu = getIntegerInput(0, 4);
+        directorView.displayManage(actions, "un employé");
+        int menuChoice = getIntegerInput(0, 4);
 
-        if (choixMenu == 1) {
+        if (menuChoice == 1) {
             addEmployee();
-        } else if (choixMenu > 0) {
+        } else if (menuChoice > 0) {
             List<UserEntity> users = baseService.getAllUsers();
             users.removeIf(user -> user.getRole() == Role.Director);
-            directorView.displayEmployees(actions.get((choixMenu - 1)), users);
+            directorView.displayEmployees(actions.get((menuChoice - 1)), users);
             int selected = getIntegerInput(0, users.size() + 1);
 
             if (selected > 0) {
                 UserEntity selectedUser = users.get(selected - 1);
 
-                if (choixMenu == 2) {
+                if (menuChoice == 2) {
                     updateEmployee(selectedUser);
-                } else if (choixMenu == 3) {
+                } else if (menuChoice == 3) {
                     deleteEmployee(selectedUser);
-                } else if (choixMenu == 4) {
+                } else if (menuChoice == 4) {
                     promoteEmployee(selectedUser);
                 }
             }
@@ -158,6 +160,45 @@ public class DirectorController extends RoleMenuController {
     }
 
     protected void manageDayMenu() {
+        List<String> actions = new ArrayList<>(Arrays.asList("Visualiser un plat de", "Ajouter un plat à", "Supprimer un plat de"));
+        directorView.displayManage(actions, "la carte des menus");
+        int choice = getIntegerInput(0, 3);
+
+        if (choice > 0) {
+            List<DishEntity> dishs = null;
+            if (choice == 2) {
+                dishs = baseService.getAllDishsNotOnTheMenuOrdered();
+            } else {
+                dishs = baseService.getAllDishsOntheMenuOrdered();
+            }
+
+            if (CollectionUtils.isNotEmpty(dishs)) {
+                if (choice == 1) {
+                    directorView.displayDishChoice(dishs, false);
+                } else {
+                    addOrDeleteDishOnTheMenu(dishs);
+                }
+            } else {
+                if (choice == 2) {
+                    directorView.displayNoDishsNotOntheMenu();
+                } else {
+                    directorView.displayNoDishsOnTheMenu();
+                }
+            }
+        }
+
+        launch(Role.Director);
+    }
+
+    protected void addOrDeleteDishOnTheMenu(List<DishEntity> dishs) {
+        directorView.displayDishChoice(dishs, true);
+        int dishChoice = getIntegerInput(0, dishs.size());
+
+        if (dishChoice > 0) {
+            DishEntity selectedDish = dishs.get(dishChoice - 1);
+            selectedDish.setOnTheMenu(!selectedDish.isOnTheMenu());
+            baseService.update(selectedDish);
+        }
     }
 
     //permet de voir les stocks de tous les produits du restaurant
