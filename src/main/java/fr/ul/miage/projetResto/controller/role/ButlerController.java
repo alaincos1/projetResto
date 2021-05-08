@@ -17,6 +17,8 @@ import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.ButlerView;
 import fr.ul.miage.projetResto.view.role.DirectorView;
 import lombok.AllArgsConstructor;
+
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
 
@@ -78,7 +80,7 @@ public class ButlerController extends RoleMenuController {
 		String choiceUser = getUserIdInput();
 		UserEntity user = baseService.getUserById(choiceUser);
 		String choiceTable = "";
-		if (!StringUtils.isBlank(choiceUser) && user == null) {
+		if (!StringUtils.isBlank(choiceUser) && ObjectUtils.isEmpty(user)) {
 			butlerView.displayInputIncorrect();
 			affectTablesToServer();
 		} else {
@@ -89,7 +91,7 @@ public class ButlerController extends RoleMenuController {
 
 		TableEntity tableToChange = baseService.getTableById(choiceTable);
 
-		if (user != null) {
+		if (ObjectUtils.isNotEmpty(user)) {
 			if (Role.Server.equals(user.getRole())) {
 				tableToChange.setIdServer(choiceUser);
 			} else {
@@ -270,7 +272,7 @@ public class ButlerController extends RoleMenuController {
 	 */
 	protected boolean isTableIdCorrect(String tableId, TableState state) {
 		TableEntity table = baseService.getTableById(tableId);
-		return table != null && (state == null || table.getTableState() == state);
+		return ObjectUtils.isNotEmpty(table) && (state == null || table.getTableState() == state);
 	}
 
 	/**
@@ -301,7 +303,7 @@ public class ButlerController extends RoleMenuController {
 	 */
 	protected boolean isTableIdCorrectServer(String tableId, UserEntity user) {
 		TableEntity table = baseService.getTableById(tableId);
-		return table != null && !table.getIdServer().equals(user.get_id())
+		return ObjectUtils.isNotEmpty(table) && !table.getIdServer().equals(user.get_id())
 				&& !table.getIdHelper().equals(user.get_id());
 	}
 
@@ -334,9 +336,9 @@ public class ButlerController extends RoleMenuController {
 	 */
 	protected void updateObject(Object o) {
 		if (baseService.update(o)) {
-			butlerView.displayActionSucceded();
+			butlerView.displaySuccess();
 		} else {
-			butlerView.displayActionFailed();
+			butlerView.displayError();
 		}
 		launch(Role.Butler);
 	}
@@ -348,9 +350,9 @@ public class ButlerController extends RoleMenuController {
 	 */
 	protected void saveObject(Object o) {
 		if (baseService.save(o)) {
-			butlerView.displayActionSucceded();
+			butlerView.displaySuccess();
 		} else {
-			butlerView.displayActionFailed();
+			butlerView.displayError();
 		}
 		launch(Role.Butler);
 	}
