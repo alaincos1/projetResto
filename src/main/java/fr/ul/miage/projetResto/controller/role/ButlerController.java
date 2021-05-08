@@ -113,7 +113,7 @@ public class ButlerController extends RoleMenuController {
 			String choiceTable = getStringInput();
 			TableEntity tableChoice = baseService.getTableById(choiceTable);
 
-			if (tableChoice == null || !butlerView.orderServed(tableChoice, baseService)
+			if (ObjectUtils.isEmpty(tableChoice) || !butlerView.orderServed(tableChoice, baseService)
 					|| !butlerView.stateForBill(tableChoice)) {
 				butlerView.displayInputIncorrect();
 				editBills();
@@ -149,7 +149,7 @@ public class ButlerController extends RoleMenuController {
 		String choiceTable = choiceReservation(tables, reservation);
 
 		// si il ne veut pas de réservation ou qu'il n'y en a pas pour ce jour
-		if ((reservation == 1 && choiceTable == null) || reservation == 0) {
+		if ((reservation == 1 && StringUtils.isEmpty(choiceTable)) || reservation == 0) {
 			if(butlerView.displayTablesList(tables, null, TableState.Free.getState()) != 0) {
 				butlerView.displayChoiceTableClient();
 				choiceTable = choiceTable(TableState.Free);
