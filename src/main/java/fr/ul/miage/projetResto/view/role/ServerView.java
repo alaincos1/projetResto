@@ -62,7 +62,7 @@ public class ServerView extends RoleView {
                 "\n 1) Oui");
     }
 
-    public void displayNoOrdersToTakeOrders() {
+    public void displayNoTableToTakeOrders() {
         System.out.println("Il n'y a pas de tables où prendre de commandes. (Pas de clients, commande en cours de préparation, à servir...)");
     }
 
@@ -96,7 +96,7 @@ public class ServerView extends RoleView {
     }
 
     public void displayNoDishOnTheMenu() {
-        System.out.println("Il n'y a pas de plats sur le menu pour ce type de plat.");
+        System.out.println("Il n'y a pas de plats sur le menu.");
     }
 
     public void displayMenuByCat(List<DishEntity> allDishes) {
@@ -123,14 +123,6 @@ public class ServerView extends RoleView {
 
     public void displayNotEnoughStockForDish(DishEntity dishEntity) {
         System.out.println("Stock insuffisant pour le plat: " + dishEntity.get_id());
-    }
-
-    public void displayOrderSaved(boolean success) {
-        if(success){
-            System.out.println("La commande est envoyée en cuisine.");
-        } else {
-            System.out.println("La commande est abandonnée.");
-        }
     }
 
     public void displayOrderToSave(OrderEntity orderToSave) {

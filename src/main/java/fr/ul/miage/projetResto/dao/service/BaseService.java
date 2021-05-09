@@ -5,6 +5,7 @@ import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.model.entity.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -219,6 +220,9 @@ public class BaseService {
     }
 
     public List<TableEntity> getTablesReadyToOrderByServer(String userId) {
+        if(getUserById(userId).getRole().equals(Role.Director)){
+            return tableCollection.getTablesReadyToOrderByServer(StringUtils.EMPTY);
+        }
         return tableCollection.getTablesReadyToOrderByServer(userId);
     }
 

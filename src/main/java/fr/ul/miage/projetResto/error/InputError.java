@@ -70,7 +70,6 @@ public class InputError {
                 }
                 break;
             case "a":
-            case "e":
             case "d":
                 for (String part : listSelection) {
                     if (checkInteger(part, borneMin, borneMax) == null) {

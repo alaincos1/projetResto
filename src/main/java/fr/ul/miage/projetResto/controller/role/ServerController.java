@@ -17,13 +17,10 @@ import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.DirectorView;
 import fr.ul.miage.projetResto.view.role.ServerView;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.bson.types.ObjectId;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @AllArgsConstructor
 public class ServerController extends RoleMenuController {
@@ -114,9 +111,9 @@ public class ServerController extends RoleMenuController {
     }
 
     protected void takeOrders(UserEntity user) {
-        List<TableEntity> tables = baseService.getTablesReadyToOrderByServer(user.getRole().equals(Role.Director) ? StringUtils.EMPTY : user.get_id());
-        if (tables == null || tables.isEmpty()) {
-            serverView.displayNoOrdersToTakeOrders();
+        List<TableEntity> tables = baseService.getTablesReadyToOrderByServer(user.get_id());
+        if (CollectionUtils.isEmpty(tables)) {
+            serverView.displayNoTableToTakeOrders();
         } else {
             serverView.displayAskTableToServe();
             serverView.displayTablesAffected(tables);
@@ -135,12 +132,14 @@ public class ServerController extends RoleMenuController {
                         Integer choice = getIntegerInput(0, 1);
                         if (choice == 1) {
                             baseService.save(orderToSave);
-                            serverView.displayOrderSaved(true);
+                            serverView.displaySuccess();
                         } else {
-                            serverView.displayOrderSaved(false);
+                            serverView.displayError();
                             orderToSave.giveStockBack(baseService);
                         }
                     }
+                } else {
+                    serverView.displayNoDishOnTheMenu();
                 }
             }
         }
@@ -203,22 +202,22 @@ public class ServerController extends RoleMenuController {
     //récupère les choix des clients
     protected List<String> getDishesOrdered(DishType dishType, HashMap<Integer, MenuUtil> menus) {
         List<String> idDishes = new ArrayList<>();
-        MenuUtil menu = menus.values().stream().filter(menu1 -> menu1.getDishType().equals(dishType)).findFirst().get();
+        MenuUtil menu = menus.values().stream().filter(menu1 -> menu1.getDishType().equals(dishType)).findFirst().orElse(null);
         List<DishEntity> allDishes = menu.getDishes();
 
         serverView.displayMenuByCat(allDishes);
         serverView.displayOrderChoice();
         String input = getStringCommandInput(0, allDishes.size() - 1);
-        while (menu.isDishesAvailable() && (!input.equals("-v") || (idDishes == null || idDishes.isEmpty()))) {
-            if ((idDishes == null || idDishes.isEmpty()) && input.equals("-v")) {
+        while (menu.isDishesAvailable() && (!input.equals("-v") || CollectionUtils.isEmpty(idDishes))) {
+            if (CollectionUtils.isEmpty(idDishes) && input.equals("-v")) {
                 serverView.displayNoDishInTheOrder();
             }
-            idDishes = getDishesChosed(input, allDishes, idDishes);
+            idDishes = getChosenDishes(input, allDishes, idDishes);
 
             //maj des plats disponibles
             menu.setDishes(baseService.getDestockableDishesByDishType(dishType));
             allDishes = menu.getDishes();
-            menu.setDishesAvailable(!(allDishes.isEmpty()));
+            menu.setDishesAvailable(!CollectionUtils.isEmpty(allDishes));
             if (menu.isDishesAvailable()) {
                 serverView.displayOrderChoice();
                 input = getStringCommandInput(0, allDishes.size() - 1);
@@ -229,7 +228,7 @@ public class ServerController extends RoleMenuController {
         return idDishes;
     }
 
-    protected List<String> getDishesChosed(String input, List<DishEntity> allDishes, List<String> selection) {
+    protected List<String> getChosenDishes(String input, List<DishEntity> allDishes, List<String> selection) {
         String[] listSelection = input.substring(2).replace(" ", "").split("/");
         String action = String.valueOf(input.charAt(1));
         switch (action) {
@@ -300,7 +299,7 @@ public class ServerController extends RoleMenuController {
 
     protected Integer getNextRank(Boolean childOrder) {
         List<OrderEntity> ordersToPrepare = baseService.getNotPreparedOrders();
-        OrderEntity last = ordersToPrepare.stream().filter(order -> childOrder.equals(order.getChildOrder())).max((order1, order2) -> Integer.compare(order1.getRank(), order2.getRank())).orElse(null);
+        OrderEntity last = ordersToPrepare.stream().filter(order -> childOrder.equals(order.getChildOrder())).max(Comparator.comparingInt(OrderEntity::getRank)).orElse(null);
         if (last == null) {
             return 1;
         }

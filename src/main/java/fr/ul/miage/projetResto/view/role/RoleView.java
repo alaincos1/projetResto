@@ -22,7 +22,7 @@ public class RoleView {
     }
 
     public void displayError() {
-        System.out.println("Une erreur est survenue, l'action n'a pas été effectuée");
+        System.out.println("Abandon/erreur. L'action n'a pas été effectuée");
     }
 
     public void displaySuccess() {

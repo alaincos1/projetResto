@@ -102,4 +102,22 @@ class OrderEntityTest {
         TableState tableState = orderEntity.getDishType(baseService);
         assertNull(tableState);
     }
+
+    @Test
+    @DisplayName("Rend le stock d'un plat à la base")
+    void checkGiveStockBack(@Mock BaseService baseService) {
+        orderEntity = new OrderEntity();
+        List<String> dishes = new ArrayList<>();
+        for (int i = 0; i < 6; i++){
+            dishes.add(" "+i);
+        }
+        orderEntity.setIdsDish(dishes);
+        DishEntity dishEntity = mock(DishEntity.class);
+        when(baseService.getDishById(anyString())).thenReturn(dishEntity);
+        doNothing().when(dishEntity).changeStock(any(BaseService.class), anyBoolean());
+
+        orderEntity.giveStockBack(baseService);
+
+        verify(dishEntity, times(orderEntity.getIdsDish().size())).changeStock(any(BaseService.class), eq(true));
+    }
 }

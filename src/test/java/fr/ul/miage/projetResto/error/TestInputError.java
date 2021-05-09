@@ -53,13 +53,6 @@ public class TestInputError {
     }
 
     @Test
-    @DisplayName("String Commande : Vérifier que on peut ajouter commande enfant")
-    void checkInputStringCommandeEnfant() {
-        String test = "-e 1/5";
-        assertEquals("-e 1/5", InputError.checkStringCommand(test, 1, 5));
-    }
-
-    @Test
     @DisplayName("String Commande : Vérifier que on peut ajouter commande adulte")
     void checkInputStringCommandeAdulte() {
         String test = "-a 1/5";
@@ -83,7 +76,7 @@ public class TestInputError {
     @Test
     @DisplayName("String Commande : Vérification si input est faux")
     void checkInputStringCommandeIncorrect() {
-        String test = "-a -e";
+        String test = "-a -d";
         assertNull(InputError.checkStringCommand(test, 1, 5));
     }
 
