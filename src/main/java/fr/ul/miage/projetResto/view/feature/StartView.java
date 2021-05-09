@@ -9,7 +9,7 @@ public class StartView {
         System.out.println("Veuillez choisir le type de service :");
         int i = 1;
         for (MealType mealType : MealType.values()) {
-            System.out.println(i++ + ") " + mealType);
+            System.out.println(i++ + ") " + mealType.getMealValue());
         }
     }
 
@@ -18,6 +18,6 @@ public class StartView {
     }
 
     public void displayService(Service service) {
-        System.out.println("Service du jour : " + service.getMealType() + " " + service.getDate());
+        System.out.println("Service du jour : " + service.getMealType().getMealValue() + " " + service.getDate());
     }
 }

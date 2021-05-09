@@ -35,7 +35,7 @@ class StartControllerTest {
 
         startController.askMealType();
 
-        assertEquals(MealType.Déjeuner, startController.getMealType());
+        assertEquals(MealType.LUNCH, startController.getMealType());
     }
 
     @Test
@@ -45,7 +45,7 @@ class StartControllerTest {
 
         startController.askMealType();
 
-        assertEquals(MealType.Dîner, startController.getMealType());
+        assertEquals(MealType.DINNER, startController.getMealType());
     }
 
     @Test
@@ -61,7 +61,7 @@ class StartControllerTest {
     @Test
     @DisplayName("Créé le service")
     void createService() {
-        startController.setMealType(MealType.Déjeuner);
+        startController.setMealType(MealType.LUNCH);
         startController.setDate("2022/09/30");
         startController.createService();
 

@@ -50,12 +50,12 @@ public class ButlerControllerTest {
         String dateToday = "2021/04/29";
 
         when(service.getDate()).thenReturn(dateToday);
-        when(service.getMealType()).thenReturn(MealType.Déjeuner);
+        when(service.getMealType()).thenReturn(MealType.LUNCH);
         doNothing().when(butlerView).displayBookingDiner();
         doReturn(1).when(butlerController).getIntegerInput(anyInt(), anyInt());
 
         MealType toTested = butlerController.choiceMealTypeWithDate(dateBooking);
-        assertEquals(toTested, MealType.Dîner);
+        assertEquals(toTested, MealType.DINNER);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class ButlerControllerTest {
         String dateToday = "2022/04/29";
 
         when(service.getDate()).thenReturn(dateToday);
-        when(service.getMealType()).thenReturn(MealType.Dîner);
+        when(service.getMealType()).thenReturn(MealType.DINNER);
         doNothing().when(butlerController).launch(any(Role.class));
 
         butlerController.choiceMealTypeWithDate(dateBooking);
@@ -83,7 +83,7 @@ public class ButlerControllerTest {
         doReturn(0).when(butlerController).getIntegerInput(anyInt(), anyInt());
 
         MealType toTested = butlerController.choiceMealTypeWithDate(dateBooking);
-        assertEquals(toTested, MealType.Déjeuner);
+        assertEquals(toTested, MealType.LUNCH);
     }
 
     @Test
@@ -97,21 +97,21 @@ public class ButlerControllerTest {
         doReturn(1).when(butlerController).getIntegerInput(anyInt(), anyInt());
 
         MealType toTested = butlerController.choiceMealTypeWithDate(dateBooking);
-        assertEquals(toTested, MealType.Dîner);
+        assertEquals(toTested, MealType.DINNER);
     }
 
     @Test
     @DisplayName("Retourne le mon mealType en fonction de l'entrée de l'utilisateur : Dejeuner")
     void choiceMealTypeTestDejeuner() {
         MealType test = butlerController.choiceMealType(0);
-        assertEquals(MealType.Déjeuner, test);
+        assertEquals(MealType.LUNCH, test);
     }
 
     @Test
     @DisplayName("Retourne le mon mealType en fonction de l'entrée de l'utilisateur : Diner")
     void choiceMealTypeTestDiner() {
         MealType test = butlerController.choiceMealType(1);
-        assertEquals(MealType.Dîner, test);
+        assertEquals(MealType.DINNER, test);
     }
 
     @Test
@@ -308,7 +308,7 @@ public class ButlerControllerTest {
     @DisplayName("Pas de réservation aujourd'hui")
     void choiceReservationTestReturn0() {
         service.setDate("2021/04/29");
-        service.setMealType(MealType.Dîner);
+        service.setMealType(MealType.DINNER);
         List<TableEntity> tables = baseService.getAllTables();
         when(butlerView.displayAllTablesWithBooking(tables, service.getDate(), service.getMealType(), baseService)).thenReturn(0);
         doNothing().when(butlerView).displayAnyBooking();
@@ -322,7 +322,7 @@ public class ButlerControllerTest {
     @DisplayName("Retourner l'id de la table réservée")
     void choiceReservationTestReturnId() {
         service.setDate("2021/04/29");
-        service.setMealType(MealType.Dîner);
+        service.setMealType(MealType.DINNER);
         List<TableEntity> tables = baseService.getAllTables();
         when(butlerView.displayAllTablesWithBooking(tables, service.getDate(), service.getMealType(), baseService)).thenReturn(1);
         doNothing().when(butlerView).displayChoiceTableClient();

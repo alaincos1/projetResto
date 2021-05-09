@@ -201,7 +201,7 @@ public class ButlerController extends RoleMenuController {
 
 		// Si la reservation est pour la date du jour et qu'on est au service du diner
 		// alors la reservation est impossible
-		if (dateBooking.equals(service.getDate()) && service.getMealType() == MealType.Dîner) {
+		if (dateBooking.equals(service.getDate()) && service.getMealType() == MealType.DINNER) {
 			butlerView.displayBookingImpossible();
 			launch(Role.Butler);
 		}
@@ -213,7 +213,7 @@ public class ButlerController extends RoleMenuController {
 			if (correct == 0) {
 				launch(Role.Butler);
 			} else {
-				mealTypeBooking = MealType.Dîner;
+				mealTypeBooking = MealType.DINNER;
 			}
 		}
 		// Si c'est pour un date ultérieur on deande le service
@@ -235,9 +235,9 @@ public class ButlerController extends RoleMenuController {
 	protected MealType choiceMealType(Integer choiceMealType) {
 		MealType mealTypeBooking;
 		if (choiceMealType == 0) {
-			mealTypeBooking = MealType.Déjeuner;
+			mealTypeBooking = MealType.LUNCH;
 		} else {
-			mealTypeBooking = MealType.Dîner;
+			mealTypeBooking = MealType.DINNER;
 
 		}
 		return mealTypeBooking;

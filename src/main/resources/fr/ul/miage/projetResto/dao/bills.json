@@ -3,7 +3,7 @@
     "_id": "1",
     "totalPrice": 43,
     "date": "2020/05/05",
-    "mealType": "Dîner",
+    "mealType": "DINNER",
     "idsOrder": [
       "1",
       "2"
@@ -13,7 +13,7 @@
     "_id": "2",
     "totalPrice": 25,
     "date": "2020/05/05",
-    "mealType": "Déjeuner",
+    "mealType": "DINNER",
     "idsOrder": [
       "3"
     ]

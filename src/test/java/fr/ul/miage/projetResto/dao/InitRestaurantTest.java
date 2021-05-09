@@ -70,7 +70,7 @@ class InitRestaurantTest {
     void testInitTableState() {
         List<TableEntity> tableEntities = new ArrayList<>();
         List<BookingEntity> bookingEntities = new ArrayList<>();
-        MealType mealType = MealType.Déjeuner;
+        MealType mealType = MealType.LUNCH;
         String date = "2021/04/25";
         String date2 = "2021/04/26";
         String idTable1 = "idTable1";
@@ -115,7 +115,7 @@ class InitRestaurantTest {
     void testInitTableStateWithoutTable() {
         List<TableEntity> tableEntities = new ArrayList<>();
         List<BookingEntity> bookingEntities = new ArrayList<>();
-        MealType mealType = MealType.Déjeuner;
+        MealType mealType = MealType.LUNCH;
         String date = "2021/04/25";
         String date2 = "2021/04/26";
         String idTable1 = "idTable1";
@@ -137,7 +137,7 @@ class InitRestaurantTest {
     void testInitTableStateWithoutMatchingBookingDate() {
         List<TableEntity> tableEntities = new ArrayList<>();
         List<BookingEntity> bookingEntities = new ArrayList<>();
-        MealType mealType = MealType.Déjeuner;
+        MealType mealType = MealType.LUNCH;
         String date = "2021/04/25";
         String date2 = "2021/04/26";
         String idTable1 = "idTable1";
@@ -163,8 +163,8 @@ class InitRestaurantTest {
     void testInitTableStateWithoutMatchingBookingMealType() {
         List<TableEntity> tableEntities = new ArrayList<>();
         List<BookingEntity> bookingEntities = new ArrayList<>();
-        MealType mealType = MealType.Déjeuner;
-        MealType mealType2 = MealType.Dîner;
+        MealType mealType = MealType.LUNCH;
+        MealType mealType2 = MealType.DINNER;
         String date = "2021/04/25";
         String date2 = "2021/04/26";
         String idTable1 = "idTable1";

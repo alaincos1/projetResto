@@ -12,15 +12,15 @@ public class LauncherTest {
 
     @Test
     void testSetService() {
-        Launcher.setService(MealType.Dîner, "2021/04/20");
-        assertEquals(Launcher.getService().getMealType(), MealType.Dîner);
+        Launcher.setService(MealType.DINNER, "2021/04/20");
+        assertEquals(Launcher.getService().getMealType(), MealType.DINNER);
         assertEquals(Launcher.getService().getDate(), "2021/04/20");
     }
 
     @Test
     void testGetService() {
-        Launcher.setService(MealType.Déjeuner, "2020/04/20");
-        assertEquals(Launcher.getService(), new Service(MealType.Déjeuner, "2020/04/20"));
+        Launcher.setService(MealType.LUNCH, "2020/04/20");
+        assertEquals(Launcher.getService(), new Service(MealType.LUNCH, "2020/04/20"));
     }
 
     @Test
