@@ -11,16 +11,18 @@ import fr.ul.miage.projetResto.model.entity.UserEntity;
 
 import java.util.List;
 
+import org.codehaus.plexus.util.StringUtils;
+
 public class ButlerView extends RoleView {
 
 	public int displayTablesList(List<TableEntity> tables, String userId, String tableState) {
 		int nbTables = 0;
 		for (TableEntity table : tables) {
-			if (userId == null && table.getTableState().getState().equals(tableState)) {
+			if (StringUtils.isBlank(userId) && table.getTableState().getState().equals(tableState)) {
 				System.out.println(" - Id: " + table.get_id() + " Nb places: " + table.getNbSeats() + " Serveur : "
 						+ table.getIdServer() + " Assistant : " + table.getIdHelper());
 				nbTables++;
-			} else if (userId != null && !userId.equals(table.getIdServer()) && !userId.equals(table.getIdHelper())) {
+			} else if (StringUtils.isNotBlank(userId) && !userId.equals(table.getIdServer()) && !userId.equals(table.getIdHelper())) {
 				System.out.println(" - Id: " + table.get_id() + " Nb places: " + table.getNbSeats() + " Serveur : "
 						+ table.getIdServer() + " Assistant : " + table.getIdHelper());
 				nbTables++;
@@ -58,7 +60,7 @@ public class ButlerView extends RoleView {
 		int nbBooking = 0;
 		for (TableEntity table : tables) {
 			String name = tableIsReserved(table, date, mealType, baseService);
-			if (name != null && table.getTableState().equals(TableState.Booked)) {
+			if (StringUtils.isNotBlank(name) && table.getTableState().equals(TableState.Booked)) {
 				System.out.println(" - Id: " + table.get_id() + " Nb places: " + table.getNbSeats() + " Nom : " + name);
 				nbBooking++;
 			}
@@ -91,14 +93,6 @@ public class ButlerView extends RoleView {
 
 	public void displayChoiceTableClient() {
 		System.out.println("Choisissez la table pour placer vos clients. Entrez l'Id de la table.");
-	}
-
-	public void displayActionSucceded() {
-		System.out.println("L'action a été effectué avec succès.");
-	}
-
-	public void displayActionFailed() {
-		System.out.println("L'action n'a pas pu aboutir.");
 	}
 
 	public void displayBookingDate() {

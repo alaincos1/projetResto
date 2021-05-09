@@ -15,6 +15,10 @@ public class DishEntity {
     private String idCategory;
     private boolean onTheMenu;
 
+    public static int orderDishByType(DishEntity dishEntity1, DishEntity dishEntity2) {
+        return dishEntity1.getDishType().getPriority().compareTo(dishEntity2.getDishType().getPriority());
+    }
+
     @Override
     public String toString() {
         StringBuilder toString = new StringBuilder();

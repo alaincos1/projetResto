@@ -1,12 +1,17 @@
 package fr.ul.miage.projetResto.view.role;
 
+import fr.ul.miage.projetResto.constants.DishType;
 import fr.ul.miage.projetResto.constants.InfoRestaurant;
 import fr.ul.miage.projetResto.constants.Role;
+import fr.ul.miage.projetResto.model.entity.DishEntity;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DirectorView extends RoleView {
     public void displayAskEndService() {
@@ -109,14 +114,13 @@ public class DirectorView extends RoleView {
         System.out.println("Aucune table est supprimable (Clients attablés, réservations, etc...)");
     }
 
-    public void displayManageEmployeesMenu(List<String> actions) {
+    public void displayManage(List<String> actions, String toManage) {
         System.out.println("Selectionnez une action.");
         System.out.println("0) Annuler");
         int i = 0;
         for (i = 0; i < actions.size(); i++) {
-            System.out.println((i + 1) + ") " + actions.get(i) + " un employé");
+            System.out.println((i + 1) + ") " + actions.get(i) + " " + toManage);
         }
-
     }
 
     public void displayEmployees(String action, List<UserEntity> users) {
@@ -142,5 +146,45 @@ public class DirectorView extends RoleView {
         System.out.println("Selectionnez le role de l'employé.");
         System.out.println("0) " + Role.Director);
         System.out.println("1) " + Role.Butler);
+    }
+
+    public void displayNoDishsOnTheMenu() {
+        System.out.println("Il n'y a pas de plats dans le menu");
+    }
+
+    public void displayNoDishsNotOntheMenu() {
+        System.out.println("Il n'y a aucuns plats d'enregistrés ou ils sont déjà tous dans le menu");
+    }
+
+    public void displayChoice(List<String> choice, Integer startIndex, boolean withIndex) {
+        for (String display : choice) {
+            if (withIndex) {
+                System.out.print(startIndex++ + ") ");
+            }
+            System.out.println(display);
+        }
+    }
+
+    // nécessite une liste triée
+    public void displayDishChoice(List<DishEntity> dishs, boolean withIndex) {
+        if (withIndex) {
+            System.out.println("0) Annuler");
+        }
+
+        Integer startIndex = 1;
+        for (DishType dishType : DishType.values()) {
+            List<String> choice = dishs.stream()
+                    .filter(dish -> dish.getDishType() == dishType)
+                    .sorted(DishEntity::orderDishByType)
+                    .map(DishEntity::get_id)
+                    .collect(Collectors.toList());
+
+            if (CollectionUtils.isNotEmpty(choice)) {
+                System.out.println(dishType.getDish());
+                displayChoice(choice, startIndex, withIndex);
+                startIndex += choice.size();
+                System.out.println();
+            }
+        }
     }
 }

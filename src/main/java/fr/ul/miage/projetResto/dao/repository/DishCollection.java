@@ -31,10 +31,22 @@ public class DishCollection extends MongoAccess {
         Document doc = getDocumentById(id, collection);
         return doc == null ? null : (DishEntity) Mapper.toObject(doc, DishEntity.class);
     }
-
-    public List<DishEntity> getDishOnTheMenuByDishType(DishType dishType) {
+	
+	public List<DishEntity> getDishOnTheMenuByDishType(DishType dishType) {
         Bson filter = and(eq("onTheMenu",true), eq("dishType", dishType.toString()));
         return collection.find(filter).sort(Sorts.ascending("idCategory")).into(new ArrayList<Document>()).stream()
+                .map(doc -> (DishEntity) Mapper.toObject(doc, DishEntity.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<DishEntity> getAllDishsNotOnMenu() {
+        return collection.find(new Document("onTheMenu", false)).into(new ArrayList<>()).stream()
+                .map(doc -> (DishEntity) Mapper.toObject(doc, DishEntity.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<DishEntity> getAllDishsOnTheMenu() {
+        return collection.find(new Document("onTheMenu", true)).into(new ArrayList<>()).stream()
                 .map(doc -> (DishEntity) Mapper.toObject(doc, DishEntity.class))
                 .collect(Collectors.toList());
     }

@@ -3,9 +3,10 @@ package fr.ul.miage.projetResto.controller.role;
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.dao.service.BaseService;
+import fr.ul.miage.projetResto.model.entity.DishEntity;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
-import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
+import fr.ul.miage.projetResto.model.entity.UserEntity;
 import fr.ul.miage.projetResto.view.role.DirectorView;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.DisplayName;
@@ -417,7 +418,7 @@ class DirectorControllerTest {
         }
 
         when(baseService.getAllTables()).thenReturn(tables);
-        doReturn(1).when(directorController).getIntegerInput(anyInt(),anyInt());
+        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(directorController).launch(Role.Director);
 
         directorController.manageTables();
@@ -436,7 +437,7 @@ class DirectorControllerTest {
         }
 
         when(baseService.getAllTables()).thenReturn(tables);
-        doReturn(1).when(directorController).getIntegerInput(anyInt(),anyInt());
+        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(directorController).launch(Role.Director);
 
         directorController.manageTables();
@@ -455,7 +456,7 @@ class DirectorControllerTest {
         }
 
         when(baseService.getAllTables()).thenReturn(tables);
-        doReturn(2).when(directorController).getIntegerInput(anyInt(),anyInt());
+        doReturn(2).when(directorController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(directorController).launch(Role.Director);
 
         directorController.manageTables();
@@ -474,7 +475,7 @@ class DirectorControllerTest {
         }
 
         when(baseService.getAllTables()).thenReturn(tables);
-        doReturn(0).when(directorController).getIntegerInput(anyInt(),anyInt());
+        doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
         doNothing().when(directorController).launch(Role.Director);
 
         directorController.manageTables();
@@ -488,7 +489,7 @@ class DirectorControllerTest {
     @DisplayName("Ajoute une table")
     void checkAddTable() {
         doReturn("1").when(directorController).getFreeNumberTable(anyList());
-        doReturn(4).when(directorController).getIntegerInput(anyInt(),anyInt());
+        doReturn(4).when(directorController).getIntegerInput(anyInt(), anyInt());
 
         directorController.addTable(new ArrayList<>());
 
@@ -506,7 +507,7 @@ class DirectorControllerTest {
         }
 
         when(baseService.getAllRemovableTables()).thenReturn(tables);
-        doReturn(1).when(directorController).getIntegerInput(anyInt(),anyInt());
+        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
 
         directorController.removeTable();
 
@@ -567,5 +568,123 @@ class DirectorControllerTest {
         String result = directorController.getFreeNumberTable(tables);
 
         assertEquals("1", result);
+    }
+
+    @Test
+    public void testManageDayMenuWithReturn() {
+        doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        doNothing().when(directorController).launch(Role.Director);
+
+        directorController.manageDayMenu();
+
+        verify(directorController, times(1)).launch(any(Role.class));
+    }
+
+    @Test
+    @DisplayName("Test le cas ou la carte des menus est vide et que l'on voudrait la visualiser ou supprimer un plat")
+    public void testManageDayMenuWithNoDishOnTheMenu() {
+        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        when(baseService.getAllDishsOntheMenuOrdered()).thenReturn(null);
+        doNothing().when(directorController).launch(any(Role.class));
+
+        directorController.manageDayMenu();
+
+        verify(directorView, times(1)).displayNoDishsOnTheMenu();
+    }
+
+    @Test
+    @DisplayName("Test le cas ou l'on voudrait ajouter un plat à la carte mais que tout les plats sont déjà dans le menu ou qu'il n'y a pas de plats en base")
+    public void testManageDayMenuWithAllDishOnTheMenu() {
+        doReturn(2).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        when(baseService.getAllDishsNotOnTheMenuOrdered()).thenReturn(null);
+        doNothing().when(directorController).launch(any(Role.class));
+
+        directorController.manageDayMenu();
+
+        verify(directorView, times(1)).displayNoDishsNotOntheMenu();
+    }
+
+    @Test
+    public void testManageDayMenuVisualize() {
+        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        List<DishEntity> dishs = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            dishs.add(easyRandom.nextObject(DishEntity.class));
+        }
+
+        when(baseService.getAllDishsOntheMenuOrdered()).thenReturn(dishs);
+        doNothing().when(directorController).launch(any(Role.class));
+
+        directorController.manageDayMenu();
+
+        verify(directorView, times(1)).displayDishChoice(anyList(), anyBoolean());
+    }
+
+    @Test
+    public void testManageDayMenuAdd() {
+        doReturn(2).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        List<DishEntity> dishs = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            dishs.add(easyRandom.nextObject(DishEntity.class));
+        }
+
+        when(baseService.getAllDishsNotOnTheMenuOrdered()).thenReturn(dishs);
+        doNothing().when(directorController).launch(any(Role.class));
+        doNothing().when(directorController).addOrDeleteDishOnTheMenu(anyList());
+
+        directorController.manageDayMenu();
+
+        verify(directorController, times(1)).addOrDeleteDishOnTheMenu(anyList());
+    }
+
+    @Test
+    public void testManageDayMenuDelete() {
+        doReturn(3).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        List<DishEntity> dishs = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            dishs.add(easyRandom.nextObject(DishEntity.class));
+        }
+
+        when(baseService.getAllDishsOntheMenuOrdered()).thenReturn(dishs);
+        doNothing().when(directorController).launch(any(Role.class));
+        doNothing().when(directorController).addOrDeleteDishOnTheMenu(anyList());
+
+        directorController.manageDayMenu();
+
+        verify(directorController, times(1)).addOrDeleteDishOnTheMenu(anyList());
+    }
+
+    @Test
+    public void testAddOrDeleteDishOnTheMenuWithReturn() {
+        doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        List<DishEntity> dishs = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            dishs.add(easyRandom.nextObject(DishEntity.class));
+        }
+
+        directorController.addOrDeleteDishOnTheMenu(dishs);
+
+        verify(baseService, times(0)).update(any(DishEntity.class));
+    }
+
+    @Test
+    public void testAddOrDeleteDishOnTheMenu() {
+        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        List<DishEntity> dishs = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            dishs.add(easyRandom.nextObject(DishEntity.class));
+        }
+
+        directorController.addOrDeleteDishOnTheMenu(dishs);
+
+        verify(baseService, times(1)).update(any(DishEntity.class));
     }
 }
