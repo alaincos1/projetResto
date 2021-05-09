@@ -39,13 +39,13 @@ public class DishCollection extends MongoAccess {
                 .collect(Collectors.toList());
     }
 
-    public List<DishEntity> getAllDishsNotOnMenu() {
+    public List<DishEntity> getAllDishesNotOnMenu() {
         return collection.find(new Document("onTheMenu", false)).into(new ArrayList<>()).stream()
                 .map(doc -> (DishEntity) Mapper.toObject(doc, DishEntity.class))
                 .collect(Collectors.toList());
     }
 
-    public List<DishEntity> getAllDishsOnTheMenu() {
+    public List<DishEntity> getAllDishesOnTheMenu() {
         return collection.find(new Document("onTheMenu", true)).into(new ArrayList<>()).stream()
                 .map(doc -> (DishEntity) Mapper.toObject(doc, DishEntity.class))
                 .collect(Collectors.toList());

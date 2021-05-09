@@ -167,9 +167,9 @@ public class DirectorController extends RoleMenuController {
         if (choice > 0) {
             List<DishEntity> dishs = null;
             if (choice == 2) {
-                dishs = baseService.getAllDishsNotOnTheMenuOrdered();
+                dishs = baseService.getAllDishesNotOnTheMenuOrdered();
             } else {
-                dishs = baseService.getAllDishsOntheMenuOrdered();
+                dishs = baseService.getAllDishesOntheMenuOrdered();
             }
 
             if (CollectionUtils.isNotEmpty(dishs)) {

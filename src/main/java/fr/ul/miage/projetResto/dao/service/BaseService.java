@@ -195,15 +195,15 @@ public class BaseService {
         return update(user);
     }
 
-    public List<DishEntity> getAllDishsNotOnTheMenuOrdered() {
-        return dishCollection.getAllDishsNotOnMenu()
+    public List<DishEntity> getAllDishesNotOnTheMenuOrdered() {
+        return dishCollection.getAllDishesNotOnMenu()
                 .stream()
                 .sorted(DishEntity::orderDishByType)
                 .collect(Collectors.toList());
     }
 
-    public List<DishEntity> getAllDishsOntheMenuOrdered() {
-        return dishCollection.getAllDishsOnTheMenu()
+    public List<DishEntity> getAllDishesOntheMenuOrdered() {
+        return dishCollection.getAllDishesOnTheMenu()
                 .stream()
                 .sorted(DishEntity::orderDishByType)
                 .collect(Collectors.toList());

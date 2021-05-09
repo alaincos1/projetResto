@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LauncherTest {
+class LauncherTest {
 
     @Test
     void testSetService() {
         Launcher.setService(MealType.DINNER, "2021/04/20");
-        assertEquals(Launcher.getService().getMealType(), MealType.DINNER);
-        assertEquals(Launcher.getService().getDate(), "2021/04/20");
+        assertEquals(MealType.DINNER, Launcher.getService().getMealType());
+        assertEquals("2021/04/20", Launcher.getService().getDate());
     }
 
     @Test

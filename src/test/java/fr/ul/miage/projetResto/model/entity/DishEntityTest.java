@@ -1,7 +1,9 @@
 package fr.ul.miage.projetResto.model.entity;
 
+import fr.ul.miage.projetResto.constants.DishType;
 import fr.ul.miage.projetResto.dao.service.BaseService;
 import org.jeasy.random.EasyRandom;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,17 +18,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-    
+
 @DisplayName("DishEntity")
 @ExtendWith(MockitoExtension.class)
 class DishEntityTest {
-	private final EasyRandom easyRandom = new EasyRandom();
+    private final EasyRandom easyRandom = new EasyRandom();
     @InjectMocks
     DishEntity dishEntity;
 
     @Test
     @DisplayName("Retourne vrai car stock du produit suffisant")
-    void checkCheckStock(@Mock BaseService baseService) {
+    void testCheckStock(@Mock BaseService baseService) {
         dishEntity = new DishEntity();
 
         List<String> products = new ArrayList<>();
@@ -48,7 +50,7 @@ class DishEntityTest {
 
     @Test
     @DisplayName("Retourne faux car stock d'un produit insuffisant")
-    void checkCheckStockNotEnough(@Mock BaseService baseService) {
+    void testCheckStockNotEnough(@Mock BaseService baseService) {
         dishEntity = new DishEntity();
 
         List<String> products = new ArrayList<>();
@@ -64,12 +66,13 @@ class DishEntityTest {
         product2.setStock(0);
         when(baseService.getProductById(anyString())).thenReturn(product1).thenReturn(product2);
 
+        boolean enoughStock = dishEntity.checkStock(baseService);
         assertFalse(enoughStock);
     }
 
     @Test
     @DisplayName("Ajoute du stock à tous les produits d'un plat")
-    void checkChangeStockAdd(@Mock BaseService baseService) {
+    void testChangeStockAdd(@Mock BaseService baseService) {
         dishEntity = new DishEntity();
 
         List<String> products = new ArrayList<>();
@@ -99,7 +102,7 @@ class DishEntityTest {
 
     @Test
     @DisplayName("Enlève du stock à tous les produits d'un plat")
-    void checkChangeStockRemove(@Mock BaseService baseService) {
+    void testChangeStockRemove(@Mock BaseService baseService) {
         dishEntity = new DishEntity();
 
         List<String> products = new ArrayList<>();
@@ -126,21 +129,21 @@ class DishEntityTest {
         verify(baseService, times(1)).update(productExpected1);
         verify(baseService, times(1)).update(productExpected2);
     }
-	
-	@Test
-    public void testOrderDishByTypeWithDifferentLowerDishType() {
+
+    @Test
+    void testOrderDishByTypeWithDifferentLowerDishType() {
         DishEntity dish1 = easyRandom.nextObject(DishEntity.class);
         DishEntity dish2 = easyRandom.nextObject(DishEntity.class);
         dish1.setDishType(DishType.MainCourse);
         dish2.setDishType(DishType.Dessert);
 
         Integer actual = DishEntity.orderDishByType(dish1, dish2);
-		
-		Assertions.assertEquals(-1, actual);
-	}
-		
-	@Test
-    public void testOrderDishByTypeWithDifferentHigherDishType() {
+
+        Assertions.assertEquals(-1, actual);
+    }
+
+    @Test
+    void testOrderDishByTypeWithDifferentHigherDishType() {
         DishEntity dish1 = easyRandom.nextObject(DishEntity.class);
         DishEntity dish2 = easyRandom.nextObject(DishEntity.class);
         dish1.setDishType(DishType.Dessert);
@@ -150,9 +153,9 @@ class DishEntityTest {
 
         Assertions.assertEquals(1, actual);
     }
-	
-	@Test
-    public void testOrderDishByTypeWithSameDishType() {
+
+    @Test
+    void testOrderDishByTypeWithSameDishType() {
         DishEntity dish1 = easyRandom.nextObject(DishEntity.class);
         DishEntity dish2 = easyRandom.nextObject(DishEntity.class);
         dish1.setDishType(DishType.MainCourse);

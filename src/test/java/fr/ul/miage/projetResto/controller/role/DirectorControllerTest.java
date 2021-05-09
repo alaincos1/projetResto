@@ -586,7 +586,7 @@ class DirectorControllerTest {
     public void testManageDayMenuWithNoDishOnTheMenu() {
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
 
-        when(baseService.getAllDishsOntheMenuOrdered()).thenReturn(null);
+        when(baseService.getAllDishesOntheMenuOrdered()).thenReturn(null);
         doNothing().when(directorController).launch(any(Role.class));
 
         directorController.manageDayMenu();
@@ -599,7 +599,7 @@ class DirectorControllerTest {
     public void testManageDayMenuWithAllDishOnTheMenu() {
         doReturn(2).when(directorController).getIntegerInput(anyInt(), anyInt());
 
-        when(baseService.getAllDishsNotOnTheMenuOrdered()).thenReturn(null);
+        when(baseService.getAllDishesNotOnTheMenuOrdered()).thenReturn(null);
         doNothing().when(directorController).launch(any(Role.class));
 
         directorController.manageDayMenu();
@@ -616,7 +616,7 @@ class DirectorControllerTest {
             dishs.add(easyRandom.nextObject(DishEntity.class));
         }
 
-        when(baseService.getAllDishsOntheMenuOrdered()).thenReturn(dishs);
+        when(baseService.getAllDishesOntheMenuOrdered()).thenReturn(dishs);
         doNothing().when(directorController).launch(any(Role.class));
 
         directorController.manageDayMenu();
@@ -633,7 +633,7 @@ class DirectorControllerTest {
             dishs.add(easyRandom.nextObject(DishEntity.class));
         }
 
-        when(baseService.getAllDishsNotOnTheMenuOrdered()).thenReturn(dishs);
+        when(baseService.getAllDishesNotOnTheMenuOrdered()).thenReturn(dishs);
         doNothing().when(directorController).launch(any(Role.class));
         doNothing().when(directorController).addOrDeleteDishOnTheMenu(anyList());
 
@@ -651,7 +651,7 @@ class DirectorControllerTest {
             dishs.add(easyRandom.nextObject(DishEntity.class));
         }
 
-        when(baseService.getAllDishsOntheMenuOrdered()).thenReturn(dishs);
+        when(baseService.getAllDishesOntheMenuOrdered()).thenReturn(dishs);
         doNothing().when(directorController).launch(any(Role.class));
         doNothing().when(directorController).addOrDeleteDishOnTheMenu(anyList());
 
