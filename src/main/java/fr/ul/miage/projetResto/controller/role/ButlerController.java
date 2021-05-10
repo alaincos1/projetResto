@@ -7,12 +7,7 @@ import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.dao.service.BaseService;
-import fr.ul.miage.projetResto.model.entity.BillEntity;
-import fr.ul.miage.projetResto.model.entity.BookingEntity;
-import fr.ul.miage.projetResto.model.entity.DishEntity;
-import fr.ul.miage.projetResto.model.entity.OrderEntity;
-import fr.ul.miage.projetResto.model.entity.TableEntity;
-import fr.ul.miage.projetResto.model.entity.UserEntity;
+import fr.ul.miage.projetResto.model.entity.*;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.ButlerView;
 import fr.ul.miage.projetResto.view.role.DirectorView;
@@ -24,6 +19,7 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @AllArgsConstructor
 public class ButlerController extends RoleMenuController {
@@ -128,6 +124,7 @@ public class ButlerController extends RoleMenuController {
 				bill.setTotalPrice(priceTotal);
 				bill.setIdsOrder(listIdDishes);
 				saveObject(bill);
+				savePerformance();
 			}
 
 		} else {
@@ -135,6 +132,24 @@ public class ButlerController extends RoleMenuController {
 		}
 
 		launch(Role.Butler);
+	}
+
+	/**
+	 * Sauvegarde les performances de rotation de clients
+	 */
+	protected void savePerformance() {
+		String idPerf = service.getDate()+service.getMealType().toString();
+		PerformanceEntity perf = baseService.getPerformanceById(idPerf);
+		Random r = new Random();
+		Integer time = r.nextInt((120 - 30) + 1) + 30;
+		if(perf == null){
+			perf = new PerformanceEntity();
+			perf.initPerf(idPerf, "serviceTime", time, 1);
+			baseService.save(perf);
+		}else{
+			perf.update("serviceTime", time, 1);
+			baseService.update(perf);
+		}
 	}
 
 	/**
