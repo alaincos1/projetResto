@@ -3,6 +3,7 @@ package fr.ul.miage.projetResto.controller.role;
 import fr.ul.miage.projetResto.Launcher;
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.MealType;
+import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
@@ -12,6 +13,7 @@ import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.ButlerView;
 import fr.ul.miage.projetResto.view.role.DirectorView;
 import lombok.AllArgsConstructor;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
@@ -94,6 +96,7 @@ public class ButlerController extends RoleMenuController {
         }
 
         updateObject(tableToChange);
+		launch(Role.Butler);
     }
 
     /**
@@ -121,7 +124,10 @@ public class ButlerController extends RoleMenuController {
                 bill.setMealType(service.getMealType());
                 bill.setTotalPrice(priceTotal);
                 bill.setIdsOrder(listIdDishes);
-                saveObject(bill);
+				tableChoice.setTableState(TableState.Dirty);
+				saveObject(tableChoice);
+				saveObject(bill);
+				changeOrderState(tableChoice);
                 savePerformance(service, baseService, "serviceTime", 30, 120);
             }
 
@@ -158,7 +164,8 @@ public class ButlerController extends RoleMenuController {
         tableToChange.setTableState(TableState.Occupied);
 
         updateObject(tableToChange);
-    }
+		launch(Role.Butler);
+	}
 
     /**
      * Prendre une réservation
@@ -185,6 +192,7 @@ public class ButlerController extends RoleMenuController {
         booking.setReservationName(nameBooking);
 
         saveObject(booking);
+		launch(Role.Butler);
     }
 
     /**
@@ -334,8 +342,8 @@ public class ButlerController extends RoleMenuController {
             butlerView.displaySuccess();
         } else {
             butlerView.displayError();
+			launch(Role.Butler);
         }
-        launch(Role.Butler);
     }
 
     /**
@@ -348,8 +356,8 @@ public class ButlerController extends RoleMenuController {
             butlerView.displaySuccess();
         } else {
             butlerView.displayError();
+			launch(Role.Butler);
         }
-        launch(Role.Butler);
     }
 
     /**
@@ -384,5 +392,19 @@ public class ButlerController extends RoleMenuController {
         }
         return priceOrderDouble;
     }
+	
+	/**
+	 * Mettre à jour l'état des commandes lorsqu'elles sont payées
+	 * 
+	 * @param table
+	 * @return la liste des id des plats
+	 */
+	public void changeOrderState(TableEntity table) {
+		List<OrderEntity> orders = baseService.getServedOrders();
+		for (OrderEntity order : orders) {
+			order.setOrderState(OrderState.Checked);
+			updateObject(order);
+		}
+	}
 
 }
