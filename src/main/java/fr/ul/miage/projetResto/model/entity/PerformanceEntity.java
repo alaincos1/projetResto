@@ -10,28 +10,28 @@ public class PerformanceEntity {
     private Integer preparationTime;
     private Integer nbOrder;
 
-    public void update(String label, Integer time, Integer number){
-        if(label.equals("serviceTime")){
+    public void update(String label, Integer time) {
+        if (label.equals("serviceTime")) {
             this.serviceTime += time;
-            this.nbTableServed += number;
+            this.nbTableServed += 1;
         }
-        if(label.equals("preparationTime")){
+        if (label.equals("preparationTime")) {
             this.preparationTime += time;
-            this.nbOrder += number;
+            this.nbOrder += 1;
         }
     }
 
-    public void initPerf(String id, String label, Integer time, Integer number){
+    public void initPerf(String id, String label, Integer time) {
         this._id = id;
-        if(label.equals("serviceTime")){
+        if (label.equals("serviceTime")) {
             this.serviceTime = time;
-            this.nbTableServed = number;
+            this.nbTableServed = 1;
             this.preparationTime = 0;
             this.nbOrder = 0;
         }
-        if(label.equals("preparationTime")){
+        if (label.equals("preparationTime")) {
             this.preparationTime = time;
-            this.nbOrder = number;
+            this.nbOrder = 1;
             this.serviceTime = 0;
             this.nbTableServed = 0;
         }

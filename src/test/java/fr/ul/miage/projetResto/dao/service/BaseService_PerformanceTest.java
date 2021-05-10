@@ -56,9 +56,9 @@ public class BaseService_PerformanceTest extends AbstractServiceTest {
     private void assertEqual(PerformanceEntity actual, PerformanceEntity expected) {
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(actual.get_id(), expected.get_id());
-        Assertions.assertEquals(actual.getMinPreparationTime(), expected.getMinPreparationTime());
-        Assertions.assertEquals(actual.getMinServiceTime(), expected.getMinServiceTime());
-        Assertions.assertEquals(actual.getNbCustomers(), expected.getNbCustomers());
-        Assertions.assertEquals(actual.getNbDish(), expected.getNbDish());
+        Assertions.assertEquals(actual.getPreparationTime(), expected.getPreparationTime());
+        Assertions.assertEquals(actual.getServiceTime(), expected.getServiceTime());
+        Assertions.assertEquals(actual.getNbTableServed(), expected.getNbTableServed());
+        Assertions.assertEquals(actual.getNbOrder(), expected.getNbOrder());
     }
 }

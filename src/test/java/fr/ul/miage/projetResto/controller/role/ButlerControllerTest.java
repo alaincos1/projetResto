@@ -7,11 +7,7 @@ import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.dao.service.BaseService;
-import fr.ul.miage.projetResto.model.entity.BillEntity;
-import fr.ul.miage.projetResto.model.entity.DishEntity;
-import fr.ul.miage.projetResto.model.entity.OrderEntity;
-import fr.ul.miage.projetResto.model.entity.TableEntity;
-import fr.ul.miage.projetResto.model.entity.UserEntity;
+import fr.ul.miage.projetResto.model.entity.*;
 import fr.ul.miage.projetResto.view.role.ButlerView;
 
 import org.junit.jupiter.api.DisplayName;
@@ -32,7 +28,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("ButlerController")
 @ExtendWith(MockitoExtension.class)
-public class ButlerControllerTest {
+class ButlerControllerTest {
     @Mock
     ButlerView butlerView;
     @Mock
@@ -463,6 +459,7 @@ public class ButlerControllerTest {
     	doReturn("1").when(butlerController).getStringInput();
     	when(baseService.getTableById(anyString())).thenReturn(table);
     	doNothing().when(butlerController).saveObject(any(BillEntity.class));
+        doNothing().when(butlerController).savePerformance(any(Service.class), any(BaseService.class), anyString(), anyInt(), anyInt());
     	doNothing().when(butlerController).launch(any(Role.class));
     	
     	butlerController.editBills();
@@ -654,6 +651,5 @@ public class ButlerControllerTest {
     	verify(butlerView, times(0)).displayChoiceTableClient();
     	verify(butlerView, times(1)).displayAnyTableFree();
     	verify(butlerController, times(1)).launch(any(Role.class));
-    	
     }
 }

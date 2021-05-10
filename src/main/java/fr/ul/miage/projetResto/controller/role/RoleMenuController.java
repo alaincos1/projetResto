@@ -1,12 +1,16 @@
 package fr.ul.miage.projetResto.controller.role;
 
+import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.Features;
 import fr.ul.miage.projetResto.constants.Role;
+import fr.ul.miage.projetResto.dao.service.BaseService;
+import fr.ul.miage.projetResto.model.entity.PerformanceEntity;
 import fr.ul.miage.projetResto.utils.InputUtil;
 import fr.ul.miage.projetResto.view.role.RoleView;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
+import java.util.Random;
 
 @Slf4j
 public class RoleMenuController {
@@ -68,5 +72,23 @@ public class RoleMenuController {
 
     public String getStringMultipleChoices(Integer min, Integer max) {
         return InputUtil.getStringMultipleChoices(min, max);
+    }
+
+    /**
+     * Sauvegarde les performances en fonction du label
+     */
+    protected void savePerformance(Service service, BaseService baseService, String label, Integer min, Integer max) {
+        String idPerf = service.getDate()+service.getMealType().toString();
+        PerformanceEntity perf = baseService.getPerformanceById(idPerf);
+        Random r = new Random();
+        Integer time = r.nextInt((max - min) + 1) + min;
+        if(perf == null){
+            perf = new PerformanceEntity();
+            perf.initPerf(idPerf, label, time);
+            baseService.save(perf);
+        }else{
+            perf.update(label, time);
+            baseService.update(perf);
+        }
     }
 }

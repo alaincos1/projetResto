@@ -77,6 +77,7 @@ public class CookController extends RoleMenuController {
             if (input != -1) {
                 orders.get(input).setOrderState(OrderState.Prepared);
                 baseService.update(orders.get(input));
+                savePerformance(service, baseService, "preparationTime", 15, 30);
                 cookView.displayOrderPrepared(orders.get(input).getIdTable());
                 if (doAgain()) {
                     setOrderReady();

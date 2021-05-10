@@ -2,13 +2,11 @@ package fr.ul.miage.projetResto.controller.role;
 
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.DishType;
+import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.dao.service.BaseService;
-import fr.ul.miage.projetResto.model.entity.CategoryEntity;
-import fr.ul.miage.projetResto.model.entity.DishEntity;
-import fr.ul.miage.projetResto.model.entity.OrderEntity;
-import fr.ul.miage.projetResto.model.entity.ProductEntity;
+import fr.ul.miage.projetResto.model.entity.*;
 import fr.ul.miage.projetResto.view.role.CookView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -74,6 +72,7 @@ class CookControllerTest {
         when(baseService.getNotPreparedOrders()).thenReturn(orders);
         doReturn(1).when(cookController).getIntegerInput(anyInt(), anyInt());
         doReturn(false).when(cookController).doAgain();
+        doNothing().when(cookController).savePerformance(any(Service.class), any(BaseService.class), anyString(), anyInt(), anyInt());
         doNothing().when(cookController).launch(any(Role.class));
 
         cookController.setOrderReady();
@@ -132,6 +131,7 @@ class CookControllerTest {
         when(baseService.getNotPreparedOrders()).thenReturn(orders);
         doReturn(1).when(cookController).getIntegerInput(anyInt(), anyInt());
         doReturn(true).doReturn(false).when(cookController).doAgain();
+        doNothing().when(cookController).savePerformance(any(Service.class), any(BaseService.class), anyString(), anyInt(), anyInt());
         doNothing().when(cookController).launch(any(Role.class));
 
         cookController.setOrderReady();
@@ -428,5 +428,4 @@ class CookControllerTest {
 
         verify(cookView, times(1)).displayAlreadyEnded();
     }
-
 }
