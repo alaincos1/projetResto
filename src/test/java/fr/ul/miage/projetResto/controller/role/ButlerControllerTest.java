@@ -458,7 +458,7 @@ class ButlerControllerTest {
     	doNothing().when(butlerView).displayChoiceTableForBill();
     	doReturn("1").when(butlerController).getStringInput();
     	when(baseService.getTableById(anyString())).thenReturn(table);
-    	doNothing().when(butlerController).saveObject(any(BillEntity.class));
+    	doNothing().when(butlerController).saveObject(any());
         doNothing().when(butlerController).savePerformance(any(Service.class), any(BaseService.class), anyString(), anyInt(), anyInt());
     	doNothing().when(butlerController).launch(any(Role.class));
     	
@@ -545,7 +545,8 @@ class ButlerControllerTest {
         doCallRealMethod().doNothing().when(butlerController).affectTablesToServer();
         when(baseService.getTableById(anyString())).thenReturn(table);
         doNothing().when(butlerController).updateObject(any(TableEntity.class));
-        
+        doNothing().when(butlerController).launch(Role.Butler);
+
     	butlerController.affectTablesToServer();
     	
     	verify(butlerView, times(1)).displayInputIncorrect();
@@ -581,6 +582,7 @@ class ButlerControllerTest {
     	doNothing().when(butlerView).displayChoiceTableServer(anyString());
     	doReturn(1).when(butlerView).displayTablesList(listTable, "ser2", null);
     	doReturn("1").when(butlerController).choiceTableServer(user);
+    	doNothing().when(butlerController).launch(Role.Butler);
         
         when(baseService.getTableById(anyString())).thenReturn(table);
         doNothing().when(butlerController).updateObject(any(TableEntity.class));
@@ -615,7 +617,8 @@ class ButlerControllerTest {
 
         when(baseService.getTableById(anyString())).thenReturn(table);
         doNothing().when(butlerController).updateObject(any(TableEntity.class));
-        
+        doNothing().when(butlerController).launch(Role.Butler);
+
     	butlerController.affectTablesToClients();
 
     	verify(butlerView, times(1)).displayChoiceTableClient();
@@ -650,7 +653,7 @@ class ButlerControllerTest {
 
     	verify(butlerView, times(0)).displayChoiceTableClient();
     	verify(butlerView, times(1)).displayAnyTableFree();
-    	verify(butlerController, times(1)).launch(any(Role.class));
+    	verify(butlerController, times(2)).launch(any(Role.class));
     }
     
     @Test 
