@@ -45,6 +45,8 @@ public class ButlerView extends RoleView {
 					+ table.getIdServer() + " Assistant : " + table.getIdHelper());
 		}
 	}
+	
+	
 
 	public void displayAllTablesWithNoBooking(List<TableEntity> tables, String date, MealType mealType,
 			BaseService baseService) {

@@ -3,6 +3,7 @@ package fr.ul.miage.projetResto.controller.role;
 import fr.ul.miage.projetResto.Launcher;
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.MealType;
+import fr.ul.miage.projetResto.constants.OrderState;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
@@ -96,6 +97,7 @@ public class ButlerController extends RoleMenuController {
 		}
 
 		updateObject(tableToChange);
+		launch(Role.Butler);
 	}
 
 	/**
@@ -123,7 +125,10 @@ public class ButlerController extends RoleMenuController {
 				bill.setMealType(service.getMealType());
 				bill.setTotalPrice(priceTotal);
 				bill.setIdsOrder(listIdDishes);
+				tableChoice.setTableState(TableState.Dirty);
+				saveObject(tableChoice);
 				saveObject(bill);
+				changeOrderState(tableChoice);
 				savePerformance();
 			}
 
@@ -150,6 +155,7 @@ public class ButlerController extends RoleMenuController {
 			perf.update("serviceTime", time, 1);
 			baseService.update(perf);
 		}
+		launch(Role.Butler);
 	}
 
 	/**
@@ -178,6 +184,7 @@ public class ButlerController extends RoleMenuController {
 		tableToChange.setTableState(TableState.Occupied);
 
 		updateObject(tableToChange);
+		launch(Role.Butler);
 	}
 
 	/**
@@ -354,8 +361,8 @@ public class ButlerController extends RoleMenuController {
 			butlerView.displaySuccess();
 		} else {
 			butlerView.displayError();
+			launch(Role.Butler);
 		}
-		launch(Role.Butler);
 	}
 
 	/**
@@ -368,8 +375,8 @@ public class ButlerController extends RoleMenuController {
 			butlerView.displaySuccess();
 		} else {
 			butlerView.displayError();
+			launch(Role.Butler);
 		}
-		launch(Role.Butler);
 	}
 
 	/**
@@ -404,5 +411,20 @@ public class ButlerController extends RoleMenuController {
 		}
 		return priceOrderDouble;
 	}
+	
+	/**
+	 * Mettre à jour l'état des commandes lorsqu'elles sont payées
+	 * 
+	 * @param table
+	 * @return la liste des id des plats
+	 */
+	public void changeOrderState(TableEntity table) {
+		List<OrderEntity> orders = baseService.getServedOrders();
+		for (OrderEntity order : orders) {
+			order.setOrderState(OrderState.Checked);
+			updateObject(order);
+		}
+	}
+
 
 }

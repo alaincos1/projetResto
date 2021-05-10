@@ -656,4 +656,25 @@ public class ButlerControllerTest {
     	verify(butlerController, times(1)).launch(any(Role.class));
     	
     }
+    
+    @Test 
+    @DisplayName("Changer l'état des commandes")
+    void changeOrderStateTest() {
+    	OrderEntity order = new OrderEntity();
+    	order.set_id("1");
+    	order.setChildOrder(false);
+    	order.setIdTable("1");
+    	order.setOrderState(OrderState.Served);
+    	order.setRank(1);
+    	
+    	List<OrderEntity> list = new ArrayList<>();
+    	list.add(order);
+    	
+    	when(baseService.getServedOrders()).thenReturn(list);
+    	doNothing().when(butlerController).updateObject(any(OrderEntity.class));
+
+    	butlerController.changeOrderState(new TableEntity());
+    	verify(butlerController, times(1)).updateObject(any(OrderEntity.class));
+    }
+    
 }
