@@ -1,12 +1,10 @@
 package fr.ul.miage.projetResto.controller.role;
 
 import fr.ul.miage.projetResto.appinfo.Service;
+import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.dao.service.BaseService;
-import fr.ul.miage.projetResto.model.entity.DishEntity;
-import fr.ul.miage.projetResto.model.entity.ProductEntity;
-import fr.ul.miage.projetResto.model.entity.TableEntity;
-import fr.ul.miage.projetResto.model.entity.UserEntity;
+import fr.ul.miage.projetResto.model.entity.*;
 import fr.ul.miage.projetResto.view.role.DirectorView;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.DisplayName;
@@ -571,7 +569,7 @@ class DirectorControllerTest {
     }
 
     @Test
-    public void testManageDayMenuWithReturn() {
+    void testManageDayMenuWithReturn() {
         doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
 
         doNothing().when(directorController).launch(Role.Director);
@@ -583,7 +581,7 @@ class DirectorControllerTest {
 
     @Test
     @DisplayName("Test le cas ou la carte des menus est vide et que l'on voudrait la visualiser ou supprimer un plat")
-    public void testManageDayMenuWithNoDishOnTheMenu() {
+    void testManageDayMenuWithNoDishOnTheMenu() {
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
 
         when(baseService.getAllDishesOntheMenuOrdered()).thenReturn(null);
@@ -596,7 +594,7 @@ class DirectorControllerTest {
 
     @Test
     @DisplayName("Test le cas ou l'on voudrait ajouter un plat à la carte mais que tout les plats sont déjà dans le menu ou qu'il n'y a pas de plats en base")
-    public void testManageDayMenuWithAllDishOnTheMenu() {
+    void testManageDayMenuWithAllDishOnTheMenu() {
         doReturn(2).when(directorController).getIntegerInput(anyInt(), anyInt());
 
         when(baseService.getAllDishesNotOnTheMenuOrdered()).thenReturn(null);
@@ -608,7 +606,7 @@ class DirectorControllerTest {
     }
 
     @Test
-    public void testManageDayMenuVisualize() {
+    void testManageDayMenuVisualize() {
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
 
         List<DishEntity> dishs = new ArrayList<>();
@@ -625,7 +623,7 @@ class DirectorControllerTest {
     }
 
     @Test
-    public void testManageDayMenuAdd() {
+    void testManageDayMenuAdd() {
         doReturn(2).when(directorController).getIntegerInput(anyInt(), anyInt());
 
         List<DishEntity> dishs = new ArrayList<>();
@@ -643,7 +641,7 @@ class DirectorControllerTest {
     }
 
     @Test
-    public void testManageDayMenuDelete() {
+    void testManageDayMenuDelete() {
         doReturn(3).when(directorController).getIntegerInput(anyInt(), anyInt());
 
         List<DishEntity> dishs = new ArrayList<>();
@@ -661,7 +659,7 @@ class DirectorControllerTest {
     }
 
     @Test
-    public void testAddOrDeleteDishOnTheMenuWithReturn() {
+    void testAddOrDeleteDishOnTheMenuWithReturn() {
         doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
 
         List<DishEntity> dishs = new ArrayList<>();
@@ -675,7 +673,7 @@ class DirectorControllerTest {
     }
 
     @Test
-    public void testAddOrDeleteDishOnTheMenu() {
+    void testAddOrDeleteDishOnTheMenu() {
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
 
         List<DishEntity> dishs = new ArrayList<>();
@@ -686,5 +684,92 @@ class DirectorControllerTest {
         directorController.addOrDeleteDishOnTheMenu(dishs);
 
         verify(baseService, times(1)).update(any(DishEntity.class));
+    }
+
+    @Test
+    @DisplayName("Aucune performance dans la base de données")
+    void testAnalysesPerformancesEmpty() {
+        when(baseService.getWeekPerformance()).thenReturn(null);
+        doNothing().when(directorView).displayMessage(anyString());
+        doNothing().when(directorController).askMainMenu();
+
+        directorController.analysesPerformances();
+
+        verify(directorView, times(1)).displayMessage(anyString());
+    }
+
+    @Test
+    @DisplayName("Affichage des performances dans la base de données")
+    void testAnalysesPerformances() {
+        List<PerformanceEntity> perfs = new ArrayList<>();
+        perfs.add(new PerformanceEntity());
+        perfs.add(new PerformanceEntity());
+        perfs.add(new PerformanceEntity());
+
+        List<Integer> ints = new ArrayList<>();
+        ints.add(0);
+        ints.add(1);
+
+        when(baseService.getWeekPerformance()).thenReturn(perfs);
+        when(baseService.getAllPerformance()).thenReturn(perfs);
+        doReturn(ints).when(directorController).getAllPerfStats(anyList());
+        doNothing().when(directorView).displayMessage(anyString());
+        doNothing().when(directorController).askMainMenu();
+
+        directorController.analysesPerformances();
+
+        verify(directorView, times(1)).displayPerf(anyList());
+        verify(directorView, times(1)).displayMessage(anyString());
+    }
+
+    @Test
+    @DisplayName("Calcule les temps moyens globaux de rotation des clients et de préparation des commande")
+    void testGetAllPerfStats() {
+        List<PerformanceEntity> perfs = new ArrayList<>();
+        PerformanceEntity perf1 = new PerformanceEntity("2021/09/30DINNER", MealType.DINNER, 20, 2, 50, 3);
+        PerformanceEntity perf2 = new PerformanceEntity("2021/09/30LUNCH", MealType.LUNCH, 29, 1, 150, 5);
+        perfs.add(perf1);
+        perfs.add(perf2);
+        List<Integer> expected = new ArrayList<>();
+        expected.add(25);
+        expected.add(16);
+
+        List<Integer> results = directorController.getAllPerfStats(perfs);
+
+        assertEquals(expected, results);
+    }
+
+    @Test
+    @DisplayName("Calcule les temps moyens globaux de rotation des clients et de préparation des commande : zéro service")
+    void testGetAllPerfStatsZeroService() {
+        List<PerformanceEntity> perfs = new ArrayList<>();
+        PerformanceEntity perf1 = new PerformanceEntity("2021/09/30DINNER", MealType.DINNER, 0, 0, 50, 3);
+        PerformanceEntity perf2 = new PerformanceEntity("2021/09/30LUNCH", MealType.LUNCH, 0, 0, 150, 5);
+        perfs.add(perf1);
+        perfs.add(perf2);
+        List<Integer> expected = new ArrayList<>();
+        expected.add(25);
+        expected.add(0);
+
+        List<Integer> results = directorController.getAllPerfStats(perfs);
+
+        assertEquals(expected, results);
+    }
+
+    @Test
+    @DisplayName("Calcule les temps moyens globaux de rotation des clients et de préparation des commande : zéro préparation")
+    void testGetAllPerfStatsZeroPreparation() {
+        List<PerformanceEntity> perfs = new ArrayList<>();
+        PerformanceEntity perf1 = new PerformanceEntity("2021/09/30DINNER", MealType.DINNER, 20, 2, 0, 0);
+        PerformanceEntity perf2 = new PerformanceEntity("2021/09/30LUNCH", MealType.LUNCH, 29, 1, 0, 0);
+        perfs.add(perf1);
+        perfs.add(perf2);
+        List<Integer> expected = new ArrayList<>();
+        expected.add(0);
+        expected.add(16);
+
+        List<Integer> results = directorController.getAllPerfStats(perfs);
+
+        assertEquals(expected, results);
     }
 }
