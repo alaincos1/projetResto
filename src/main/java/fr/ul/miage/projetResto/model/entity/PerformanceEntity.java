@@ -1,10 +1,16 @@
 package fr.ul.miage.projetResto.model.entity;
 
+import fr.ul.miage.projetResto.constants.MealType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class PerformanceEntity {
     private String _id;
+    private MealType mealType;
     private Integer serviceTime;
     private Integer nbTableServed;
     private Integer preparationTime;
@@ -23,6 +29,7 @@ public class PerformanceEntity {
 
     public void initPerf(String id, String label, Integer time) {
         this._id = id;
+        this.mealType = MealType.valueOf(id.substring(10));
         if (label.equals("serviceTime")) {
             this.serviceTime = time;
             this.nbTableServed = 1;

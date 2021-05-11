@@ -28,4 +28,8 @@ public class RoleView {
     public void displaySuccess() {
         System.out.println("Opération effectuée");
     }
+
+    public void displayMessage(String message) {
+        System.out.println(message);
+    }
 }

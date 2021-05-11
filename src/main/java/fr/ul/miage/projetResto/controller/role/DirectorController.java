@@ -6,10 +6,7 @@ import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
 import fr.ul.miage.projetResto.dao.service.BaseService;
-import fr.ul.miage.projetResto.model.entity.DishEntity;
-import fr.ul.miage.projetResto.model.entity.ProductEntity;
-import fr.ul.miage.projetResto.model.entity.TableEntity;
-import fr.ul.miage.projetResto.model.entity.UserEntity;
+import fr.ul.miage.projetResto.model.entity.*;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.*;
 import lombok.AllArgsConstructor;
@@ -329,6 +326,37 @@ public class DirectorController extends RoleMenuController {
     }
 
     protected void analysesPerformances() {
+        List<PerformanceEntity> perf = baseService.getWeekPerformance();
+        if (CollectionUtils.isEmpty(perf)) {
+            directorView.displayMessage("Aucune performance enregistrée");
+        } else {
+            directorView.displayPerf(perf);
+
+            List<PerformanceEntity> allPerf = baseService.getAllPerformance();
+            List<Integer> results = getAllPerfStats(allPerf);
+            directorView.displayMessage("\n --- Performances globales ---" +
+                    "\n  - Préparation des commandes : " + results.get(0) + " min/commande" +
+                    "\n  - Rotation des clients : " + results.get(1) + " min/table");
+        }
+        askMainMenu();
+    }
+
+    protected List<Integer> getAllPerfStats(List<PerformanceEntity> allPerf) {
+        List<Integer> results = new ArrayList<>();
+        Integer totalServiceTime = 0;
+        Integer totalPreparationTime = 0;
+        Integer totalTableServed = 0;
+        Integer totalOrder = 0;
+
+        for (PerformanceEntity perf : allPerf) {
+            totalServiceTime += perf.getServiceTime();
+            totalPreparationTime += perf.getPreparationTime();
+            totalTableServed += perf.getNbTableServed();
+            totalOrder += perf.getNbOrder();
+        }
+        results.add((totalOrder == 0) ? 0 : totalPreparationTime / totalOrder);
+        results.add((totalTableServed == 0) ? 0 : totalServiceTime / totalTableServed);
+        return results;
     }
 
     //Met fin à la prise des commandes, fin de service

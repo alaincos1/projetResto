@@ -235,7 +235,7 @@ public class BaseService {
     }
 
     public List<TableEntity> getTablesReadyToOrderByServer(String userId) {
-        if(getUserById(userId).getRole().equals(Role.Director)){
+        if (getUserById(userId).getRole().equals(Role.Director)) {
             return tableCollection.getTablesReadyToOrderByServer(StringUtils.EMPTY);
         }
         return tableCollection.getTablesReadyToOrderByServer(userId);
@@ -245,11 +245,19 @@ public class BaseService {
         List<DishEntity> rawDishes = dishCollection.getDishOnTheMenuByDishType(dishType);
         List<DishEntity> result = new ArrayList<>();
 
-        for (DishEntity dish : rawDishes){
-            if(dish.checkStock(this)){
+        for (DishEntity dish : rawDishes) {
+            if (dish.checkStock(this)) {
                 result.add(dish);
             }
         }
         return result;
+    }
+
+    public List<PerformanceEntity> getWeekPerformance() {
+        return performanceCollection.getWeekPerformance();
+    }
+
+    public List<PerformanceEntity> getAllPerformance() {
+        return performanceCollection.getAllPerformance();
     }
 }
