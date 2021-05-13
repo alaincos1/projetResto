@@ -2,11 +2,9 @@ package fr.ul.miage.projetResto.view.role;
 
 import fr.ul.miage.projetResto.constants.DishType;
 import fr.ul.miage.projetResto.constants.InfoRestaurant;
+import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.Role;
-import fr.ul.miage.projetResto.model.entity.DishEntity;
-import fr.ul.miage.projetResto.model.entity.ProductEntity;
-import fr.ul.miage.projetResto.model.entity.TableEntity;
-import fr.ul.miage.projetResto.model.entity.UserEntity;
+import fr.ul.miage.projetResto.model.entity.*;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
@@ -189,6 +187,19 @@ public class DirectorView extends RoleView {
                 startIndex += choice.size();
                 System.out.println();
             }
+        }
+    }
+
+    public void displayPerf(List<PerformanceEntity> perfs) {
+        for (PerformanceEntity perf : perfs) {
+            String date = perf.get_id().substring(0, 10);
+            String type = perf.get_id().substring(10);
+            MealType meal = MealType.valueOf(type);
+            int meanPrep = perf.getPreparationTime() / perf.getNbOrder();
+            int meanServ = perf.getServiceTime() / perf.getNbTableServed();
+            displayMessage(" -> " + date + " " + meal.getMealValue() +
+                    "\n     - Préparation des commandes : " + meanPrep + " min/commande" +
+                    "\n     - Rotation des clients : " + meanServ + " min/table");
         }
     }
 

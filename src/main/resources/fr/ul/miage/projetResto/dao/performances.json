@@ -1,9 +1,43 @@
 [
   {
     "_id": "2021/05/20DINNER",
+    "mealType": "DINNER",
     "serviceTime": 120,
     "nbTableServed": 4,
     "preparationTime": 110,
     "nbOrder": 6
+  },
+  {
+    "_id": "2021/05/21LUNCH",
+    "mealType": "LUNCH",
+    "serviceTime": 145,
+    "nbTableServed": 3,
+    "preparationTime": 190,
+    "nbOrder": 6
+  },
+  {
+    "_id": "2021/05/18LUNCH",
+    "mealType": "LUNCH",
+    "serviceTime": 520,
+    "nbTableServed": 5,
+    "preparationTime": 250,
+    "nbOrder": 10
+  },
+  {
+    "_id": "2021/05/27DINNER",
+    "mealType": "DINNER",
+    "serviceTime": 140,
+    "nbTableServed": 4,
+    "preparationTime": 260,
+    "nbOrder": 11
+  },
+  {
+    "_id": "2021/05/27LUNCH",
+    "mealType": "LUNCH",
+    "serviceTime": 550,
+    "nbTableServed": 11,
+    "preparationTime": 260,
+    "nbOrder": 5
   }
+
 ]

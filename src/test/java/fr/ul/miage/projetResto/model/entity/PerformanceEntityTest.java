@@ -1,5 +1,6 @@
 package fr.ul.miage.projetResto.model.entity;
 
+import fr.ul.miage.projetResto.constants.MealType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,6 +61,7 @@ class PerformanceEntityTest {
     void testInitPreparation() {
         PerformanceEntity expected = new PerformanceEntity();
         expected.set_id("2021/09/30DINNER");
+        expected.setMealType(MealType.DINNER);
         expected.setNbTableServed(0);
         expected.setNbOrder(1);
         expected.setPreparationTime(10);
@@ -77,6 +79,7 @@ class PerformanceEntityTest {
     void testInitService() {
         PerformanceEntity expected = new PerformanceEntity();
         expected.set_id("2021/09/30DINNER");
+        expected.setMealType(MealType.DINNER);
         expected.setNbTableServed(1);
         expected.setNbOrder(0);
         expected.setPreparationTime(0);

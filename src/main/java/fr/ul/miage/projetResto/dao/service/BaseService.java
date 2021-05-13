@@ -277,4 +277,12 @@ public class BaseService {
         }
         return result;
     }
+
+    public List<PerformanceEntity> getWeekPerformance() {
+        return performanceCollection.getWeekPerformance();
+    }
+
+    public List<PerformanceEntity> getAllPerformance() {
+        return performanceCollection.getAllPerformance();
+    }
 }

@@ -16,13 +16,15 @@ import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.*;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import fr.ul.miage.projetResto.model.entity.*;
+import org.apache.commons.lang3.StringUtils;
 
 @AllArgsConstructor
 public class DirectorController extends RoleMenuController {
@@ -393,6 +395,37 @@ public class DirectorController extends RoleMenuController {
     }
 
     protected void analysesPerformances() {
+        List<PerformanceEntity> perf = baseService.getWeekPerformance();
+        if (CollectionUtils.isEmpty(perf)) {
+            directorView.displayMessage("Aucune performance enregistrée");
+        } else {
+            directorView.displayPerf(perf);
+
+            List<PerformanceEntity> allPerf = baseService.getAllPerformance();
+            List<Integer> results = getAllPerfStats(allPerf);
+            directorView.displayMessage("\n --- Performances globales ---" +
+                    "\n  - Préparation des commandes : " + results.get(0) + " min/commande" +
+                    "\n  - Rotation des clients : " + results.get(1) + " min/table");
+        }
+        askMainMenu();
+    }
+
+    protected List<Integer> getAllPerfStats(List<PerformanceEntity> allPerf) {
+        List<Integer> results = new ArrayList<>();
+        Integer totalServiceTime = 0;
+        Integer totalPreparationTime = 0;
+        Integer totalTableServed = 0;
+        Integer totalOrder = 0;
+
+        for (PerformanceEntity perf : allPerf) {
+            totalServiceTime += perf.getServiceTime();
+            totalPreparationTime += perf.getPreparationTime();
+            totalTableServed += perf.getNbTableServed();
+            totalOrder += perf.getNbOrder();
+        }
+        results.add((totalOrder == 0) ? 0 : totalPreparationTime / totalOrder);
+        results.add((totalTableServed == 0) ? 0 : totalServiceTime / totalTableServed);
+        return results;
     }
 
     //Met fin à la prise des commandes, fin de service
