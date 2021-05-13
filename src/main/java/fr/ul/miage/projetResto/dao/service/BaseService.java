@@ -1,15 +1,20 @@
 package fr.ul.miage.projetResto.dao.service;
 
 import fr.ul.miage.projetResto.constants.DishType;
+import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.dao.repository.*;
 import fr.ul.miage.projetResto.model.entity.*;
+import fr.ul.miage.projetResto.utils.DateDto;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class BaseService {
@@ -209,6 +214,26 @@ public class BaseService {
                 .collect(Collectors.toList());
     }
 
+    public String getTakingByPeriod(DateDto period, MealType mealType) {
+        List<BillEntity> billEntities = billCollection.getBillsByPeriodAndMealType(period, mealType);
+
+        BigInteger taking = BigInteger.valueOf(billEntities.stream()
+                .map(BillEntity::getTotalPrice)
+                .reduce(0, Integer::sum));
+
+        return "recette: " + taking + "€";
+    }
+
+    public Map.Entry<String, Integer> getMostFamousDish() {
+        List<OrderEntity> orderEntities = orderCollection.getAllChecked();
+        return orderEntities.stream()
+                .map(OrderEntity::getIdsDish)
+                .flatMap(List::stream)
+                .collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum))
+                .entrySet().stream()
+                .max(Comparator.comparing(Map.Entry::getValue)).orElse(null);
+    }
+
     protected boolean updateUser(UserEntity user) {
         if (userCollection.update(user)) {
             removeUserFromAllTable(user);
@@ -235,7 +260,7 @@ public class BaseService {
     }
 
     public List<TableEntity> getTablesReadyToOrderByServer(String userId) {
-        if(getUserById(userId).getRole().equals(Role.Director)){
+        if (getUserById(userId).getRole().equals(Role.Director)) {
             return tableCollection.getTablesReadyToOrderByServer(StringUtils.EMPTY);
         }
         return tableCollection.getTablesReadyToOrderByServer(userId);
@@ -245,8 +270,8 @@ public class BaseService {
         List<DishEntity> rawDishes = dishCollection.getDishOnTheMenuByDishType(dishType);
         List<DishEntity> result = new ArrayList<>();
 
-        for (DishEntity dish : rawDishes){
-            if(dish.checkStock(this)){
+        for (DishEntity dish : rawDishes) {
+            if (dish.checkStock(this)) {
                 result.add(dish);
             }
         }

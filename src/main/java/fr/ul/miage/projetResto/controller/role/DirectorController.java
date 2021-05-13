@@ -2,6 +2,7 @@ package fr.ul.miage.projetResto.controller.role;
 
 import fr.ul.miage.projetResto.appinfo.Service;
 import fr.ul.miage.projetResto.constants.InfoRestaurant;
+import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.constants.TableState;
 import fr.ul.miage.projetResto.controller.feature.LogInController;
@@ -10,14 +11,18 @@ import fr.ul.miage.projetResto.model.entity.DishEntity;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
+import fr.ul.miage.projetResto.utils.DateDto;
 import fr.ul.miage.projetResto.view.feature.LogInView;
 import fr.ul.miage.projetResto.view.role.*;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class DirectorController extends RoleMenuController {
@@ -326,6 +331,65 @@ public class DirectorController extends RoleMenuController {
     }
 
     protected void analysesIncomes() {
+        List<String> actions = new ArrayList<>(Arrays.asList("Recettes quotidiennes", "Recettes hebdomadaires", "Recettes mensuelles", "Plat le plus populaire"));
+        directorView.displayManage(actions);
+        int choice = getIntegerInput(0, actions.size());
+
+        if (choice > 0) {
+            if (choice == 1)
+                analyses("day", 7);
+            else if (choice == 2)
+                analyses("week", 4);
+            else if (choice == 3)
+                analyses("month", 6);
+            else
+                analysesMostFamous();
+        }
+
+        launch(Role.Director);
+    }
+
+    protected void analyses(String type, Integer last) {
+        int choice = 1;
+        if (StringUtils.equalsIgnoreCase(type, "day")) {
+            List<String> actions = Arrays.stream(MealType.values())
+                    .map(MealType::getMealValue)
+                    .collect(Collectors.toList());
+            directorView.displayManage(actions);
+            choice = getIntegerInput(0, actions.size());
+        }
+
+        if (choice > 0) {
+            MealType mealType = null;
+            if (StringUtils.equalsIgnoreCase(type, "day")) {
+                mealType = MealType.values()[choice - 1];
+            }
+
+            List<DateDto> dates = getListDate(type, service.getDate(), last);
+
+            if (CollectionUtils.isNotEmpty(dates)) {
+                List<String> toDisplay = dates.stream()
+                        .map(DateDto::getDisplayDate)
+                        .collect(Collectors.toList());
+
+                directorView.displayManage(toDisplay);
+                int choiceDate = getIntegerInput(0, toDisplay.size());
+
+                if (choiceDate > 0) {
+                    DateDto dateDto = dates.get(choiceDate - 1);
+                    directorView.simpleDisplay(baseService.getTakingByPeriod(dateDto, mealType));
+                }
+            }
+        }
+    }
+
+    protected void analysesMostFamous() {
+        Map.Entry<String, Integer> mostFamous = baseService.getMostFamousDish();
+        if (mostFamous != null) {
+            directorView.displayMostFamous(mostFamous);
+        } else {
+            directorView.displayError();
+        }
     }
 
     protected void analysesPerformances() {

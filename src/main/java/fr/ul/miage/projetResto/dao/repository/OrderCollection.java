@@ -73,4 +73,11 @@ public class OrderCollection extends MongoAccess {
                 .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
                 .collect(Collectors.toList());
     }
+
+    public List<OrderEntity> getAllChecked() {
+        Bson doc = eq("orderState", OrderState.Checked.toString());
+        return collection.find(doc).into(new ArrayList<>()).stream()
+                .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
+                .collect(Collectors.toList());
+    }
 }

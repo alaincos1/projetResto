@@ -9,8 +9,8 @@ import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DirectorView extends RoleView {
@@ -123,6 +123,10 @@ public class DirectorView extends RoleView {
         }
     }
 
+    public void displayManage(List<String> actions) {
+        displayManage(actions, "");
+    }
+
     public void displayEmployees(String action, List<UserEntity> users) {
         System.out.println("Selectionnez l'employé à " + action.toLowerCase());
         System.out.println("0) Annuler");
@@ -186,5 +190,13 @@ public class DirectorView extends RoleView {
                 System.out.println();
             }
         }
+    }
+
+    public void displayMostFamous(Map.Entry<String, Integer> mostFamous) {
+        System.out.println(mostFamous.getKey() + ": " + mostFamous.getValue());
+    }
+
+    public void simpleDisplay(String toDisplay) {
+        System.out.println(toDisplay);
     }
 }
