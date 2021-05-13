@@ -35,13 +35,13 @@ class OrderEntityTest {
         orderEntity.setIdsDish(dishes);
 
         DishEntity dishEntity = new DishEntity();
-        dishEntity.setDishType(DishType.Drink);
+        dishEntity.setDishType(DishType.DRINK);
         DishEntity dishEntity1 = new DishEntity();
-        dishEntity1.setDishType(DishType.Starter);
+        dishEntity1.setDishType(DishType.STARTER);
         when(baseService.getDishById(anyString())).thenReturn(dishEntity).thenReturn(dishEntity1);
 
         TableState tableState = orderEntity.getDishType(baseService);
-        assertEquals(TableState.Starter, tableState);
+        assertEquals(TableState.STARTER, tableState);
     }
 
     @Test
@@ -55,13 +55,13 @@ class OrderEntityTest {
         orderEntity.setIdsDish(dishes);
 
         DishEntity dishEntity = new DishEntity();
-        dishEntity.setDishType(DishType.Drink);
+        dishEntity.setDishType(DishType.DRINK);
         DishEntity dishEntity1 = new DishEntity();
-        dishEntity1.setDishType(DishType.MainCourse);
+        dishEntity1.setDishType(DishType.MAIN_COURSE);
         when(baseService.getDishById(anyString())).thenReturn(dishEntity).thenReturn(dishEntity1);
 
         TableState tableState = orderEntity.getDishType(baseService);
-        assertEquals(TableState.MainCourse, tableState);
+        assertEquals(TableState.MAIN_COURSE, tableState);
     }
 
     @Test
@@ -75,13 +75,13 @@ class OrderEntityTest {
         orderEntity.setIdsDish(dishes);
 
         DishEntity dishEntity = new DishEntity();
-        dishEntity.setDishType(DishType.Drink);
+        dishEntity.setDishType(DishType.DRINK);
         DishEntity dishEntity1 = new DishEntity();
-        dishEntity1.setDishType(DishType.Dessert);
+        dishEntity1.setDishType(DishType.DESSERT);
         when(baseService.getDishById(anyString())).thenReturn(dishEntity).thenReturn(dishEntity1);
 
         TableState tableState = orderEntity.getDishType(baseService);
-        assertEquals(TableState.Dessert, tableState);
+        assertEquals(TableState.DESSERT, tableState);
     }
 
     @Test
@@ -94,7 +94,7 @@ class OrderEntityTest {
         orderEntity.setIdsDish(dishes);
 
         DishEntity dishEntity = new DishEntity();
-        dishEntity.setDishType(DishType.Drink);
+        dishEntity.setDishType(DishType.DRINK);
         when(baseService.getDishById(anyString())).thenReturn(dishEntity);
 
         TableState tableState = orderEntity.getDishType(baseService);

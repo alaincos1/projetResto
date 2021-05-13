@@ -14,8 +14,8 @@ public class UserCollection extends MongoAccess {
 
     public boolean save(Object userEntity) {
         UserEntity user = (UserEntity) userEntity;
-        if (user.getRole() == Role.Director && collection.countDocuments(new Document("role", Role.Director.toString())) >= 1 ||
-                user.getRole() == Role.Butler && collection.countDocuments(new Document("role", Role.Butler.toString())) >= 1) {
+        if (user.getRole() == Role.DIRECTOR && collection.countDocuments(new Document("role", Role.DIRECTOR.toString())) >= 1 ||
+                user.getRole() == Role.BUTLER && collection.countDocuments(new Document("role", Role.BUTLER.toString())) >= 1) {
             return false;
         }
 
@@ -25,8 +25,8 @@ public class UserCollection extends MongoAccess {
     @Override
     public boolean update(Object o) {
         UserEntity user = (UserEntity) o;
-        if (user.getRole() == Role.Director && getUserById(user.get_id()).getRole() != Role.Director && collection.countDocuments(new Document("role", Role.Director.toString())) >= 1 ||
-                user.getRole() == Role.Butler && getUserById(user.get_id()).getRole() != Role.Butler && collection.countDocuments(new Document("role", Role.Butler.toString())) >= 1) {
+        if (user.getRole() == Role.DIRECTOR && getUserById(user.get_id()).getRole() != Role.DIRECTOR && collection.countDocuments(new Document("role", Role.DIRECTOR.toString())) >= 1 ||
+                user.getRole() == Role.BUTLER && getUserById(user.get_id()).getRole() != Role.BUTLER && collection.countDocuments(new Document("role", Role.BUTLER.toString())) >= 1) {
             return false;
         }
         return super.update(Mapper.toDocument(o), collection);
@@ -44,7 +44,7 @@ public class UserCollection extends MongoAccess {
     }
 
     public boolean delete(UserEntity user, boolean forceDelete) {
-        if ((user.getRole() == Role.Director || user.getRole() == Role.Butler) && !forceDelete) {
+        if ((user.getRole() == Role.DIRECTOR || user.getRole() == Role.BUTLER) && !forceDelete) {
             return false;
         }
 

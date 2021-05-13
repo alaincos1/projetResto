@@ -65,16 +65,16 @@ public class DirectorController extends RoleMenuController {
                 endService();
                 break;
             case 8:
-                butlerController.launch(Role.Butler);
+                butlerController.launch(Role.BUTLER);
                 break;
             case 9:
-                serverController.launch(Role.Server);
+                serverController.launch(Role.SERVER);
                 break;
             case 10:
-                helperController.launch(Role.Helper);
+                helperController.launch(Role.HELPER);
                 break;
             case 11:
-                cookController.launch(Role.Cook);
+                cookController.launch(Role.COOK);
                 break;
             default:
                 break;
@@ -90,7 +90,7 @@ public class DirectorController extends RoleMenuController {
             addEmployee();
         } else if (menuChoice > 0) {
             List<UserEntity> users = baseService.getAllUsers();
-            users.removeIf(user -> user.getRole() == Role.Director);
+            users.removeIf(user -> user.getRole() == Role.DIRECTOR);
             directorView.displayEmployees(actions.get((menuChoice - 1)), users);
             int selected = getIntegerInput(0, users.size() + 1);
 
@@ -106,18 +106,18 @@ public class DirectorController extends RoleMenuController {
                 }
             }
         }
-        launch(Role.Director);
+        launch(Role.DIRECTOR);
     }
 
     protected void promoteEmployee(UserEntity user) {
         directorView.displayDirectionRole();
         int choice = getIntegerInput(0, 1);
-        Role newRole = choice == 0 ? Role.Director : Role.Butler;
+        Role newRole = choice == 0 ? Role.DIRECTOR : Role.BUTLER;
 
         if (baseService.promoteUser(user, newRole)) {
             directorView.displaySuccess();
 
-            if (newRole == Role.Director) {
+            if (newRole == Role.DIRECTOR) {
                 callAction(0);
             }
         } else {
@@ -194,7 +194,7 @@ public class DirectorController extends RoleMenuController {
             }
         }
 
-        launch(Role.Director);
+        launch(Role.DIRECTOR);
     }
 
     protected void addOrDeleteDishOnTheMenu(List<DishEntity> dishs) {
@@ -221,7 +221,7 @@ public class DirectorController extends RoleMenuController {
             product = addStockProduct(products, input);
             saveProduct(product);
         }
-        launch(Role.Director);
+        launch(Role.DIRECTOR);
     }
 
     //Créé un nouveau produit et son stock
@@ -287,14 +287,14 @@ public class DirectorController extends RoleMenuController {
         } else if (i == 2) {
             removeTable();
         }
-        launch(Role.Director);
+        launch(Role.DIRECTOR);
     }
 
     //ajoute une table
     protected void addTable(List<TableEntity> tables) {
         TableEntity tableToAdd = new TableEntity();
         tableToAdd.set_id(getFreeNumberTable(tables));
-        tableToAdd.setTableState(TableState.Free);
+        tableToAdd.setTableState(TableState.FREE);
         directorView.displayAskNumberSeats();
         tableToAdd.setNbSeats(getIntegerInput(1, InfoRestaurant.MAX_SEATS.getValue()));
         if (baseService.save(tableToAdd)) {
@@ -348,7 +348,7 @@ public class DirectorController extends RoleMenuController {
                 analysesMostFamous();
         }
 
-        launch(Role.Director);
+        launch(Role.DIRECTOR);
     }
 
     protected void analyses(String type, Integer last) {
@@ -441,6 +441,6 @@ public class DirectorController extends RoleMenuController {
         } else {
             directorView.displayAlreadyEnded();
         }
-        launch(Role.Director);
+        launch(Role.DIRECTOR);
     }
 }

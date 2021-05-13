@@ -136,8 +136,8 @@ class DishEntityTest {
     void testOrderDishByTypeWithDifferentLowerDishType() {
         DishEntity dish1 = easyRandom.nextObject(DishEntity.class);
         DishEntity dish2 = easyRandom.nextObject(DishEntity.class);
-        dish1.setDishType(DishType.MainCourse);
-        dish2.setDishType(DishType.Dessert);
+        dish1.setDishType(DishType.MAIN_COURSE);
+        dish2.setDishType(DishType.DESSERT);
 
         Integer actual = DishEntity.orderDishByType(dish1, dish2);
 
@@ -148,8 +148,8 @@ class DishEntityTest {
     void testOrderDishByTypeWithDifferentHigherDishType() {
         DishEntity dish1 = easyRandom.nextObject(DishEntity.class);
         DishEntity dish2 = easyRandom.nextObject(DishEntity.class);
-        dish1.setDishType(DishType.Dessert);
-        dish2.setDishType(DishType.MainCourse);
+        dish1.setDishType(DishType.DESSERT);
+        dish2.setDishType(DishType.MAIN_COURSE);
 
         Integer actual = DishEntity.orderDishByType(dish1, dish2);
 
@@ -160,8 +160,8 @@ class DishEntityTest {
     void testOrderDishByTypeWithSameDishType() {
         DishEntity dish1 = easyRandom.nextObject(DishEntity.class);
         DishEntity dish2 = easyRandom.nextObject(DishEntity.class);
-        dish1.setDishType(DishType.MainCourse);
-        dish2.setDishType(DishType.MainCourse);
+        dish1.setDishType(DishType.MAIN_COURSE);
+        dish2.setDishType(DishType.MAIN_COURSE);
 
         Integer actual = DishEntity.orderDishByType(dish1, dish2);
 

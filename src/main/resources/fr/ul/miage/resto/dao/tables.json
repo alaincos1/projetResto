@@ -2,42 +2,42 @@
   {
     "_id": "1",
     "nbSeats": 4,
-    "tableState": "Free",
+    "tableState": "FREE",
     "idServer": "ser1",
     "idHelper": "hel1"
   },
   {
     "_id": "2",
     "nbSeats": 4,
-    "tableState": "Free",
+    "tableState": "FREE",
     "idServer": "ser1",
     "idHelper": "hel1"
   },
   {
     "_id": "3",
     "nbSeats": 4,
-    "tableState": "Free",
+    "tableState": "FREE",
     "idServer": "ser1",
     "idHelper": "hel1"
   },
   {
     "_id": "4",
     "nbSeats": 2,
-    "tableState": "Free",
+    "tableState": "FREE",
     "idServer": "ser2",
     "idHelper": "hel2"
   },
   {
     "_id": "5",
     "nbSeats": 2,
-    "tableState": "Free",
+    "tableState": "FREE",
     "idServer": "ser2",
     "idHelper": "hel2"
   },
   {
     "_id": "6",
     "nbSeats": 2,
-    "tableState": "Free",
+    "tableState": "FREE",
     "idServer": "ser2",
     "idHelper": "hel2"
   }

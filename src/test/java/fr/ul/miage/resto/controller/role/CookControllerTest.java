@@ -67,7 +67,7 @@ class CookControllerTest {
         List<OrderEntity> orders = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             OrderEntity order = new OrderEntity();
-            order.setOrderState(OrderState.Ordered);
+            order.setOrderState(OrderState.ORDERED);
             orders.add(order);
         }
 
@@ -80,9 +80,9 @@ class CookControllerTest {
         cookController.setOrderReady();
 
         verify(baseService, times(1)).update(orders.get(0));
-        assertEquals(OrderState.Prepared, orders.get(0).getOrderState());
-        assertEquals(OrderState.Ordered, orders.get(1).getOrderState());
-        assertEquals(OrderState.Ordered, orders.get(2).getOrderState());
+        assertEquals(OrderState.PREPARED, orders.get(0).getOrderState());
+        assertEquals(OrderState.ORDERED, orders.get(1).getOrderState());
+        assertEquals(OrderState.ORDERED, orders.get(2).getOrderState());
     }
 
     @Test
@@ -104,7 +104,7 @@ class CookControllerTest {
         List<OrderEntity> orders = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             OrderEntity order = new OrderEntity();
-            order.setOrderState(OrderState.Ordered);
+            order.setOrderState(OrderState.ORDERED);
             orders.add(order);
         }
 
@@ -115,9 +115,9 @@ class CookControllerTest {
         cookController.setOrderReady();
 
         verify(baseService, times(0)).update(orders.get(0));
-        assertEquals(OrderState.Ordered, orders.get(0).getOrderState());
-        assertEquals(OrderState.Ordered, orders.get(1).getOrderState());
-        assertEquals(OrderState.Ordered, orders.get(2).getOrderState());
+        assertEquals(OrderState.ORDERED, orders.get(0).getOrderState());
+        assertEquals(OrderState.ORDERED, orders.get(1).getOrderState());
+        assertEquals(OrderState.ORDERED, orders.get(2).getOrderState());
     }
 
     @Test
@@ -126,7 +126,7 @@ class CookControllerTest {
         List<OrderEntity> orders = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             OrderEntity order = new OrderEntity();
-            order.setOrderState(OrderState.Ordered);
+            order.setOrderState(OrderState.ORDERED);
             orders.add(order);
         }
 
@@ -139,9 +139,9 @@ class CookControllerTest {
         cookController.setOrderReady();
 
         verify(cookController, times(2)).setOrderReady();
-        assertEquals(OrderState.Prepared, orders.get(0).getOrderState());
-        assertEquals(OrderState.Ordered, orders.get(1).getOrderState());
-        assertEquals(OrderState.Ordered, orders.get(2).getOrderState());
+        assertEquals(OrderState.PREPARED, orders.get(0).getOrderState());
+        assertEquals(OrderState.ORDERED, orders.get(1).getOrderState());
+        assertEquals(OrderState.ORDERED, orders.get(2).getOrderState());
     }
 
     @Test
@@ -149,7 +149,7 @@ class CookControllerTest {
     void testCreateDish() {
         doReturn("randomName").when(cookController).getStringInput();
         doReturn(2).when(cookController).getPriceDish();
-        doReturn(DishType.Dessert).when(cookController).getDishType();
+        doReturn(DishType.DESSERT).when(cookController).getDishType();
         doReturn("Glace").when(cookController).getDishCategory(any(DishType.class));
         List<String> idsProducts = new ArrayList<>();
         idsProducts.add("1");
@@ -169,7 +169,7 @@ class CookControllerTest {
         doReturn("randomName").when(cookController).getStringInput();
         when(baseService.getDishById(anyString())).thenReturn(new DishEntity());
         doReturn(2).when(cookController).getPriceDish();
-        doReturn(DishType.Dessert).when(cookController).getDishType();
+        doReturn(DishType.DESSERT).when(cookController).getDishType();
         doReturn("Glace").when(cookController).getDishCategory(any(DishType.class));
         List<String> idsProducts = new ArrayList<>();
         idsProducts.add("1");
@@ -188,7 +188,7 @@ class CookControllerTest {
     void testCreateDishCancel() {
         doReturn("randomName").when(cookController).getStringInput();
         doReturn(2).when(cookController).getPriceDish();
-        doReturn(DishType.Dessert).when(cookController).getDishType();
+        doReturn(DishType.DESSERT).when(cookController).getDishType();
         doReturn("Glace").when(cookController).getDishCategory(any(DishType.class));
         List<String> idsProducts = new ArrayList<>();
         idsProducts.add("1");
@@ -209,7 +209,7 @@ class CookControllerTest {
 
         DishType dishtype = cookController.getDishType();
 
-        assertEquals(DishType.Starter, dishtype);
+        assertEquals(DishType.STARTER, dishtype);
     }
 
     @Test
@@ -219,13 +219,13 @@ class CookControllerTest {
         for (int i = 0; i < 3; i++) {
             CategoryEntity cat = new CategoryEntity();
             cat.set_id("" + i);
-            cat.setDishType(DishType.Dessert);
+            cat.setDishType(DishType.DESSERT);
             catList.add(cat);
         }
         when(baseService.getCategoriesByDishType(any(DishType.class))).thenReturn(catList);
         doReturn(1).when(cookController).getIntegerInput(anyInt(), anyInt());
 
-        String dishCat = cookController.getDishCategory(DishType.Dessert);
+        String dishCat = cookController.getDishCategory(DishType.DESSERT);
 
         assertEquals("0", dishCat);
     }
@@ -237,14 +237,14 @@ class CookControllerTest {
         for (int i = 0; i < 3; i++) {
             CategoryEntity cat = new CategoryEntity();
             cat.set_id("" + i);
-            cat.setDishType(DishType.Dessert);
+            cat.setDishType(DishType.DESSERT);
             catList.add(cat);
         }
         when(baseService.getCategoriesByDishType(any(DishType.class))).thenReturn(catList);
         doReturn(0).when(cookController).getIntegerInput(anyInt(), anyInt());
         doReturn("newCat").when(cookController).getStringInput();
 
-        String dishCat = cookController.getDishCategory(DishType.Dessert);
+        String dishCat = cookController.getDishCategory(DishType.DESSERT);
 
         assertEquals("newCat", dishCat);
     }
@@ -328,7 +328,7 @@ class CookControllerTest {
     void testSaveDish() {
         DishEntity dish = new DishEntity();
         dish.set_id("dish");
-        dish.setDishType(DishType.Dessert);
+        dish.setDishType(DishType.DESSERT);
         dish.setIdCategory("dish");
         List<String> idsProduct = new ArrayList<>();
         idsProduct.add("1");
@@ -351,7 +351,7 @@ class CookControllerTest {
     void testSaveDishModify() {
         DishEntity dish = new DishEntity();
         dish.set_id("dish");
-        dish.setDishType(DishType.Dessert);
+        dish.setDishType(DishType.DESSERT);
         dish.setIdCategory("dish");
         List<String> idsProduct = new ArrayList<>();
         idsProduct.add("1");
@@ -374,7 +374,7 @@ class CookControllerTest {
     void testSaveDishNewCat() {
         DishEntity dish = new DishEntity();
         dish.set_id("dish");
-        dish.setDishType(DishType.Dessert);
+        dish.setDishType(DishType.DESSERT);
         dish.setIdCategory("dish");
         List<String> idsProduct = new ArrayList<>();
         idsProduct.add("1");

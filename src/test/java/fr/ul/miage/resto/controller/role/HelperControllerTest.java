@@ -67,16 +67,16 @@ class HelperControllerTest {
         user.set_id("hel1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
-        tables.get(0).setTableState(TableState.Dirty);
+        tables.get(0).setTableState(TableState.DIRTY);
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
         doReturn(1).when(helperController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(helperController).launch(Role.Helper);
+        doNothing().when(helperController).launch(Role.HELPER);
 
         helperController.cleanTables(user);
 
         verify(helperView, times(1)).displayTablesToClean(anyList());
         verify(baseService, times(1)).update(any(TableEntity.class));
-        assertEquals(TableState.Free, tables.get(0).getTableState());
+        assertEquals(TableState.FREE, tables.get(0).getTableState());
     }
 
     @Test
@@ -86,7 +86,7 @@ class HelperControllerTest {
         user.set_id("hel1");
         List<TableEntity> tables = new ArrayList<>();
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
-        doNothing().when(helperController).launch(Role.Helper);
+        doNothing().when(helperController).launch(Role.HELPER);
 
         helperController.cleanTables(user);
 
@@ -101,15 +101,15 @@ class HelperControllerTest {
         user.set_id("hel1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
-        tables.get(0).setTableState(TableState.Dirty);
+        tables.get(0).setTableState(TableState.DIRTY);
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
         doReturn(0).when(helperController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(helperController).launch(Role.Helper);
+        doNothing().when(helperController).launch(Role.HELPER);
 
         helperController.cleanTables(user);
 
         verify(helperView, times(1)).displayTablesToClean(anyList());
         verify(baseService, times(0)).update(any(TableEntity.class));
-        assertEquals(TableState.Dirty, tables.get(0).getTableState());
+        assertEquals(TableState.DIRTY, tables.get(0).getTableState());
     }
 }

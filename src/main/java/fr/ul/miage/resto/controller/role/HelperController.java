@@ -26,9 +26,9 @@ public class HelperController extends RoleMenuController {
         Role role = Launcher.getLoggedUser().getRole();
         switch (action) {
             case 0:
-                if (role.equals(Role.Director)) {
+                if (role.equals(Role.DIRECTOR)) {
                     DirectorController directorController = new DirectorController(baseService, service, new DirectorView());
-                    directorController.launch(Role.Director);
+                    directorController.launch(Role.DIRECTOR);
                 } else {
                     LogInController logInController = new LogInController(baseService, service, new LogInView());
                     logInController.disconnect();
@@ -47,7 +47,7 @@ public class HelperController extends RoleMenuController {
 
     protected void viewTables(UserEntity user) {
         List<TableEntity> tables;
-        if (Role.Director.equals(user.getRole())) {
+        if (Role.DIRECTOR.equals(user.getRole())) {
             tables = baseService.getAllTables();
         } else {
             tables = baseService.getAllTableByServerOrHelper(user.get_id());
@@ -63,10 +63,10 @@ public class HelperController extends RoleMenuController {
 
     protected void cleanTables(UserEntity user) {
         List<TableEntity> tablesToClean;
-        if (Role.Director.equals(user.getRole())) {
-            tablesToClean = baseService.getAllTableByState(TableState.Dirty);
+        if (Role.DIRECTOR.equals(user.getRole())) {
+            tablesToClean = baseService.getAllTableByState(TableState.DIRTY);
         } else {
-            tablesToClean = baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.Dirty);
+            tablesToClean = baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.DIRTY);
         }
 
         if (tablesToClean.isEmpty()) {
@@ -75,7 +75,7 @@ public class HelperController extends RoleMenuController {
             helperView.displayTablesToClean(tablesToClean);
             int choice = getIntegerInput(0, tablesToClean.size()) - 1;
             if (choice != -1) {
-                tablesToClean.get(choice).setTableState(TableState.Free);
+                tablesToClean.get(choice).setTableState(TableState.FREE);
                 if (baseService.update(tablesToClean.get(choice))) {
                     helperView.displayTableCleanedDoAgain();
                     if (doAgain()) {
@@ -86,6 +86,6 @@ public class HelperController extends RoleMenuController {
                 }
             }
         }
-        launch(Role.Helper);
+        launch(Role.HELPER);
     }
 }

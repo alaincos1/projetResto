@@ -38,7 +38,7 @@ public class InitRestaurant {
 
         if (CollectionUtils.isNotEmpty(orders)) {
             orders.forEach(order -> {
-                order.setOrderState(OrderState.Unchecked);
+                order.setOrderState(OrderState.UNCHECKED);
                 baseService.update(order);
             });
         }
@@ -61,9 +61,9 @@ public class InitRestaurant {
         if (CollectionUtils.isNotEmpty(idsReservedTable)) {
             tableEntities.forEach(table -> {
                 if (idsReservedTable.contains(table.get_id())) {
-                    table.setTableState(TableState.Booked);
+                    table.setTableState(TableState.BOOKED);
                 } else {
-                    table.setTableState(TableState.Free);
+                    table.setTableState(TableState.FREE);
                 }
 
                 baseService.update(table);
@@ -74,11 +74,11 @@ public class InitRestaurant {
     //Si aucun utilisateur est en base, en insère un avec le role Director et l'identifiant admin
     protected void initUsers() {
         List<UserEntity> users = baseService.getAllUsers();
-        boolean directorHere = users.stream().noneMatch(userEntity -> userEntity.getRole().equals(Role.Director));
+        boolean directorHere = users.stream().noneMatch(userEntity -> userEntity.getRole().equals(Role.DIRECTOR));
         if(directorHere){
             UserEntity admin = new UserEntity();
             admin.set_id("admin");
-            admin.setRole(Role.Director);
+            admin.setRole(Role.DIRECTOR);
             baseService.save(admin);
             System.out.println("Nouvel utilisateur disponible en tant que Directeur : admin");
         }

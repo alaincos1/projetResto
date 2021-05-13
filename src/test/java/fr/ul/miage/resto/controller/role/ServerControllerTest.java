@@ -71,16 +71,16 @@ class ServerControllerTest {
         user.set_id("ser1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
-        tables.get(0).setTableState(TableState.Starter);
+        tables.get(0).setTableState(TableState.STARTER);
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
         doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.setTablesDirty(user);
 
         verify(serverView, times(1)).displayTablesToDirty(anyList());
         verify(baseService, times(1)).update(any(TableEntity.class));
-        assertEquals(TableState.Dirty, tables.get(0).getTableState());
+        assertEquals(TableState.DIRTY, tables.get(0).getTableState());
     }
 
     @Test
@@ -90,7 +90,7 @@ class ServerControllerTest {
         user.set_id("ser1");
         List<TableEntity> tables = new ArrayList<>();
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.setTablesDirty(user);
 
@@ -105,16 +105,16 @@ class ServerControllerTest {
         user.set_id("ser1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
-        tables.get(0).setTableState(TableState.Starter);
+        tables.get(0).setTableState(TableState.STARTER);
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
         doReturn(0).when(serverController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.setTablesDirty(user);
 
         verify(serverView, times(1)).displayTablesToDirty(anyList());
         verify(baseService, times(0)).update(any(TableEntity.class));
-        assertEquals(TableState.Starter, tables.get(0).getTableState());
+        assertEquals(TableState.STARTER, tables.get(0).getTableState());
     }
 
     @Test
@@ -134,13 +134,13 @@ class ServerControllerTest {
             orders.add(order);
         }
         DishEntity dishEntity = new DishEntity();
-        dishEntity.setDishType(DishType.Starter);
+        dishEntity.setDishType(DishType.STARTER);
         when(baseService.getAllTableByServerOrHelper(anyString())).thenReturn(tables);
         doReturn(orders).when(serverController).getOnlyServerOrders(anyList(), anyList());
         doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
         when(baseService.getTableById(anyString())).thenReturn(new TableEntity());
         when(baseService.getDishById(anyString())).thenReturn(dishEntity);
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.serveOrders(user);
 
@@ -165,11 +165,11 @@ class ServerControllerTest {
             orders.add(order);
         }
         DishEntity dishEntity = new DishEntity();
-        dishEntity.setDishType(DishType.Starter);
+        dishEntity.setDishType(DishType.STARTER);
         when(baseService.getAllTableByServerOrHelper(anyString())).thenReturn(tables);
         doReturn(orders).when(serverController).getOnlyServerOrders(anyList(), anyList());
         doReturn(0).when(serverController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.serveOrders(user);
 
@@ -186,7 +186,7 @@ class ServerControllerTest {
         List<OrderEntity> orders = new ArrayList<>();
         when(baseService.getAllTableByServerOrHelper(anyString())).thenReturn(tables);
         doReturn(orders).when(serverController).getOnlyServerOrders(anyList(), anyList());
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.serveOrders(user);
 
@@ -240,20 +240,20 @@ class ServerControllerTest {
     @DisplayName("Récupère le type de plat ")
     void testGetOrderDishType() {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, true, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, true, new ArrayList<>()));
 
         doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
 
         DishType result = serverController.getOrderDishType(menus);
 
-        assertEquals(DishType.Starter, result);
+        assertEquals(DishType.STARTER, result);
     }
 
     @Test
     @DisplayName("Annulation de la récupèration du type de plat ")
     void testGetOrderDishTypeCancel() {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, true, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, true, new ArrayList<>()));
 
         doReturn(0).when(serverController).getIntegerInput(anyInt(), anyInt());
 
@@ -266,7 +266,7 @@ class ServerControllerTest {
     @DisplayName("Récupèration du type de plat non disponible")
     void testGetOrderDishTypeNotAvailable() {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, false, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, false, new ArrayList<>()));
 
         doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
 
@@ -359,7 +359,7 @@ class ServerControllerTest {
         order.setIdsDish(total);
         order.setIdTable("1");
         order.setChildOrder(false);
-        order.setOrderState(OrderState.Ordered);
+        order.setOrderState(OrderState.ORDERED);
         order.setRank(1);
 
         doReturn(1).when(serverController).getNextRank(anyBoolean());
@@ -510,21 +510,21 @@ class ServerControllerTest {
     void testGetDrinksOrdered() {
         List<DishEntity> drinks = new ArrayList<>();
         doReturn(true).when(serverController).askDrinksOrder();
-        when(baseService.getDestockableDishesByDishType(DishType.Drink)).thenReturn(drinks);
+        when(baseService.getDestockableDishesByDishType(DishType.DRINK)).thenReturn(drinks);
         doReturn(new ArrayList<>()).when(serverController).getDishesOrdered(any(DishType.class), any());
 
         serverController.getDrinksOrdered();
 
-        verify(serverController, times(1)).getDishesOrdered(eq(DishType.Drink), any());
+        verify(serverController, times(1)).getDishesOrdered(eq(DishType.DRINK), any());
     }
 
     @Test
     @DisplayName("Vérifie la disponibilité des types de plat : tout est disponible")
     void testCheckAvailabilityMenus() {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, true, new ArrayList<>()));
-        menus.put(2, new MenuUtil(DishType.MainCourse, true, new ArrayList<>()));
-        menus.put(3, new MenuUtil(DishType.Dessert, true, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, true, new ArrayList<>()));
+        menus.put(2, new MenuUtil(DishType.MAIN_COURSE, true, new ArrayList<>()));
+        menus.put(3, new MenuUtil(DishType.DESSERT, true, new ArrayList<>()));
 
         boolean result = serverController.checkAvailabilityMenus(menus);
 
@@ -535,9 +535,9 @@ class ServerControllerTest {
     @DisplayName("Vérifie la disponibilité des types de plat : rien  n'est disponible")
     void testCheckAvailabilityMenusNone() {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, false, new ArrayList<>()));
-        menus.put(2, new MenuUtil(DishType.MainCourse, false, new ArrayList<>()));
-        menus.put(3, new MenuUtil(DishType.Dessert, false, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, false, new ArrayList<>()));
+        menus.put(2, new MenuUtil(DishType.MAIN_COURSE, false, new ArrayList<>()));
+        menus.put(3, new MenuUtil(DishType.DESSERT, false, new ArrayList<>()));
 
         boolean result = serverController.checkAvailabilityMenus(menus);
 
@@ -548,9 +548,9 @@ class ServerControllerTest {
     @DisplayName("Vérifie la disponibilité des types de plat : un seul est disponible")
     void testCheckAvailabilityMenusOneTrue() {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, false, new ArrayList<>()));
-        menus.put(2, new MenuUtil(DishType.MainCourse, false, new ArrayList<>()));
-        menus.put(3, new MenuUtil(DishType.Dessert, true, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, false, new ArrayList<>()));
+        menus.put(2, new MenuUtil(DishType.MAIN_COURSE, false, new ArrayList<>()));
+        menus.put(3, new MenuUtil(DishType.DESSERT, true, new ArrayList<>()));
 
         boolean result = serverController.checkAvailabilityMenus(menus);
 
@@ -561,12 +561,12 @@ class ServerControllerTest {
     @DisplayName("Récupère le menu selon l'état table: Occupée")
     void testGetMenusAvailableOccupied() {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, false, new ArrayList<>()));
-        menus.put(2, new MenuUtil(DishType.MainCourse, false, new ArrayList<>()));
-        menus.put(3, new MenuUtil(DishType.Dessert, false, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, false, new ArrayList<>()));
+        menus.put(2, new MenuUtil(DishType.MAIN_COURSE, false, new ArrayList<>()));
+        menus.put(3, new MenuUtil(DishType.DESSERT, false, new ArrayList<>()));
 
         when(baseService.getDestockableDishesByDishType(any(DishType.class))).thenReturn(new ArrayList<>());
-        HashMap<Integer, MenuUtil> result = serverController.getMenusAvailable(TableState.Occupied);
+        HashMap<Integer, MenuUtil> result = serverController.getMenusAvailable(TableState.OCCUPIED);
 
         assertEquals(menus, result);
     }
@@ -575,12 +575,12 @@ class ServerControllerTest {
     @DisplayName("Récupère le menu selon l'état table: Entrée")
     void testGetMenusAvailableStarter() {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, false, new ArrayList<>()));
-        menus.put(2, new MenuUtil(DishType.MainCourse, false, new ArrayList<>()));
-        menus.put(3, new MenuUtil(DishType.Dessert, false, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, false, new ArrayList<>()));
+        menus.put(2, new MenuUtil(DishType.MAIN_COURSE, false, new ArrayList<>()));
+        menus.put(3, new MenuUtil(DishType.DESSERT, false, new ArrayList<>()));
 
         when(baseService.getDestockableDishesByDishType(any(DishType.class))).thenReturn(new ArrayList<>());
-        HashMap<Integer, MenuUtil> result = serverController.getMenusAvailable(TableState.Starter);
+        HashMap<Integer, MenuUtil> result = serverController.getMenusAvailable(TableState.STARTER);
 
         assertEquals(menus, result);
     }
@@ -589,11 +589,11 @@ class ServerControllerTest {
     @DisplayName("Récupère le menu selon l'état table: Plat")
     void testGetMenusAvailableMainCourse() {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.MainCourse, false, new ArrayList<>()));
-        menus.put(2, new MenuUtil(DishType.Dessert, false, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.MAIN_COURSE, false, new ArrayList<>()));
+        menus.put(2, new MenuUtil(DishType.DESSERT, false, new ArrayList<>()));
 
         when(baseService.getDestockableDishesByDishType(any(DishType.class))).thenReturn(new ArrayList<>());
-        HashMap<Integer, MenuUtil> result = serverController.getMenusAvailable(TableState.MainCourse);
+        HashMap<Integer, MenuUtil> result = serverController.getMenusAvailable(TableState.MAIN_COURSE);
 
         assertEquals(menus, result);
     }
@@ -602,10 +602,10 @@ class ServerControllerTest {
     @DisplayName("Récupère le menu selon l'état table: Dessert")
     void testGetMenusAvailableDessert() {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Dessert, false, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.DESSERT, false, new ArrayList<>()));
 
         when(baseService.getDestockableDishesByDishType(any(DishType.class))).thenReturn(new ArrayList<>());
-        HashMap<Integer, MenuUtil> result = serverController.getMenusAvailable(TableState.Dessert);
+        HashMap<Integer, MenuUtil> result = serverController.getMenusAvailable(TableState.DESSERT);
 
         assertEquals(menus, result);
     }
@@ -627,7 +627,7 @@ class ServerControllerTest {
         dishes.add(dish1);
         dishes.add(dish2);
         dishes.add(dish3);
-        menus.put(1, new MenuUtil(DishType.Starter, true, dishes));
+        menus.put(1, new MenuUtil(DishType.STARTER, true, dishes));
         List<String> idDishes = new ArrayList<>();
         idDishes.add("Salade de pommes de terre");
         idDishes.add("Salades de carottes");
@@ -636,7 +636,7 @@ class ServerControllerTest {
         doReturn(idDishes).when(serverController).getChosenDishes(anyString(), anyList(), anyList());
         when(baseService.getDestockableDishesByDishType(any(DishType.class))).thenReturn(new ArrayList<>());
 
-        serverController.getDishesOrdered(DishType.Starter, menus);
+        serverController.getDishesOrdered(DishType.STARTER, menus);
 
         verify(serverView, times(1)).displayNoDishOnTheMenu();
     }
@@ -658,7 +658,7 @@ class ServerControllerTest {
         dishes.add(dish1);
         dishes.add(dish2);
         dishes.add(dish3);
-        menus.put(1, new MenuUtil(DishType.Starter, true, dishes));
+        menus.put(1, new MenuUtil(DishType.STARTER, true, dishes));
         List<String> idDishes = new ArrayList<>();
         idDishes.add("Salade de pommes de terre");
         idDishes.add("Salades de carottes");
@@ -667,7 +667,7 @@ class ServerControllerTest {
         doReturn(idDishes).when(serverController).getChosenDishes(anyString(), anyList(), anyList());
         when(baseService.getDestockableDishesByDishType(any(DishType.class))).thenReturn(dishes);
 
-        serverController.getDishesOrdered(DishType.Starter, menus);
+        serverController.getDishesOrdered(DishType.STARTER, menus);
 
         verify(serverView, times(0)).displayNoDishOnTheMenu();
     }
@@ -689,7 +689,7 @@ class ServerControllerTest {
         dishes.add(dish1);
         dishes.add(dish2);
         dishes.add(dish3);
-        menus.put(1, new MenuUtil(DishType.Starter, true, dishes));
+        menus.put(1, new MenuUtil(DishType.STARTER, true, dishes));
         List<String> idDishes = new ArrayList<>();
         idDishes.add("Salade de pommes de terre");
         idDishes.add("Salades de carottes");
@@ -698,7 +698,7 @@ class ServerControllerTest {
         doReturn(idDishes).when(serverController).getChosenDishes(anyString(), anyList(), anyList());
         when(baseService.getDestockableDishesByDishType(any(DishType.class))).thenReturn(new ArrayList<>());
 
-        serverController.getDishesOrdered(DishType.Starter, menus);
+        serverController.getDishesOrdered(DishType.STARTER, menus);
 
         verify(serverView, times(1)).displayNoDishInTheOrder();
     }
@@ -708,11 +708,11 @@ class ServerControllerTest {
     void testTakeOrdersButNoTableToServe() {
         UserEntity user = new UserEntity();
         user.set_id("serveur");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
 
         when(baseService.getTablesReadyToOrderByServer(anyString())).thenReturn(tables);
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.takeOrders(user);
 
@@ -724,7 +724,7 @@ class ServerControllerTest {
     void testTakeOrdersCancel() {
         UserEntity user = new UserEntity();
         user.set_id("serveur");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
         table1.set_id("1");
@@ -732,7 +732,7 @@ class ServerControllerTest {
 
         when(baseService.getTablesReadyToOrderByServer(anyString())).thenReturn(tables);
         doReturn(0).when(serverController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.takeOrders(user);
 
@@ -745,21 +745,21 @@ class ServerControllerTest {
     void testTakeOrdersNoDishTypeAvailable() {
         UserEntity user = new UserEntity();
         user.set_id("serveur");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
         table1.set_id("1");
-        table1.setTableState(TableState.Occupied);
+        table1.setTableState(TableState.OCCUPIED);
         tables.add(table1);
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, false, new ArrayList<>()));
-        menus.put(2, new MenuUtil(DishType.MainCourse, false, new ArrayList<>()));
-        menus.put(3, new MenuUtil(DishType.Dessert, false, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, false, new ArrayList<>()));
+        menus.put(2, new MenuUtil(DishType.MAIN_COURSE, false, new ArrayList<>()));
+        menus.put(3, new MenuUtil(DishType.DESSERT, false, new ArrayList<>()));
 
         when(baseService.getTablesReadyToOrderByServer(anyString())).thenReturn(tables);
         doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
         doReturn(menus).when(serverController).getMenusAvailable(any(TableState.class));
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.takeOrders(user);
 
@@ -771,23 +771,23 @@ class ServerControllerTest {
     void testTakeOrdersCancelChoiceDishType() {
         UserEntity user = new UserEntity();
         user.set_id("serveur");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
         table1.set_id("1");
-        table1.setTableState(TableState.Occupied);
+        table1.setTableState(TableState.OCCUPIED);
         tables.add(table1);
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, true, new ArrayList<>()));
-        menus.put(2, new MenuUtil(DishType.MainCourse, true, new ArrayList<>()));
-        menus.put(3, new MenuUtil(DishType.Dessert, true, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, true, new ArrayList<>()));
+        menus.put(2, new MenuUtil(DishType.MAIN_COURSE, true, new ArrayList<>()));
+        menus.put(3, new MenuUtil(DishType.DESSERT, true, new ArrayList<>()));
 
         when(baseService.getTablesReadyToOrderByServer(anyString())).thenReturn(tables);
         doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
         doReturn(menus).when(serverController).getMenusAvailable(any(TableState.class));
         doReturn(true).when(serverController).askChildOrder();
         doReturn(null).when(serverController).getOrderDishType(any());
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.takeOrders(user);
 
@@ -799,16 +799,16 @@ class ServerControllerTest {
     void testTakeOrdersCancleAllOrder() {
         UserEntity user = new UserEntity();
         user.set_id("serveur");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
         table1.set_id("1");
-        table1.setTableState(TableState.Occupied);
+        table1.setTableState(TableState.OCCUPIED);
         tables.add(table1);
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, true, new ArrayList<>()));
-        menus.put(2, new MenuUtil(DishType.MainCourse, true, new ArrayList<>()));
-        menus.put(3, new MenuUtil(DishType.Dessert, true, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, true, new ArrayList<>()));
+        menus.put(2, new MenuUtil(DishType.MAIN_COURSE, true, new ArrayList<>()));
+        menus.put(3, new MenuUtil(DishType.DESSERT, true, new ArrayList<>()));
         List<String> dishes = new ArrayList<>();
         dishes.add("Salades de riz");
         dishes.add("Beignet de crevettes");
@@ -819,12 +819,12 @@ class ServerControllerTest {
         doReturn(1).doReturn(0).when(serverController).getIntegerInput(anyInt(), anyInt());
         doReturn(menus).when(serverController).getMenusAvailable(any(TableState.class));
         doReturn(true).when(serverController).askChildOrder();
-        doReturn(DishType.Starter).when(serverController).getOrderDishType(any());
+        doReturn(DishType.STARTER).when(serverController).getOrderDishType(any());
         doReturn(dishes).when(serverController).getDishesOrdered(any(DishType.class), any());
         doReturn(new ArrayList<>()).when(serverController).getDrinksOrdered();
         doReturn(spy).when(serverController).createOrderToSave(anyString(), anyBoolean(), anyList(), anyList());
         doNothing().when(spy).giveStockBack(any(BaseService.class));
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.takeOrders(user);
 
@@ -838,16 +838,16 @@ class ServerControllerTest {
     void testTakeOrders() {
         UserEntity user = new UserEntity();
         user.set_id("serveur");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
         table1.set_id("1");
-        table1.setTableState(TableState.Occupied);
+        table1.setTableState(TableState.OCCUPIED);
         tables.add(table1);
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
-        menus.put(1, new MenuUtil(DishType.Starter, true, new ArrayList<>()));
-        menus.put(2, new MenuUtil(DishType.MainCourse, true, new ArrayList<>()));
-        menus.put(3, new MenuUtil(DishType.Dessert, true, new ArrayList<>()));
+        menus.put(1, new MenuUtil(DishType.STARTER, true, new ArrayList<>()));
+        menus.put(2, new MenuUtil(DishType.MAIN_COURSE, true, new ArrayList<>()));
+        menus.put(3, new MenuUtil(DishType.DESSERT, true, new ArrayList<>()));
         List<String> dishes = new ArrayList<>();
         dishes.add("Salades de riz");
         dishes.add("Beignet de crevettes");
@@ -856,10 +856,10 @@ class ServerControllerTest {
         doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
         doReturn(menus).when(serverController).getMenusAvailable(any(TableState.class));
         doReturn(true).when(serverController).askChildOrder();
-        doReturn(DishType.Starter).when(serverController).getOrderDishType(any());
+        doReturn(DishType.STARTER).when(serverController).getOrderDishType(any());
         doReturn(dishes).when(serverController).getDishesOrdered(any(DishType.class), any());
         doReturn(new ArrayList<>()).when(serverController).getDrinksOrdered();
-        doNothing().when(serverController).launch(Role.Server);
+        doNothing().when(serverController).launch(Role.SERVER);
 
         serverController.takeOrders(user);
 

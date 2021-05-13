@@ -25,13 +25,13 @@ class LauncherTest {
 
     @Test
     void testSetLoggedUser() {
-        Launcher.setLoggedUser(new UserEntity("admin", Role.Director));
-        assertEquals(Launcher.getLoggedUser(), new UserEntity("admin", Role.Director));
+        Launcher.setLoggedUser(new UserEntity("admin", Role.DIRECTOR));
+        assertEquals(Launcher.getLoggedUser(), new UserEntity("admin", Role.DIRECTOR));
     }
 
     @Test
     void testGetLoggedUser() {
-        Launcher.setLoggedUser(new UserEntity("admin", Role.Butler));
-        assertEquals(Launcher.getLoggedUser(), new UserEntity("admin", Role.Butler));
+        Launcher.setLoggedUser(new UserEntity("admin", Role.BUTLER));
+        assertEquals(Launcher.getLoggedUser(), new UserEntity("admin", Role.BUTLER));
     }
 }

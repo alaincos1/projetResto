@@ -1,30 +1,30 @@
 [
   {
     "_id": "dir",
-    "role": "Director"
+    "role": "DIRECTOR"
   },
   {
     "_id": "mai",
-    "role": "Butler"
+    "role": "BUTLER"
   },
   {
     "_id": "cui",
-    "role": "Cook"
+    "role": "COOK"
   },
   {
     "_id": "ser1",
-    "role": "Server"
+    "role": "SERVER"
   },
   {
     "_id": "ser2",
-    "role": "Server"
+    "role": "SERVER"
   },
   {
     "_id": "hel1",
-    "role": "Helper"
+    "role": "HELPER"
   },
   {
     "_id": "hel2",
-    "role": "Helper"
+    "role": "HELPER"
   }
 ]

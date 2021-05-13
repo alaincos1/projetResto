@@ -40,7 +40,7 @@ class InitRestaurantTest {
         List<OrderEntity> uncheckedOrders = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             uncheckedOrders.add(easyRandom.nextObject(OrderEntity.class));
-            uncheckedOrders.get(i).setOrderState(OrderState.Served);
+            uncheckedOrders.get(i).setOrderState(OrderState.SERVED);
         }
         when(baseService.getAllNotCheckedOrder()).thenReturn(uncheckedOrders);
 
@@ -195,7 +195,7 @@ class InitRestaurantTest {
     private TableEntity createTableEntity(String id) {
         TableEntity tableEntity = easyRandom.nextObject(TableEntity.class);
         tableEntity.set_id(id);
-        tableEntity.setTableState(TableState.Free);
+        tableEntity.setTableState(TableState.FREE);
 
         return tableEntity;
     }
@@ -215,9 +215,9 @@ class InitRestaurantTest {
     void checkInitUsersDirectorHere() {
         List<UserEntity> users = new ArrayList<>();
         UserEntity user1 = new UserEntity();
-        user1.setRole(Role.Helper);
+        user1.setRole(Role.HELPER);
         UserEntity user2 = new UserEntity();
-        user2.setRole(Role.Director);
+        user2.setRole(Role.DIRECTOR);
         users.add(user1);
         users.add(user2);
         when(baseService.getAllUsers()).thenReturn(users);
@@ -232,9 +232,9 @@ class InitRestaurantTest {
     void checkInitUsersNoDirectorButUsers() {
         List<UserEntity> users = new ArrayList<>();
         UserEntity user1 = new UserEntity();
-        user1.setRole(Role.Helper);
+        user1.setRole(Role.HELPER);
         UserEntity user2 = new UserEntity();
-        user2.setRole(Role.Cook);
+        user2.setRole(Role.COOK);
         users.add(user1);
         users.add(user2);
         when(baseService.getAllUsers()).thenReturn(users);

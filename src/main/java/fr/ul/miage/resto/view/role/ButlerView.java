@@ -33,7 +33,7 @@ public class ButlerView extends RoleView {
 
 	public void displayServersList(List<UserEntity> users) {
 		for (UserEntity user : users) {
-			if (user.getRole().equals(Role.Server) || user.getRole().equals(Role.Helper)) {
+			if (user.getRole().equals(Role.SERVER) || user.getRole().equals(Role.HELPER)) {
 				System.out.println(" - " + user.get_id() + " -> " + user.getRole().getValue());
 			}
 		}
@@ -62,7 +62,7 @@ public class ButlerView extends RoleView {
 		int nbBooking = 0;
 		for (TableEntity table : tables) {
 			String name = tableIsReserved(table, date, mealType, baseService);
-			if (StringUtils.isNotBlank(name) && table.getTableState().equals(TableState.Booked)) {
+			if (StringUtils.isNotBlank(name) && table.getTableState().equals(TableState.BOOKED)) {
 				System.out.println(" - Id: " + table.get_id() + " Nb places: " + table.getNbSeats() + " Nom : " + name);
 				nbBooking++;
 			}
@@ -162,8 +162,8 @@ public class ButlerView extends RoleView {
 	 * @return bollean 
 	 */
 	public Boolean stateForBill(TableEntity table) {
-		if (table.getTableState() == TableState.Booked || table.getTableState() == TableState.Free
-				|| table.getTableState() == TableState.Occupied) {
+		if (table.getTableState() == TableState.BOOKED || table.getTableState() == TableState.FREE
+				|| table.getTableState() == TableState.OCCUPIED) {
 			return false;
 		}
 		return true;

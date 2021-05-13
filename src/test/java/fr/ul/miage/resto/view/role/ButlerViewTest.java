@@ -34,7 +34,7 @@ class ButlerViewTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Dessert);
+        table.setTableState(TableState.DESSERT);
 
         assertTrue(butlerView.stateForBill(table));
     }
@@ -47,7 +47,7 @@ class ButlerViewTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Free);
+        table.setTableState(TableState.FREE);
 
         assertFalse(butlerView.stateForBill(table));
     }
@@ -60,13 +60,13 @@ class ButlerViewTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Free);
+        table.setTableState(TableState.FREE);
 
         OrderEntity order = new OrderEntity();
         order.set_id("1");
         order.setChildOrder(false);
         order.setIdTable("1");
-        order.setOrderState(OrderState.Served);
+        order.setOrderState(OrderState.SERVED);
         order.setRank(1);
         List<String> list = new ArrayList<>();
         list.add("1");
@@ -77,7 +77,7 @@ class ButlerViewTest {
         order1.set_id("2");
         order1.setChildOrder(false);
         order1.setIdTable("1");
-        order1.setOrderState(OrderState.Served);
+        order1.setOrderState(OrderState.SERVED);
         order1.setRank(1);
         List<String> list1 = new ArrayList<>();
         list1.add("1");
@@ -100,7 +100,7 @@ class ButlerViewTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Free);
+        table.setTableState(TableState.FREE);
 
         List<OrderEntity> listOrder = new ArrayList<>();
 

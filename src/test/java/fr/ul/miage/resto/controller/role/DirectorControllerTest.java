@@ -179,7 +179,7 @@ class DirectorControllerTest {
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
         doReturn(new ProductEntity()).when(directorController).createProduct();
         doNothing().when(directorController).saveProduct(any(ProductEntity.class));
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
 
         directorController.manageStocks();
 
@@ -200,7 +200,7 @@ class DirectorControllerTest {
         doReturn(3).when(directorController).getIntegerInput(anyInt(), anyInt());
         doReturn(new ProductEntity()).when(directorController).addStockProduct(anyList(), anyInt());
         doNothing().when(directorController).saveProduct(any(ProductEntity.class));
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
 
         directorController.manageStocks();
 
@@ -219,7 +219,7 @@ class DirectorControllerTest {
         }
         when(baseService.getAllProducts()).thenReturn(products);
         doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
 
         directorController.manageStocks();
 
@@ -229,7 +229,7 @@ class DirectorControllerTest {
     @Test
     void testManageEmployeeAddEmployee() {
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
         doNothing().when(directorController).addEmployee();
 
         directorController.manageEmployees();
@@ -240,7 +240,7 @@ class DirectorControllerTest {
     @Test
     void testManageEmployeeWithReturn() {
         doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
 
         directorController.manageEmployees();
 
@@ -254,7 +254,7 @@ class DirectorControllerTest {
         users.add(user);
 
         doReturn(2).doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
         doNothing().when(directorController).updateEmployee(any(UserEntity.class));
         when(baseService.getAllUsers()).thenReturn(users);
 
@@ -270,7 +270,7 @@ class DirectorControllerTest {
         users.add(user);
 
         doReturn(3).doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
         doNothing().when(directorController).deleteEmployee(any(UserEntity.class));
         when(baseService.getAllUsers()).thenReturn(users);
 
@@ -286,7 +286,7 @@ class DirectorControllerTest {
         users.add(user);
 
         doReturn(4).doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
         doNothing().when(directorController).promoteEmployee(any(UserEntity.class));
         when(baseService.getAllUsers()).thenReturn(users);
 
@@ -420,7 +420,7 @@ class DirectorControllerTest {
 
         when(baseService.getAllTables()).thenReturn(tables);
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
 
         directorController.manageTables();
 
@@ -439,7 +439,7 @@ class DirectorControllerTest {
 
         when(baseService.getAllTables()).thenReturn(tables);
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
 
         directorController.manageTables();
 
@@ -458,7 +458,7 @@ class DirectorControllerTest {
 
         when(baseService.getAllTables()).thenReturn(tables);
         doReturn(2).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
 
         directorController.manageTables();
 
@@ -477,7 +477,7 @@ class DirectorControllerTest {
 
         when(baseService.getAllTables()).thenReturn(tables);
         doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
 
         directorController.manageTables();
 
@@ -575,7 +575,7 @@ class DirectorControllerTest {
     void testManageDayMenuWithReturn() {
         doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
 
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
 
         directorController.manageDayMenu();
 
@@ -693,7 +693,7 @@ class DirectorControllerTest {
     void testAnalysesIncomesWithReturn() {
         doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
 
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
 
         directorController.analysesIncomes();
 
@@ -704,7 +704,7 @@ class DirectorControllerTest {
     void testAnalysesIncomes() {
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
 
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
         doNothing().when(directorController).analyses(anyString(), anyInt());
 
         directorController.analysesIncomes();
@@ -716,7 +716,7 @@ class DirectorControllerTest {
     void testAnalysesIncomesMostFamous() {
         doReturn(4).when(directorController).getIntegerInput(anyInt(), anyInt());
 
-        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).launch(Role.DIRECTOR);
         doNothing().when(directorController).analysesMostFamous();
 
         directorController.analysesIncomes();

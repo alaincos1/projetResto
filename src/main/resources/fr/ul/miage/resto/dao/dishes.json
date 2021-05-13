@@ -2,7 +2,7 @@
   {
     "_id": "Salade de sardines",
     "price": 12,
-    "dishType": "Starter",
+    "dishType": "STARTER",
     "idsProduct": [
       "Salades",
       "Sardines"
@@ -13,7 +13,7 @@
   {
     "_id": "Salade caesar",
     "price": 8,
-    "dishType": "Starter",
+    "dishType": "STARTER",
     "idsProduct": [
       "Salades"
     ],
@@ -23,7 +23,7 @@
   {
     "_id": "Patates sautées et légumes",
     "price": 19,
-    "dishType": "MainCourse",
+    "dishType": "MAIN_COURSE",
     "idsProduct": [
       "Pommes de terre",
       "Haricots"
@@ -34,7 +34,7 @@
   {
     "_id": "Boeuf et légumes",
     "price": 22,
-    "dishType": "MainCourse",
+    "dishType": "MAIN_COURSE",
     "idsProduct": [
       "Boeuf",
       "Haricots"
@@ -45,7 +45,7 @@
   {
     "_id": "Banana Split",
     "price": 3,
-    "dishType": "Dessert",
+    "dishType": "DESSERT",
     "idsProduct": [
       "Bananes",
       "Glace à la vanille"
@@ -56,7 +56,7 @@
   {
     "_id": "Beignet de banane",
     "price": 4,
-    "dishType": "Dessert",
+    "dishType": "DESSERT",
     "idsProduct": [
       "Bananes"
     ],

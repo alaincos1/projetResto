@@ -33,9 +33,9 @@ public class ServerController extends RoleMenuController {
         Role role = Launcher.getLoggedUser().getRole();
         switch (action) {
             case 0:
-                if (role.equals(Role.Director)) {
+                if (role.equals(Role.DIRECTOR)) {
                     DirectorController directorController = new DirectorController(baseService, service, new DirectorView());
-                    directorController.launch(Role.Director);
+                    directorController.launch(Role.DIRECTOR);
                 } else {
                     LogInController logInController = new LogInController(baseService, service, new LogInView());
                     logInController.disconnect();
@@ -64,7 +64,7 @@ public class ServerController extends RoleMenuController {
 
     protected void viewTables(UserEntity user) {
         List<TableEntity> tables;
-        if (Role.Director.equals(user.getRole())) {
+        if (Role.DIRECTOR.equals(user.getRole())) {
             tables = baseService.getAllTables();
         } else {
             tables = baseService.getAllTableByServerOrHelper(user.get_id());
@@ -80,14 +80,14 @@ public class ServerController extends RoleMenuController {
 
     protected void setTablesDirty(UserEntity user) {
         List<TableEntity> tablesToDirty = new ArrayList<>();
-        if (Role.Director.equals(user.getRole())) {
-            tablesToDirty.addAll(baseService.getAllTableByState(TableState.Starter));
-            tablesToDirty.addAll(baseService.getAllTableByState(TableState.MainCourse));
-            tablesToDirty.addAll(baseService.getAllTableByState(TableState.Dessert));
+        if (Role.DIRECTOR.equals(user.getRole())) {
+            tablesToDirty.addAll(baseService.getAllTableByState(TableState.STARTER));
+            tablesToDirty.addAll(baseService.getAllTableByState(TableState.MAIN_COURSE));
+            tablesToDirty.addAll(baseService.getAllTableByState(TableState.DESSERT));
         } else {
-            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.Starter));
-            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.MainCourse));
-            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.Dessert));
+            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.STARTER));
+            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.MAIN_COURSE));
+            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.DESSERT));
         }
 
         if (tablesToDirty.isEmpty()) {
@@ -96,7 +96,7 @@ public class ServerController extends RoleMenuController {
             serverView.displayTablesToDirty(tablesToDirty);
             int choice = getIntegerInput(0, tablesToDirty.size()) - 1;
             if (choice != -1) {
-                tablesToDirty.get(choice).setTableState(TableState.Dirty);
+                tablesToDirty.get(choice).setTableState(TableState.DIRTY);
                 if (baseService.update(tablesToDirty.get(choice))) {
                     serverView.displayTableDirtyDoAgain();
                     if (doAgain()) {
@@ -107,7 +107,7 @@ public class ServerController extends RoleMenuController {
                 }
             }
         }
-        launch(Role.Server);
+        launch(Role.SERVER);
     }
 
     protected void takeOrders(UserEntity user) {
@@ -143,7 +143,7 @@ public class ServerController extends RoleMenuController {
                 }
             }
         }
-        launch(Role.Server);
+        launch(Role.SERVER);
     }
 
     //Si aucun plat n'est disponible dans aucun type de plat renvoie faux
@@ -160,23 +160,23 @@ public class ServerController extends RoleMenuController {
     protected HashMap<Integer, MenuUtil> getMenusAvailable(TableState tableState) {
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
 
-        List<DishEntity> starterDishes = baseService.getDestockableDishesByDishType(DishType.Starter);
-        List<DishEntity> mainCourseDishes = baseService.getDestockableDishesByDishType(DishType.MainCourse);
-        List<DishEntity> dessertDishes = baseService.getDestockableDishesByDishType(DishType.Dessert);
+        List<DishEntity> starterDishes = baseService.getDestockableDishesByDishType(DishType.STARTER);
+        List<DishEntity> mainCourseDishes = baseService.getDestockableDishesByDishType(DishType.MAIN_COURSE);
+        List<DishEntity> dessertDishes = baseService.getDestockableDishesByDishType(DishType.DESSERT);
 
         switch (tableState) {
-            case Occupied:
-            case Starter:
-                menus.put(1, new MenuUtil(DishType.Starter, !(starterDishes == null || starterDishes.isEmpty()), starterDishes));
-                menus.put(2, new MenuUtil(DishType.MainCourse, !(mainCourseDishes == null || mainCourseDishes.isEmpty()), mainCourseDishes));
-                menus.put(3, new MenuUtil(DishType.Dessert, !(dessertDishes == null || dessertDishes.isEmpty()), dessertDishes));
+            case OCCUPIED:
+            case STARTER:
+                menus.put(1, new MenuUtil(DishType.STARTER, !(starterDishes == null || starterDishes.isEmpty()), starterDishes));
+                menus.put(2, new MenuUtil(DishType.MAIN_COURSE, !(mainCourseDishes == null || mainCourseDishes.isEmpty()), mainCourseDishes));
+                menus.put(3, new MenuUtil(DishType.DESSERT, !(dessertDishes == null || dessertDishes.isEmpty()), dessertDishes));
                 break;
-            case MainCourse:
-                menus.put(1, new MenuUtil(DishType.MainCourse, !(mainCourseDishes == null || mainCourseDishes.isEmpty()), mainCourseDishes));
-                menus.put(2, new MenuUtil(DishType.Dessert, !(dessertDishes == null || dessertDishes.isEmpty()), dessertDishes));
+            case MAIN_COURSE:
+                menus.put(1, new MenuUtil(DishType.MAIN_COURSE, !(mainCourseDishes == null || mainCourseDishes.isEmpty()), mainCourseDishes));
+                menus.put(2, new MenuUtil(DishType.DESSERT, !(dessertDishes == null || dessertDishes.isEmpty()), dessertDishes));
                 break;
-            case Dessert:
-                menus.put(1, new MenuUtil(DishType.Dessert, !(dessertDishes == null || dessertDishes.isEmpty()), dessertDishes));
+            case DESSERT:
+                menus.put(1, new MenuUtil(DishType.DESSERT, !(dessertDishes == null || dessertDishes.isEmpty()), dessertDishes));
                 break;
             default:
                 break;
@@ -189,9 +189,9 @@ public class ServerController extends RoleMenuController {
             return new ArrayList<>();
         }
         HashMap<Integer, MenuUtil> menu = new HashMap<>();
-        List<DishEntity> drinks = baseService.getDestockableDishesByDishType(DishType.Drink);
-        menu.put(1, new MenuUtil(DishType.Drink, !(drinks == null || drinks.isEmpty()), drinks));
-        return getDishesOrdered(DishType.Drink, menu);
+        List<DishEntity> drinks = baseService.getDestockableDishesByDishType(DishType.DRINK);
+        menu.put(1, new MenuUtil(DishType.DRINK, !(drinks == null || drinks.isEmpty()), drinks));
+        return getDishesOrdered(DishType.DRINK, menu);
     }
 
     protected boolean askDrinksOrder() {
@@ -289,7 +289,7 @@ public class ServerController extends RoleMenuController {
         OrderEntity orderToSave = new OrderEntity();
         orderToSave.set_id(new ObjectId().toString());
         orderToSave.setIdTable(idTable);
-        orderToSave.setOrderState(OrderState.Ordered);
+        orderToSave.setOrderState(OrderState.ORDERED);
         orderToSave.setChildOrder(childOrder);
         idDishes.addAll(idDrinks);
         orderToSave.setIdsDish(idDishes);
@@ -308,7 +308,7 @@ public class ServerController extends RoleMenuController {
 
     protected void serveOrders(UserEntity user) {
         List<OrderEntity> orders = baseService.getPreparedOrders();
-        if (!Role.Director.equals(user.getRole())) {
+        if (!Role.DIRECTOR.equals(user.getRole())) {
             List<TableEntity> tables = baseService.getAllTableByServerOrHelper(user.get_id());
             orders = getOnlyServerOrders(orders, tables);
         }
@@ -319,7 +319,7 @@ public class ServerController extends RoleMenuController {
             serverView.displayOrdersToServe(orders);
             int choice = getIntegerInput(0, orders.size()) - 1;
             if (choice != -1) {
-                orders.get(choice).setOrderState(OrderState.Served);
+                orders.get(choice).setOrderState(OrderState.SERVED);
                 TableEntity table = baseService.getTableById(orders.get(choice).getIdTable());
                 table.setTableState(orders.get(choice).getDishType(baseService));
 
@@ -333,7 +333,7 @@ public class ServerController extends RoleMenuController {
                 }
             }
         }
-        launch(Role.Server);
+        launch(Role.SERVER);
     }
 
     protected List<OrderEntity> getOnlyServerOrders(List<OrderEntity> orders, List<TableEntity> tables) {

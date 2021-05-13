@@ -32,10 +32,10 @@ public class ButlerController extends RoleMenuController {
         Role role = Launcher.getLoggedUser().getRole();
         switch (action) {
             case 0:
-                if (role.equals(Role.Director)) {
+                if (role.equals(Role.DIRECTOR)) {
                     DirectorController directorController = new DirectorController(baseService, service,
                             new DirectorView());
-                    directorController.launch(Role.Director);
+                    directorController.launch(Role.DIRECTOR);
                 } else {
                     LogInController logInController = new LogInController(baseService, service, new LogInView());
                     logInController.disconnect();
@@ -50,7 +50,7 @@ public class ButlerController extends RoleMenuController {
             case 3:
                 if (service.isEndNewClients()) {
                     butlerView.displayEndNewClient();
-                    launch(Role.Butler);
+                    launch(Role.BUTLER);
                 } else {
                     affectTablesToClients();
                 }
@@ -88,7 +88,7 @@ public class ButlerController extends RoleMenuController {
         TableEntity tableToChange = baseService.getTableById(choiceTable);
 
         if (ObjectUtils.isNotEmpty(user)) {
-            if (Role.Server.equals(user.getRole())) {
+            if (Role.SERVER.equals(user.getRole())) {
                 tableToChange.setIdServer(choiceUser);
             } else {
                 tableToChange.setIdHelper(choiceUser);
@@ -96,7 +96,7 @@ public class ButlerController extends RoleMenuController {
         }
 
         updateObject(tableToChange);
-		launch(Role.Butler);
+		launch(Role.BUTLER);
     }
 
     /**
@@ -124,7 +124,7 @@ public class ButlerController extends RoleMenuController {
                 bill.setMealType(service.getMealType());
                 bill.setTotalPrice(priceTotal);
                 bill.setIdsOrder(listIdDishes);
-				tableChoice.setTableState(TableState.Dirty);
+				tableChoice.setTableState(TableState.DIRTY);
 				saveObject(tableChoice);
 				saveObject(bill);
 				changeOrderState(tableChoice);
@@ -135,7 +135,7 @@ public class ButlerController extends RoleMenuController {
             butlerView.displayBillImpossible();
         }
 
-        launch(Role.Butler);
+        launch(Role.BUTLER);
     }
 
     /**
@@ -151,20 +151,20 @@ public class ButlerController extends RoleMenuController {
 
         // si il ne veut pas de réservation ou qu'il n'y en a pas pour ce jour
         if ((reservation == 1 && StringUtils.isEmpty(choiceTable)) || reservation == 0) {
-            if (butlerView.displayTablesList(tables, null, TableState.Free.getState()) != 0) {
+            if (butlerView.displayTablesList(tables, null, TableState.FREE.getState()) != 0) {
                 butlerView.displayChoiceTableClient();
-                choiceTable = choiceTable(TableState.Free);
+                choiceTable = choiceTable(TableState.FREE);
             } else {
                 butlerView.displayAnyTableFree();
-                launch(Role.Butler);
+                launch(Role.BUTLER);
             }
         }
 
         TableEntity tableToChange = baseService.getTableById(choiceTable);
-        tableToChange.setTableState(TableState.Occupied);
+        tableToChange.setTableState(TableState.OCCUPIED);
 
         updateObject(tableToChange);
-		launch(Role.Butler);
+		launch(Role.BUTLER);
 	}
 
     /**
@@ -192,7 +192,7 @@ public class ButlerController extends RoleMenuController {
         booking.setReservationName(nameBooking);
 
         saveObject(booking);
-		launch(Role.Butler);
+		launch(Role.BUTLER);
     }
 
     /**
@@ -208,7 +208,7 @@ public class ButlerController extends RoleMenuController {
         // alors la reservation est impossible
         if (dateBooking.equals(service.getDate()) && service.getMealType() == MealType.DINNER) {
             butlerView.displayBookingImpossible();
-            launch(Role.Butler);
+            launch(Role.BUTLER);
         }
         // Si la reservation est pour le jour et qu'on est au service du dejeuner alors
         // la reservation est automatique pour le soir
@@ -216,7 +216,7 @@ public class ButlerController extends RoleMenuController {
             butlerView.displayBookingDiner();
             Integer correct = getIntegerInput(0, 1);
             if (correct == 0) {
-                launch(Role.Butler);
+                launch(Role.BUTLER);
             } else {
                 mealTypeBooking = MealType.DINNER;
             }
@@ -324,7 +324,7 @@ public class ButlerController extends RoleMenuController {
             if (butlerView.displayAllTablesWithBooking(tables, service.getDate(), service.getMealType(),
                     baseService) != 0) {
                 butlerView.displayChoiceTableClient();
-                choiceTable = choiceTable(TableState.Booked);
+                choiceTable = choiceTable(TableState.BOOKED);
             } else {
                 butlerView.displayAnyBooking();
             }
@@ -342,7 +342,7 @@ public class ButlerController extends RoleMenuController {
             butlerView.displaySuccess();
         } else {
             butlerView.displayError();
-			launch(Role.Butler);
+			launch(Role.BUTLER);
         }
     }
 
@@ -356,7 +356,7 @@ public class ButlerController extends RoleMenuController {
             butlerView.displaySuccess();
         } else {
             butlerView.displayError();
-			launch(Role.Butler);
+			launch(Role.BUTLER);
         }
     }
 
@@ -402,7 +402,7 @@ public class ButlerController extends RoleMenuController {
 	public void changeOrderState(TableEntity table) {
 		List<OrderEntity> orders = baseService.getServedOrders();
 		for (OrderEntity order : orders) {
-			order.setOrderState(OrderState.Checked);
+			order.setOrderState(OrderState.CHECKED);
 			updateObject(order);
 		}
 	}

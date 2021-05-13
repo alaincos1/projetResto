@@ -146,8 +146,8 @@ public class DirectorView extends RoleView {
 
     public void displayDirectionRole() {
         System.out.println("Selectionnez le role de l'employé.");
-        System.out.println("0) " + Role.Director);
-        System.out.println("1) " + Role.Butler);
+        System.out.println("0) " + Role.DIRECTOR);
+        System.out.println("1) " + Role.BUTLER);
     }
 
     public void displayNoDishsOnTheMenu() {

@@ -12,13 +12,13 @@ import lombok.Getter;
 @JsonSerialize(converter = EnumSerializer.class)
 @JsonDeserialize(converter = TableStateDeserializer.class)
 public enum TableState implements EnumInBase {
-    Free("Libre"),
-    Booked("Réservée"),
-    Occupied("Occupée"),
-    Starter("Entrée"),
-    MainCourse("Plat"),
-    Dessert("Dessert"),
-    Dirty("Sâle");
+    FREE("Libre"),
+    BOOKED("Réservée"),
+    OCCUPIED("Occupée"),
+    STARTER("Entrée"),
+    MAIN_COURSE("Plat"),
+    DESSERT("Dessert"),
+    DIRTY("Sâle");
 
     private final String state;
 }

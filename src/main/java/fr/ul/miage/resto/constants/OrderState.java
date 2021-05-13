@@ -12,15 +12,11 @@ import lombok.Getter;
 @JsonSerialize(converter = EnumSerializer.class)
 @JsonDeserialize(converter = OrderStateDeserializer.class)
 public enum OrderState implements EnumInBase {
-    Ordered("Commandée"),
-    Prepared("Préparée"),
-    Served("Servie"),
-    Checked("Payée"),
-    Unchecked("Impayée");
+    ORDERED("Commandée"),
+    PREPARED("Préparée"),
+    SERVED("Servie"),
+    CHECKED("Payée"),
+    UNCHECKED("Impayée");
 
     private final String state;
-
-    public String getName() {
-        return "orderState";
-    }
 }

@@ -38,19 +38,19 @@ public class LogInController {
 
     protected void connectUserAccordingRole(RoleMenuController controller, Role role) {
         switch (role) {
-            case Director:
+            case DIRECTOR:
                 controller = new DirectorController(baseService, service, new DirectorView());
                 break;
-            case Butler:
+            case BUTLER:
                 controller = new ButlerController(baseService, service, new ButlerView());
                 break;
-            case Cook:
+            case COOK:
                 controller = new CookController(baseService, service, new CookView());
                 break;
-            case Server:
+            case SERVER:
                 controller = new ServerController(baseService, service, new ServerView());
                 break;
-            case Helper:
+            case HELPER:
                 controller = new HelperController(baseService, service, new HelperView());
                 break;
         }

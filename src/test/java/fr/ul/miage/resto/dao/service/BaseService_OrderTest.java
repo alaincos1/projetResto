@@ -62,7 +62,7 @@ class BaseService_OrderTest extends AbstractServiceTest {
         List<OrderEntity> expected = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             expected.add(easyRandom.nextObject(OrderEntity.class));
-            expected.get(i).setOrderState(OrderState.Ordered);
+            expected.get(i).setOrderState(OrderState.ORDERED);
         }
 
         when(baseService.getAllNotCheckedOrder()).thenReturn(expected);

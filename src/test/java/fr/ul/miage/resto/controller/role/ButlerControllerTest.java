@@ -113,11 +113,11 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Free);
+        table.setTableState(TableState.FREE);
 
         when(baseService.getTableById(anyString())).thenReturn(table);
 
-        assertTrue(butlerController.isTableIdCorrect("1", TableState.Free));
+        assertTrue(butlerController.isTableIdCorrect("1", TableState.FREE));
     }
 
     @Test
@@ -128,11 +128,11 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Free);
+        table.setTableState(TableState.FREE);
 
         when(baseService.getTableById(anyString())).thenReturn(table);
 
-        assertFalse(butlerController.isTableIdCorrect("1", TableState.Booked));
+        assertFalse(butlerController.isTableIdCorrect("1", TableState.BOOKED));
     }
 
     @Test
@@ -143,11 +143,11 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Free);
+        table.setTableState(TableState.FREE);
 
         when(baseService.getTableById(anyString())).thenReturn(null);
 
-        assertFalse(butlerController.isTableIdCorrect("2", TableState.Free));
+        assertFalse(butlerController.isTableIdCorrect("2", TableState.FREE));
     }
 
     @Test
@@ -156,7 +156,7 @@ class ButlerControllerTest {
         doReturn("1").when(butlerController).getStringInput();
         doReturn(true).when(butlerController).isTableIdCorrect(anyString(), any(TableState.class));
 
-        assertEquals("1", butlerController.choiceTable(TableState.Free));
+        assertEquals("1", butlerController.choiceTable(TableState.FREE));
     }
 
     @Test
@@ -167,7 +167,7 @@ class ButlerControllerTest {
         doReturn(false).when(butlerController).isTableIdCorrect(anyString(), any(TableState.class));
         doCallRealMethod().doReturn("1").when(butlerController).choiceTable(any(TableState.class));
 
-        butlerController.choiceTable(TableState.Booked);
+        butlerController.choiceTable(TableState.BOOKED);
 
         verify(butlerView, times(1)).displayInputIncorrect();
         verify(butlerController, times(2)).choiceTable(any(TableState.class));
@@ -179,7 +179,7 @@ class ButlerControllerTest {
         doReturn("1").when(butlerController).getStringInput();
         doReturn(true).when(butlerController).isTableIdCorrect(anyString(), any(TableState.class));
 
-        assertEquals("1", butlerController.choiceTable(TableState.Booked));
+        assertEquals("1", butlerController.choiceTable(TableState.BOOKED));
     }
 
     @Test
@@ -187,7 +187,7 @@ class ButlerControllerTest {
     void testChoiceTableServerCorrectServer() {
         UserEntity user = new UserEntity();
         user.set_id("hel1");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
 
         doReturn("1").when(butlerController).getStringInput();
         doReturn(true).when(butlerController).isTableIdCorrectServer("1", user);
@@ -200,7 +200,7 @@ class ButlerControllerTest {
     void testChoiceTableServerCorrectServerFalse() {
         UserEntity user = new UserEntity();
         user.set_id("hel1");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
 
         doReturn("1").when(butlerController).getStringInput();
         doNothing().when(butlerView).displayInputIncorrect();
@@ -218,14 +218,14 @@ class ButlerControllerTest {
     void testIsTableIdCorrectServerTestReturnFalseHelper() {
         UserEntity user = new UserEntity();
         user.set_id("hel1");
-        user.setRole(Role.Helper);
+        user.setRole(Role.HELPER);
 
         TableEntity table = new TableEntity();
         table.set_id("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Free);
+        table.setTableState(TableState.FREE);
 
         doReturn(table).when(baseService).getTableById(anyString());
 
@@ -237,14 +237,14 @@ class ButlerControllerTest {
     void testIsTableIdCorrectServerTestReturnTrueServer() {
         UserEntity user = new UserEntity();
         user.set_id("test");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
 
         TableEntity table = new TableEntity();
         table.set_id("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Free);
+        table.setTableState(TableState.FREE);
 
         doReturn(table).when(baseService).getTableById(anyString());
 
@@ -256,14 +256,14 @@ class ButlerControllerTest {
     void testIsTableIdCorrectServerTestReturnTrueHelper() {
         UserEntity user = new UserEntity();
         user.set_id("test");
-        user.setRole(Role.Helper);
+        user.setRole(Role.HELPER);
 
         TableEntity table = new TableEntity();
         table.set_id("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Free);
+        table.setTableState(TableState.FREE);
 
         doReturn(table).when(baseService).getTableById(anyString());
 
@@ -275,14 +275,14 @@ class ButlerControllerTest {
     void testIsTableIdCorrectServerTestReturnFalseServer() {
         UserEntity user = new UserEntity();
         user.set_id("ser1");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
 
         TableEntity table = new TableEntity();
         table.set_id("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Free);
+        table.setTableState(TableState.FREE);
 
         doReturn(table).when(baseService).getTableById(anyString());
 
@@ -330,7 +330,7 @@ class ButlerControllerTest {
         order.set_id("1");
         order.setChildOrder(false);
         order.setIdTable("1");
-        order.setOrderState(OrderState.Served);
+        order.setOrderState(OrderState.SERVED);
         order.setRank(1);
         List<String> list = new ArrayList<>();
         list.add("1");
@@ -341,7 +341,7 @@ class ButlerControllerTest {
         order1.set_id("2");
         order1.setChildOrder(false);
         order1.setIdTable("2");
-        order1.setOrderState(OrderState.Served);
+        order1.setOrderState(OrderState.SERVED);
         order1.setRank(1);
         order1.setIdsDish(list);
 
@@ -350,7 +350,7 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Dessert);
+        table.setTableState(TableState.DESSERT);
 
         List<OrderEntity> listOrder = new ArrayList<>();
         listOrder.add(order);
@@ -368,7 +368,7 @@ class ButlerControllerTest {
         order.set_id("1");
         order.setChildOrder(false);
         order.setIdTable("1");
-        order.setOrderState(OrderState.Served);
+        order.setOrderState(OrderState.SERVED);
         order.setRank(1);
         List<String> list = new ArrayList<>();
         list.add("1");
@@ -379,7 +379,7 @@ class ButlerControllerTest {
         order1.set_id("2");
         order1.setChildOrder(false);
         order1.setIdTable("1");
-        order1.setOrderState(OrderState.Served);
+        order1.setOrderState(OrderState.SERVED);
         order1.setRank(1);
         List<String> list1 = new ArrayList<>();
         list1.add("1");
@@ -390,7 +390,7 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Dessert);
+        table.setTableState(TableState.DESSERT);
 
         List<OrderEntity> listOrder = new ArrayList<>();
         listOrder.add(order);
@@ -409,7 +409,7 @@ class ButlerControllerTest {
         listProducts.add("2");
         DishEntity dish1 = new DishEntity();
         dish1.set_id("1");
-        dish1.setDishType(DishType.Dessert);
+        dish1.setDishType(DishType.DESSERT);
         dish1.setIdCategory("Viande");
         dish1.setIdsProduct(listProducts);
         dish1.setOnTheMenu(true);
@@ -417,7 +417,7 @@ class ButlerControllerTest {
 
         DishEntity dish2 = new DishEntity();
         dish2.set_id("2");
-        dish2.setDishType(DishType.Dessert);
+        dish2.setDishType(DishType.DESSERT);
         dish2.setIdCategory("Boisson");
         dish2.setIdsProduct(listProducts);
         dish2.setOnTheMenu(true);
@@ -442,7 +442,7 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Dessert);
+        table.setTableState(TableState.DESSERT);
 
         doReturn(2).when(butlerView).displayAllTablesForBill(anyList(), any(BaseService.class));
         when(butlerView.orderServed(table, baseService)).thenReturn(true);
@@ -467,7 +467,7 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Dessert);
+        table.setTableState(TableState.DESSERT);
 
         doReturn(0).when(butlerView).displayAllTablesForBill(anyList(), any(BaseService.class));
         doNothing().when(butlerView).displayBillImpossible();
@@ -486,7 +486,7 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Dessert);
+        table.setTableState(TableState.DESSERT);
 
         doReturn("3").when(butlerController).getStringInput();
         when(baseService.getTableById(anyString())).thenReturn(null);
@@ -508,14 +508,14 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Dessert);
+        table.setTableState(TableState.DESSERT);
 
         List<TableEntity> listTable = new ArrayList<>();
         listTable.add(table);
 
         UserEntity user = new UserEntity();
         user.set_id("ser1");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
 
         List<UserEntity> listUser = new ArrayList<>();
         listUser.add(user);
@@ -531,7 +531,7 @@ class ButlerControllerTest {
         doCallRealMethod().doNothing().when(butlerController).affectTablesToServer();
         when(baseService.getTableById(anyString())).thenReturn(table);
         doNothing().when(butlerController).updateObject(any(TableEntity.class));
-        doNothing().when(butlerController).launch(Role.Butler);
+        doNothing().when(butlerController).launch(Role.BUTLER);
 
         butlerController.affectTablesToServer();
 
@@ -546,14 +546,14 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Dessert);
+        table.setTableState(TableState.DESSERT);
 
         List<TableEntity> listTable = new ArrayList<>();
         listTable.add(table);
 
         UserEntity user = new UserEntity();
         user.set_id("ser2");
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
 
         List<UserEntity> listUser = new ArrayList<>();
         listUser.add(user);
@@ -568,7 +568,7 @@ class ButlerControllerTest {
         doNothing().when(butlerView).displayChoiceTableServer(anyString());
         doReturn(1).when(butlerView).displayTablesList(listTable, "ser2", null);
         doReturn("1").when(butlerController).choiceTableServer(user);
-        doNothing().when(butlerController).launch(Role.Butler);
+        doNothing().when(butlerController).launch(Role.BUTLER);
 
         when(baseService.getTableById(anyString())).thenReturn(table);
         doNothing().when(butlerController).updateObject(any(TableEntity.class));
@@ -587,7 +587,7 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Dessert);
+        table.setTableState(TableState.DESSERT);
 
         List<TableEntity> listTable = new ArrayList<>();
         listTable.add(table);
@@ -603,7 +603,7 @@ class ButlerControllerTest {
 
         when(baseService.getTableById(anyString())).thenReturn(table);
         doNothing().when(butlerController).updateObject(any(TableEntity.class));
-        doNothing().when(butlerController).launch(Role.Butler);
+        doNothing().when(butlerController).launch(Role.BUTLER);
 
         butlerController.affectTablesToClients();
 
@@ -619,7 +619,7 @@ class ButlerControllerTest {
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
-        table.setTableState(TableState.Dessert);
+        table.setTableState(TableState.DESSERT);
 
         List<TableEntity> listTable = new ArrayList<>();
 
@@ -649,7 +649,7 @@ class ButlerControllerTest {
         order.set_id("1");
         order.setChildOrder(false);
         order.setIdTable("1");
-        order.setOrderState(OrderState.Served);
+        order.setOrderState(OrderState.SERVED);
         order.setRank(1);
 
         List<OrderEntity> list = new ArrayList<>();

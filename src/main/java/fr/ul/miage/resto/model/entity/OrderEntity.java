@@ -20,7 +20,7 @@ public class OrderEntity {
     public TableState getDishType(BaseService baseService) {
         for(String dish : idsDish){
             DishEntity dishEntity = baseService.getDishById(dish);
-            if(!dishEntity.getDishType().equals(DishType.Drink)){
+            if(!dishEntity.getDishType().equals(DishType.DRINK)){
                 return TableState.valueOf(dishEntity.getDishType().toString());
             }
         }

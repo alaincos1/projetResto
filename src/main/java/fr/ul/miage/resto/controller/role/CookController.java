@@ -32,9 +32,9 @@ public class CookController extends RoleMenuController {
         Role role = Launcher.getLoggedUser().getRole();
         switch (action) {
             case 0:
-                if (role.equals(Role.Director)) {
+                if (role.equals(Role.DIRECTOR)) {
                     DirectorController directorController = new DirectorController(baseService, service, new DirectorView());
-                    directorController.launch(Role.Director);
+                    directorController.launch(Role.DIRECTOR);
                 } else {
                     LogInController logInController = new LogInController(baseService, service, new LogInView());
                     logInController.disconnect();
@@ -61,7 +61,7 @@ public class CookController extends RoleMenuController {
         List<OrderEntity> orders = baseService.getNotPreparedOrders();
         if (orders.isEmpty()) {
             cookView.displayNoOrderToPrepare();
-            launch(Role.Cook);
+            launch(Role.COOK);
         } else {
             cookView.displayOrdersList(orders);
             askMainMenu();
@@ -75,7 +75,7 @@ public class CookController extends RoleMenuController {
             cookView.displayWhichOrderPrepared();
             int input = getIntegerInput(0, orders.size()) - 1;
             if (input != -1) {
-                orders.get(input).setOrderState(OrderState.Prepared);
+                orders.get(input).setOrderState(OrderState.PREPARED);
                 baseService.update(orders.get(input));
                 savePerformance(service, baseService, "preparationTime", 15, 30);
                 cookView.displayOrderPrepared(orders.get(input).getIdTable());
@@ -86,7 +86,7 @@ public class CookController extends RoleMenuController {
         } else {
             cookView.displayNoOrderToPrepare();
         }
-        launch(Role.Cook);
+        launch(Role.COOK);
     }
 
     protected void createDish() {
@@ -98,7 +98,7 @@ public class CookController extends RoleMenuController {
             cookView.displayModifyOrCancel();
             Integer choice = getIntegerInput(0, 1);
             if (choice == 0) {
-                launch(Role.Cook);
+                launch(Role.COOK);
                 return;
             }
             modify = true;
@@ -117,7 +117,7 @@ public class CookController extends RoleMenuController {
         } else {
             cookView.displaySaveOrNot(false);
         }
-        launch(Role.Cook);
+        launch(Role.COOK);
     }
 
     protected Integer getPriceDish() {
@@ -218,6 +218,6 @@ public class CookController extends RoleMenuController {
         } else {
             cookView.displayAlreadyEnded();
         }
-        launch(Role.Cook);
+        launch(Role.COOK);
     }
 }

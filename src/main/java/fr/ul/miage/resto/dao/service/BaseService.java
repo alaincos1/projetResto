@@ -184,7 +184,7 @@ public class BaseService {
     }
 
     public boolean promoteUser(UserEntity user, Role role) {
-        if (user.getRole() == role || user.getRole() == Role.Director || role != Role.Director && role != Role.Butler) {
+        if (user.getRole() == role || user.getRole() == Role.DIRECTOR || role != Role.DIRECTOR && role != Role.BUTLER) {
             return false;
         }
 
@@ -243,14 +243,14 @@ public class BaseService {
     }
 
     protected void removeUserFromAllTable(UserEntity user) {
-        if (user.getRole() != Role.Server && user.getRole() != Role.Helper) {
+        if (user.getRole() != Role.SERVER && user.getRole() != Role.HELPER) {
             return;
         }
 
         List<TableEntity> tables = getAllTableByServerOrHelper(user.get_id());
 
         tables.forEach(table -> {
-            if (user.getRole() == Role.Server) {
+            if (user.getRole() == Role.SERVER) {
                 table.setIdServer("");
             } else {
                 table.setIdHelper("");
@@ -260,7 +260,7 @@ public class BaseService {
     }
 
     public List<TableEntity> getTablesReadyToOrderByServer(String userId) {
-        if (getUserById(userId).getRole().equals(Role.Director)) {
+        if (getUserById(userId).getRole().equals(Role.DIRECTOR)) {
             return tableCollection.getTablesReadyToOrderByServer(StringUtils.EMPTY);
         }
         return tableCollection.getTablesReadyToOrderByServer(userId);

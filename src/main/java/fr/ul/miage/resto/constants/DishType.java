@@ -12,10 +12,10 @@ import lombok.Getter;
 @JsonSerialize(converter = EnumSerializer.class)
 @JsonDeserialize(converter = DishTypeDeserializer.class)
 public enum DishType implements EnumInBase {
-    Starter("Entrée", 1),
-    MainCourse("Plat", 2),
-    Dessert("Dessert", 3),
-    Drink("Boisson", 4);
+    STARTER("Entrée", 1),
+    MAIN_COURSE("Plat", 2),
+    DESSERT("Dessert", 3),
+    DRINK("Boisson", 4);
 
     private final String dish;
     private final Integer priority;

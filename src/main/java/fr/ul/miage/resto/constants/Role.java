@@ -12,11 +12,11 @@ import lombok.Getter;
 @JsonSerialize(converter = EnumSerializer.class)
 @JsonDeserialize(converter = RoleDeserializer.class)
 public enum Role implements EnumInBase {
-    Director("Directeur"),
-    Butler("Maître d'hôtel"),
-    Server("Serveur"),
-    Helper("Assistant de service"),
-    Cook("Cuisinier");
+    DIRECTOR("Directeur"),
+    BUTLER("Maître d'hôtel"),
+    SERVER("Serveur"),
+    HELPER("Assistant de service"),
+    COOK("Cuisinier");
 
     private final String value;
 }

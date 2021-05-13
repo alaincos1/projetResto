@@ -32,11 +32,11 @@ public class OrderCollection extends MongoAccess {
 
     public List<OrderEntity> getNotPreparedOrders() {
         List<Document> childOrdersDocuments = collection.find(
-                and(eq("orderState", OrderState.Ordered.toString()), eq("childOrder", true)))
+                and(eq("orderState", OrderState.ORDERED.toString()), eq("childOrder", true)))
                 .sort(Sorts.ascending("rank"))
                 .into(new ArrayList<>());
         List<Document> orderDocuments = collection.find(
-                and(eq("orderState", OrderState.Ordered.toString()), eq("childOrder", false)))
+                and(eq("orderState", OrderState.ORDERED.toString()), eq("childOrder", false)))
                 .sort(Sorts.ascending("rank"))
                 .into(new ArrayList<>());
         return getOrdersEntityListChildrenOrderFirst(childOrdersDocuments, orderDocuments);
@@ -54,28 +54,28 @@ public class OrderCollection extends MongoAccess {
     }
 
     public List<OrderEntity> getAllNotChecked() {
-        Bson doc = ne("orderState", OrderState.Checked.toString());
+        Bson doc = ne("orderState", OrderState.CHECKED.toString());
         return collection.find(doc).into(new ArrayList<>()).stream()
                 .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
                 .collect(Collectors.toList());
     }
 
     public List<OrderEntity> getPreparedOrders() {
-        Bson doc = eq("orderState", OrderState.Prepared.toString());
+        Bson doc = eq("orderState", OrderState.PREPARED.toString());
         return collection.find(doc).into(new ArrayList<>()).stream()
                 .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
                 .collect(Collectors.toList());
     }
 
     public List<OrderEntity> getServedOrders() {
-        Bson doc = eq("orderState", OrderState.Served.toString());
+        Bson doc = eq("orderState", OrderState.SERVED.toString());
         return collection.find(doc).into(new ArrayList<>()).stream()
                 .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
                 .collect(Collectors.toList());
     }
 
     public List<OrderEntity> getAllChecked() {
-        Bson doc = eq("orderState", OrderState.Checked.toString());
+        Bson doc = eq("orderState", OrderState.CHECKED.toString());
         return collection.find(doc).into(new ArrayList<>()).stream()
                 .map(document -> (OrderEntity) Mapper.toObject(document, OrderEntity.class))
                 .collect(Collectors.toList());

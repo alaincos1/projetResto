@@ -62,7 +62,7 @@ public class TableCollection extends MongoAccess {
     }
 
     public List<TableEntity> getAllRemovableTables() {
-        Bson filter = eq("tableState", TableState.Free.toString());
+        Bson filter = eq("tableState", TableState.FREE.toString());
         List<TableEntity> tables = collection.find(filter).into(new ArrayList<>()).stream()
                 .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
                 .collect(Collectors.toList());
@@ -82,8 +82,8 @@ public class TableCollection extends MongoAccess {
         if (!userId.isEmpty()) {
             filterServer = eq("idServer", userId);
         }
-        Bson filterTableState = and(not(eq("tableState", TableState.Free.toString())),
-                not(eq("tableState", TableState.Dirty.toString())));
+        Bson filterTableState = and(not(eq("tableState", TableState.FREE.toString())),
+                not(eq("tableState", TableState.DIRTY.toString())));
         Bson filters;
         if (filterServer == null) {
             filters = filterTableState;

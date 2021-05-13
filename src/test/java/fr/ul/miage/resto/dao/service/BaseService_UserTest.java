@@ -83,8 +83,8 @@ class BaseService_UserTest extends AbstractServiceTest {
     @Test
     void testPromoteUser() {
         UserEntity userToPromote = easyRandom.nextObject(UserEntity.class);
-        userToPromote.setRole(Role.Server);
-        Role role = Role.Director;
+        userToPromote.setRole(Role.SERVER);
+        Role role = Role.DIRECTOR;
 
         doNothing().when(baseService).removeUserFromAllTable(any(UserEntity.class));
         doReturn(true).when(baseService).update(any(UserEntity.class));
@@ -97,8 +97,8 @@ class BaseService_UserTest extends AbstractServiceTest {
     @Test
     void testPromoteUserWithoutDirectionRole() {
         UserEntity userToPromote = easyRandom.nextObject(UserEntity.class);
-        userToPromote.setRole(Role.Helper);
-        Role role = Role.Server;
+        userToPromote.setRole(Role.HELPER);
+        Role role = Role.SERVER;
 
         boolean actual = baseService.promoteUser(userToPromote, role);
 
@@ -108,8 +108,8 @@ class BaseService_UserTest extends AbstractServiceTest {
     @Test
     void testPromoteUserWithSameRole() {
         UserEntity userToPromote = easyRandom.nextObject(UserEntity.class);
-        userToPromote.setRole(Role.Butler);
-        Role role = Role.Butler;
+        userToPromote.setRole(Role.BUTLER);
+        Role role = Role.BUTLER;
 
         boolean actual = baseService.promoteUser(userToPromote, role);
 
@@ -119,8 +119,8 @@ class BaseService_UserTest extends AbstractServiceTest {
     @Test
     void testPromoteUserWithActualDirector() {
         UserEntity userToPromote = easyRandom.nextObject(UserEntity.class);
-        userToPromote.setRole(Role.Director);
-        Role role = Role.Butler;
+        userToPromote.setRole(Role.DIRECTOR);
+        Role role = Role.BUTLER;
 
         boolean actual = baseService.promoteUser(userToPromote, role);
 
@@ -130,7 +130,7 @@ class BaseService_UserTest extends AbstractServiceTest {
     @Test
     void testRemoveUserServerFromAllTable() {
         UserEntity user = easyRandom.nextObject(UserEntity.class);
-        user.setRole(Role.Server);
+        user.setRole(Role.SERVER);
 
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -149,7 +149,7 @@ class BaseService_UserTest extends AbstractServiceTest {
     @Test
     void testRemoveUserHelperFromAllTable() {
         UserEntity user = easyRandom.nextObject(UserEntity.class);
-        user.setRole(Role.Helper);
+        user.setRole(Role.HELPER);
 
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -168,7 +168,7 @@ class BaseService_UserTest extends AbstractServiceTest {
     @Test
     void testRemoveUserFromAllTableWithError() {
         UserEntity user = easyRandom.nextObject(UserEntity.class);
-        user.setRole(Role.Director);
+        user.setRole(Role.DIRECTOR);
 
         baseService.removeUserFromAllTable(user);
 

@@ -1,22 +1,22 @@
 [
   {
     "_id": "Viande",
-    "dishType": "MainCourse"
+    "dishType": "MAIN_COURSE"
   },
   {
     "_id": "Salade",
-    "dishType": "Starter"
+    "dishType": "STARTER"
   },
   {
     "_id": "Légumes",
-    "dishType": "MainCourse"
+    "dishType": "MAIN_COURSE"
   },
   {
     "_id": "Glace",
-    "dishType": "Dessert"
+    "dishType": "DESSERT"
   },
   {
     "_id": "Gâteau",
-    "dishType": "Dessert"
+    "dishType": "DESSERT"
   }
 ]
