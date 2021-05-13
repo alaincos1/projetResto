@@ -172,7 +172,7 @@ public class DirectorController extends RoleMenuController {
         int choice = getIntegerInput(0, 3);
 
         if (choice > 0) {
-            List<DishEntity> dishs = null;
+            List<DishEntity> dishs;
             if (choice == 2) {
                 dishs = baseService.getAllDishesNotOnTheMenuOrdered();
             } else {
@@ -321,7 +321,6 @@ public class DirectorController extends RoleMenuController {
         }
     }
 
-    //trouve le premier numéro de table libre de 1 à 100;
     protected String getFreeNumberTable(List<TableEntity> tables) {
         List<Integer> tableId = new ArrayList<>();
         tables.forEach(tableEntity -> tableId.add(Integer.parseInt(tableEntity.get_id())));

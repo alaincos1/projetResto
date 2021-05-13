@@ -658,7 +658,7 @@ class ButlerControllerTest {
         when(baseService.getServedOrders()).thenReturn(list);
         doNothing().when(butlerController).updateObject(any(OrderEntity.class));
 
-        butlerController.changeOrderState(new TableEntity());
+        butlerController.changeOrderState();
         verify(butlerController, times(1)).updateObject(any(OrderEntity.class));
     }
 

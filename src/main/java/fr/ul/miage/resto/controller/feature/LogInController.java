@@ -20,8 +20,7 @@ public class LogInController {
     public void launch() {
         askUserId();
         Role role = Launcher.getLoggedUser().getRole();
-        RoleMenuController controller = null;
-        connectUserAccordingRole(controller, role);
+        connectUserAccordingRole(role);
     }
 
     public void askUserId() {
@@ -36,7 +35,8 @@ public class LogInController {
         }
     }
 
-    protected void connectUserAccordingRole(RoleMenuController controller, Role role) {
+    protected void connectUserAccordingRole(Role role) {
+        RoleMenuController controller = null;
         switch (role) {
             case DIRECTOR:
                 controller = new DirectorController(baseService, service, new DirectorView());
@@ -54,7 +54,9 @@ public class LogInController {
                 controller = new HelperController(baseService, service, new HelperView());
                 break;
         }
-        controller.launch(role);
+        if(controller != null) {
+            controller.launch(role);
+        }
     }
 
     public void disconnect() {

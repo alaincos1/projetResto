@@ -2,8 +2,9 @@ package fr.ul.miage.resto.view.role;
 
 import fr.ul.miage.resto.constants.Features;
 import fr.ul.miage.resto.constants.Role;
+import fr.ul.miage.resto.view.GeneralView;
 
-public class RoleView {
+public class RoleView extends GeneralView {
     public void displayMenu(Role roleTemp) {
         System.out.println("\n --- \n " +
                 "En tant que " + roleTemp.getValue() + " choisissez une action : \n" +
@@ -27,9 +28,5 @@ public class RoleView {
 
     public void displaySuccess() {
         System.out.println("Opération effectuée");
-    }
-
-    public void displayMessage(String message) {
-        System.out.println(message);
     }
 }

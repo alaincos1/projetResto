@@ -199,30 +199,32 @@ public class ServerController extends RoleMenuController {
         return getIntegerInput(0, 1) == 1;
     }
 
-    //récupère les choix des clients
     protected List<String> getDishesOrdered(DishType dishType, HashMap<Integer, MenuUtil> menus) {
         List<String> idDishes = new ArrayList<>();
         MenuUtil menu = menus.values().stream().filter(menu1 -> menu1.getDishType().equals(dishType)).findFirst().orElse(null);
-        List<DishEntity> allDishes = menu.getDishes();
 
-        serverView.displayMenuByCat(allDishes);
-        serverView.displayOrderChoice();
-        String input = getStringCommandInput(0, allDishes.size() - 1);
-        while (menu.isDishesAvailable() && (!input.equals("-v") || CollectionUtils.isEmpty(idDishes))) {
-            if (CollectionUtils.isEmpty(idDishes) && input.equals("-v")) {
-                serverView.displayNoDishInTheOrder();
-            }
-            idDishes = getChosenDishes(input, allDishes, idDishes);
-
-            //maj des plats disponibles
-            menu.setDishes(baseService.getDestockableDishesByDishType(dishType));
+        List<DishEntity> allDishes;
+        if (menu != null) {
             allDishes = menu.getDishes();
-            menu.setDishesAvailable(!CollectionUtils.isEmpty(allDishes));
-            if (menu.isDishesAvailable()) {
-                serverView.displayOrderChoice();
-                input = getStringCommandInput(0, allDishes.size() - 1);
-            } else {
-                serverView.displayNoDishOnTheMenu();
+            serverView.displayMenuByCat(allDishes);
+            serverView.displayOrderChoice();
+            String input = getStringCommandInput(0, allDishes.size() - 1);
+            while (menu.isDishesAvailable() && (!input.equals("-v") || CollectionUtils.isEmpty(idDishes))) {
+                if (CollectionUtils.isEmpty(idDishes) && input.equals("-v")) {
+                    serverView.displayNoDishInTheOrder();
+                }
+                idDishes = getChosenDishes(input, allDishes, idDishes);
+
+                //maj des plats disponibles
+                menu.setDishes(baseService.getDestockableDishesByDishType(dishType));
+                allDishes = menu.getDishes();
+                menu.setDishesAvailable(!CollectionUtils.isEmpty(allDishes));
+                if (menu.isDishesAvailable()) {
+                    serverView.displayOrderChoice();
+                    input = getStringCommandInput(0, allDishes.size() - 1);
+                } else {
+                    serverView.displayNoDishOnTheMenu();
+                }
             }
         }
         return idDishes;

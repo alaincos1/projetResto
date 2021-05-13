@@ -110,8 +110,8 @@ public class ButlerController extends RoleMenuController {
             String choiceTable = getStringInput();
             TableEntity tableChoice = baseService.getTableById(choiceTable);
 
-            if (ObjectUtils.isEmpty(tableChoice) || !butlerView.orderServed(tableChoice, baseService)
-                    || !butlerView.stateForBill(tableChoice)) {
+            if (Boolean.TRUE.equals(ObjectUtils.isEmpty(tableChoice) || !butlerView.orderServed(tableChoice, baseService)
+                    || !butlerView.stateForBill(tableChoice))) {
                 butlerView.displayInputIncorrect();
                 editBills();
             } else {
@@ -127,7 +127,7 @@ public class ButlerController extends RoleMenuController {
 				tableChoice.setTableState(TableState.DIRTY);
 				saveObject(tableChoice);
 				saveObject(bill);
-				changeOrderState(tableChoice);
+				changeOrderState();
                 savePerformance(service, baseService, "serviceTime", 30, 120);
             }
 
@@ -234,7 +234,7 @@ public class ButlerController extends RoleMenuController {
      * Fonction qui permet de définir le service en fonction d l'entrée de
      * l'utilisateur
      *
-     * @param choiceMealType
+     * @param choiceMealType le mealType choisi
      * @return Entrée de l'utilsiateur (0/1)
      */
     protected MealType choiceMealType(Integer choiceMealType) {
@@ -282,7 +282,7 @@ public class ButlerController extends RoleMenuController {
      * Retourne l'id de la table entrée par l'utilisateur si elle existe et que
      * l'user en parametre n'est ni son serveur ni son assistant
      *
-     * @param user
+     * @param user l'utilisateur
      * @return id de la table
      */
     protected String choiceTableServer(UserEntity user) {
@@ -300,8 +300,8 @@ public class ButlerController extends RoleMenuController {
      * savoir si le table avec l'id 1 existe et que "ser" n'est ni son serveur ni
      * son assistant
      *
-     * @param tableId
-     * @param user
+     * @param tableId l'id de la table
+     * @param user l'utilisateur
      * @return boolean
      */
     protected boolean isTableIdCorrectServer(String tableId, UserEntity user) {
@@ -335,7 +335,7 @@ public class ButlerController extends RoleMenuController {
     /**
      * Mettre à jour un objet (table...)
      *
-     * @param o
+     * @param o l'objet à sauvegarder en base
      */
     protected void updateObject(Object o) {
         if (baseService.update(o)) {
@@ -349,7 +349,7 @@ public class ButlerController extends RoleMenuController {
     /**
      * Insere un objet (facture, réservation..)
      *
-     * @param o
+     * @param o l'objet à sauvegarder en base
      */
     protected void saveObject(Object o) {
         if (baseService.save(o)) {
@@ -363,7 +363,7 @@ public class ButlerController extends RoleMenuController {
     /**
      * retourne la liste des plats d'une table (toutes les commandes servies)
      *
-     * @param table
+     * @param table la table
      * @return la liste des id des plats
      */
     public List<String> listDishes(TableEntity table) {
@@ -395,11 +395,8 @@ public class ButlerController extends RoleMenuController {
 	
 	/**
 	 * Mettre à jour l'état des commandes lorsqu'elles sont payées
-	 * 
-	 * @param table
-	 * @return la liste des id des plats
 	 */
-	public void changeOrderState(TableEntity table) {
+	public void changeOrderState() {
 		List<OrderEntity> orders = baseService.getServedOrders();
 		for (OrderEntity order : orders) {
 			order.setOrderState(OrderState.CHECKED);

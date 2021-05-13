@@ -18,7 +18,11 @@ import java.util.stream.IntStream;
 
 @Slf4j
 public class DateUtil {
-    private static final SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.FRENCH);
+    private static final String DATE_FORMAT = "yyyy/MM/dd";
+
+    private DateUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static List<DateDto> getListDate(String type, String date, Integer last) {
         LocalDate localDate = getLocalDate(date);
@@ -40,6 +44,7 @@ public class DateUtil {
 
     private static List<DateDto> getDatesDays(Integer last, LocalDate localDate) {
         localDate = localDate.minusDays(last);
+        SimpleDateFormat defaultFormat = new SimpleDateFormat(DATE_FORMAT, Locale.FRENCH);
         SimpleDateFormat displayFormat = new SimpleDateFormat("yyyy/MM/dd (EEEE)", Locale.FRENCH);
 
         List<String> startDates = getFormattedDate(defaultFormat, localDate, last, 0);
@@ -57,6 +62,8 @@ public class DateUtil {
         LocalDate localDate1 = localDate.minusWeeks(last).with(DayOfWeek.MONDAY);
         LocalDate localDate2 = localDate.minusWeeks(last).with(DayOfWeek.SUNDAY);
 
+        SimpleDateFormat defaultFormat = new SimpleDateFormat(DATE_FORMAT, Locale.FRENCH);
+
         List<String> startDates = getFormattedDate(defaultFormat, localDate1, last, 1);
         List<String> endDates = getFormattedDate(defaultFormat, localDate2, last, 1);
 
@@ -72,6 +79,7 @@ public class DateUtil {
         LocalDate localDate1 = localDate.minusMonths(last).withDayOfMonth(1);
         LocalDate localDate2 = localDate.minusMonths(last).withDayOfMonth(localDate.lengthOfMonth());
         SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM yyyy", Locale.FRENCH);
+        SimpleDateFormat defaultFormat = new SimpleDateFormat(DATE_FORMAT, Locale.FRENCH);
 
         List<String> displayDates = getFormattedDate(displayFormat, localDate1, last, 2);
         List<String> startDates = getFormattedDate(defaultFormat, localDate1, last, 2);
@@ -96,7 +104,7 @@ public class DateUtil {
 
     private static LocalDate getLocalDate(String date) {
         try {
-            return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            return LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT));
         } catch (DateTimeParseException e) {
             log.error(e.getMessage());
         }

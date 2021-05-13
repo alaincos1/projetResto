@@ -26,6 +26,8 @@ public class CookController extends RoleMenuController {
     private final BaseService baseService;
     private final Service service;
     private final CookView cookView;
+    private static final String MINUS_THAN = "moins de";
+    private static final String CHAR = " caractères";
 
     @Override
     public void callAction(Integer action) {
@@ -92,7 +94,7 @@ public class CookController extends RoleMenuController {
     protected void createDish() {
         DishEntity newDish = new DishEntity();
         boolean modify = false;
-        cookView.displayAskInput("le nom du plat", "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
+        cookView.displayAskInput("le nom du plat", MINUS_THAN + InfoRestaurant.MAX_LENGTH_NAME.getValue() + CHAR);
         String name = getStringInput();
         if (baseService.getDishById(name) != null) {
             cookView.displayModifyOrCancel();
@@ -138,10 +140,10 @@ public class CookController extends RoleMenuController {
         cookView.displayCategories(categories);
         Integer input = getIntegerInput(0, categories.size());
         if (input == 0) {
-            cookView.displayAskInput("la nouvelle catégorie du plat", "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
+            cookView.displayAskInput("la nouvelle catégorie du plat", MINUS_THAN + InfoRestaurant.MAX_LENGTH_NAME.getValue() + CHAR);
             String newCat = getStringInput();
             while (baseService.getCategoryById(newCat) != null) {
-                cookView.displayAskInput("une catégorie de plat qui n'est pas déjà définie dans un autre type de plat que " + dishType.getDish(), "moins de " + InfoRestaurant.MAX_LENGTH_NAME.getValue() + " caractères");
+                cookView.displayAskInput("une catégorie de plat qui n'est pas déjà définie dans un autre type de plat que " + dishType.getDish(), MINUS_THAN + InfoRestaurant.MAX_LENGTH_NAME.getValue() + CHAR);
                 newCat = getStringInput();
             }
             return newCat;

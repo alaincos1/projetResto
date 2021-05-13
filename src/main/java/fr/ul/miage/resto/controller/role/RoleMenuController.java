@@ -20,6 +20,7 @@ public class RoleMenuController {
     protected RoleView roleView = new RoleView();
     protected Integer nbActions;
     protected Role roleTemp;
+    private static final Random random = new Random();
 
     public void launch(Role role) {
         this.roleTemp = role;
@@ -83,8 +84,7 @@ public class RoleMenuController {
     protected void savePerformance(Service service, BaseService baseService, String label, Integer min, Integer max) {
         String idPerf = service.getDate() + service.getMealType().toString();
         PerformanceEntity perf = baseService.getPerformanceById(idPerf);
-        Random r = new Random();
-        Integer time = r.nextInt((max - min) + 1) + min;
+        Integer time = random.nextInt((max - min) + 1) + min;
         if (perf == null) {
             perf = new PerformanceEntity();
             perf.initPerf(idPerf, label, time);
