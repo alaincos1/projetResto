@@ -1,12 +1,14 @@
 package fr.ul.miage.projetResto.controller.role;
 
 import fr.ul.miage.projetResto.appinfo.Service;
+import fr.ul.miage.projetResto.constants.MealType;
 import fr.ul.miage.projetResto.constants.Role;
 import fr.ul.miage.projetResto.dao.service.BaseService;
 import fr.ul.miage.projetResto.model.entity.DishEntity;
 import fr.ul.miage.projetResto.model.entity.ProductEntity;
 import fr.ul.miage.projetResto.model.entity.TableEntity;
 import fr.ul.miage.projetResto.model.entity.UserEntity;
+import fr.ul.miage.projetResto.utils.DateDto;
 import fr.ul.miage.projetResto.view.role.DirectorView;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.DisplayName;
@@ -17,8 +19,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -686,5 +687,77 @@ class DirectorControllerTest {
         directorController.addOrDeleteDishOnTheMenu(dishs);
 
         verify(baseService, times(1)).update(any(DishEntity.class));
+    }
+
+    @Test
+    public void testAnalysesIncomesWithReturn() {
+        doReturn(0).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        doNothing().when(directorController).launch(Role.Director);
+
+        directorController.analysesIncomes();
+
+        verify(directorController, times(1)).launch(any(Role.class));
+    }
+
+    @Test
+    public void testAnalysesIncomes() {
+        doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).analyses(anyString(), anyInt());
+
+        directorController.analysesIncomes();
+
+        verify(directorController, times(1)).analyses(anyString(), anyInt());
+    }
+
+    @Test
+    public void testAnalysesIncomesMostFamous() {
+        doReturn(4).when(directorController).getIntegerInput(anyInt(), anyInt());
+
+        doNothing().when(directorController).launch(Role.Director);
+        doNothing().when(directorController).analysesMostFamous();
+
+        directorController.analysesIncomes();
+
+        verify(directorController, times(1)).analysesMostFamous();
+    }
+
+    @Test
+    public void testAnalyses() {
+        String type = "day";
+        Integer last = 4;
+        String date = "2021/05/13";
+        List<DateDto> dates = new ArrayList<>(Arrays.asList(new DateDto("2021/05/13", "2021/05/13", "2021/05/13 (JEUDI)")));
+
+        when(service.getDate()).thenReturn(date);
+        doReturn(1).doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
+        doReturn(dates).when(directorController).getListDate(anyString(), anyString(), anyInt());
+        when(baseService.getTakingByPeriod(any(DateDto.class), any(MealType.class))).thenReturn("Recette");
+
+        directorController.analyses(type, last);
+
+        verify(directorView, times(1)).simpleDisplay(anyString());
+    }
+
+    @Test
+    public void testAnalysesMostFamous() {
+        Map.Entry<String, Integer> mostFamous = new AbstractMap.SimpleEntry<>("Tarte à la rubarbe", 42);
+
+        when(baseService.getMostFamousDish()).thenReturn(mostFamous);
+
+        directorController.analysesMostFamous();
+
+        verify(directorView, times(1)).displayMostFamous(any(Map.Entry.class));
+    }
+
+    @Test
+    public void testAnalysesMostFamousWithNull() {
+        when(baseService.getMostFamousDish()).thenReturn(null);
+
+        directorController.analysesMostFamous();
+
+        verify(directorView, times(1)).displayError();
     }
 }

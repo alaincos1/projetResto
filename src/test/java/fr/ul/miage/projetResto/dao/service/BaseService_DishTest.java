@@ -1,8 +1,14 @@
 package fr.ul.miage.projetResto.dao.service;
 
 import fr.ul.miage.projetResto.model.entity.DishEntity;
+import fr.ul.miage.projetResto.model.entity.OrderEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -51,6 +57,27 @@ public class BaseService_DishTest extends AbstractServiceTest {
         DishEntity actual = baseService.getDishById(expected.get_id());
 
         Assertions.assertNull(actual);
+    }
+
+    @Test
+    public void testGetMostFamousDish() {
+        List<String> idsDish1 = new ArrayList<>(Arrays.asList("plat1", "plat2"));
+        List<String> idsDish2 = new ArrayList<>(Arrays.asList("plat1", "plat3"));
+
+        OrderEntity orderEntity1 = easyRandom.nextObject(OrderEntity.class);
+        OrderEntity orderEntity2 = easyRandom.nextObject(OrderEntity.class);
+
+        orderEntity1.setIdsDish(idsDish1);
+        orderEntity2.setIdsDish(idsDish2);
+        List<OrderEntity> orders = new ArrayList<>(Arrays.asList(orderEntity1, orderEntity2));
+
+        when(orderCollection.getAllChecked()).thenReturn(orders);
+
+        Map.Entry<String, Integer> mostFamous = baseService.getMostFamousDish();
+
+        Assertions.assertNotNull(mostFamous);
+        Assertions.assertEquals(2, mostFamous.getValue());
+        Assertions.assertEquals("plat1", mostFamous.getKey());
     }
 
     private void assertEqual(DishEntity actual, DishEntity expected) {
