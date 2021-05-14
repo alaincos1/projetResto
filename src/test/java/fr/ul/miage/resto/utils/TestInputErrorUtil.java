@@ -1,6 +1,5 @@
-package fr.ul.miage.resto.controller.utils;
+package fr.ul.miage.resto.utils;
 
-import fr.ul.miage.resto.utils.InputErrorUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
