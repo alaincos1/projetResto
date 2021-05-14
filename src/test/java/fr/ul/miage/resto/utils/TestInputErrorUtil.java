@@ -67,11 +67,11 @@ class TestInputErrorUtil {
         assertNull(InputErrorUtil.checkStringCommand(arg, 1, 5));
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"-a", "-w"})
     @DisplayName("String Commande : Vérifier que l'input est un string et renvoie le bon string")
-    void testInputString() {
-        String test = "-a";
-        assertNull(InputErrorUtil.checkStringCommand(test, null, null));
+    void testInputString(String arg) {
+        assertNull(InputErrorUtil.checkStringCommand(arg, null, null));
     }
 
     @Test
@@ -96,24 +96,10 @@ class TestInputErrorUtil {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"22/03/2020", "2021/02/31"})
+    @ValueSource(strings = {"22/03/2020", "2021/02/31", "2021/56/12", "2021/03/56", "2019/09/30"})
     @DisplayName("Date : Vérifier que la méthode retourne null si le string n'est pas de bon format, impossible,")
     void testInputDateFormatReturnNull(String arg) {
         assertNull(InputErrorUtil.checkDate(arg));
-    }
-
-    @Test
-    @DisplayName("Date : Vérifier que la méthode retourne null si la date est impossible (mois n°56)")
-    void testInputDateImpossibleReturnNull2() {
-        String test = "2021/56/12";
-        assertNull(InputErrorUtil.checkDate(test));
-    }
-
-    @Test
-    @DisplayName("Date : Vérifier que la méthode retourne null si la date est impossible (jour n°56)")
-    void testInputDateImpossibleReturnNull3() {
-        String test = "2021/03/56";
-        assertNull(InputErrorUtil.checkDate(test));
     }
 
     @Test

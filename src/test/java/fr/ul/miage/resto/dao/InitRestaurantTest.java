@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -32,8 +33,34 @@ class InitRestaurantTest {
     BaseService baseService;
     @Mock
     Service service;
+    @Spy
     @InjectMocks
     InitRestaurant initRestaurant;
+
+    @Test
+    void testInitRestaurant() {
+        doNothing().when(initRestaurant).deletePastBookings();
+        doNothing().when(initRestaurant).initUncheckedOrder();
+        doNothing().when(initRestaurant).initTableState();
+        doNothing().when(initRestaurant).initUsers();
+
+        initRestaurant.initRestaurant();
+
+        verify(initRestaurant, times(1)).deletePastBookings();
+        verify(initRestaurant, times(1)).initUncheckedOrder();
+        verify(initRestaurant, times(1)).initTableState();
+        verify(initRestaurant, times(1)).initUsers();
+    }
+
+    @Test
+    void testDeletePastBookings() {
+        doNothing().when(baseService).deletePastBooking(anyString());
+        when(service.getDate()).thenReturn("2021/09/30");
+
+        initRestaurant.deletePastBookings();
+
+        verify(baseService, times(1)).deletePastBooking(anyString());
+    }
 
     @Test
     void testInitUncheckedOrder() {
