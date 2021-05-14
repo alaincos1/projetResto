@@ -35,7 +35,7 @@ class HelperControllerTest {
     @DisplayName("Afficher les tables")
     void testViewTables() {
         UserEntity user = new UserEntity();
-        user.set_id("hel1");
+        user.setId("hel1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
         when(baseService.getAllTableByServerOrHelper(anyString())).thenReturn(tables);
@@ -50,7 +50,7 @@ class HelperControllerTest {
     @DisplayName("Aucune table à afficher")
     void testViewNoneTables() {
         UserEntity user = new UserEntity();
-        user.set_id("hel1");
+        user.setId("hel1");
         List<TableEntity> tables = new ArrayList<>();
         when(baseService.getAllTableByServerOrHelper(anyString())).thenReturn(tables);
         doNothing().when(helperController).askMainMenu();
@@ -64,7 +64,7 @@ class HelperControllerTest {
     @DisplayName("Nettoie une table")
     void testCleanTables() {
         UserEntity user = new UserEntity();
-        user.set_id("hel1");
+        user.setId("hel1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
         tables.get(0).setTableState(TableState.DIRTY);
@@ -83,7 +83,7 @@ class HelperControllerTest {
     @DisplayName("Aucune table à nettoyer")
     void testCleanNoneTables() {
         UserEntity user = new UserEntity();
-        user.set_id("hel1");
+        user.setId("hel1");
         List<TableEntity> tables = new ArrayList<>();
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
         doNothing().when(helperController).launch(Role.HELPER);
@@ -98,7 +98,7 @@ class HelperControllerTest {
     @DisplayName("Annule le nettoyage une table")
     void testCleanTablesCancel() {
         UserEntity user = new UserEntity();
-        user.set_id("hel1");
+        user.setId("hel1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
         tables.get(0).setTableState(TableState.DIRTY);

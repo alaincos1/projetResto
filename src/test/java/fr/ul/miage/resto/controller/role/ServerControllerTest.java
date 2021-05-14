@@ -41,7 +41,7 @@ class ServerControllerTest {
     @DisplayName("Afficher les tables")
     void testViewTables() {
         UserEntity user = new UserEntity();
-        user.set_id("ser1");
+        user.setId("ser1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
 
@@ -55,7 +55,7 @@ class ServerControllerTest {
     @DisplayName("Aucune table à afficher")
     void testViewNoneTables() {
         UserEntity user = new UserEntity();
-        user.set_id("ser1");
+        user.setId("ser1");
         List<TableEntity> tables = new ArrayList<>();
 
         when(baseService.getAllTableByServerOrHelper(anyString())).thenReturn(tables);
@@ -68,7 +68,7 @@ class ServerControllerTest {
     @DisplayName("Déclare une table à débarasser")
     void testSetTablesDirty() {
         UserEntity user = new UserEntity();
-        user.set_id("ser1");
+        user.setId("ser1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
         tables.get(0).setTableState(TableState.STARTER);
@@ -87,7 +87,7 @@ class ServerControllerTest {
     @DisplayName("Aucune table à déclarer à débarasser")
     void testSetTablesDirtyNone() {
         UserEntity user = new UserEntity();
-        user.set_id("ser1");
+        user.setId("ser1");
         List<TableEntity> tables = new ArrayList<>();
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
         doNothing().when(serverController).launch(Role.SERVER);
@@ -102,7 +102,7 @@ class ServerControllerTest {
     @DisplayName("Annule la déclaration du débarassage d'une table")
     void testSetTablesDirtyCancel() {
         UserEntity user = new UserEntity();
-        user.set_id("ser1");
+        user.setId("ser1");
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
         tables.get(0).setTableState(TableState.STARTER);
@@ -121,14 +121,14 @@ class ServerControllerTest {
     @DisplayName("Servir une commande")
     void testServeOrders() {
         UserEntity user = new UserEntity();
-        user.set_id("ser1");
+        user.setId("ser1");
         List<TableEntity> tables = new ArrayList<>();
         List<OrderEntity> orders = new ArrayList<>();
         List<String> dishes = new ArrayList<>();
         dishes.add("plat");
         for (int i = 0; i < 3; i++) {
             OrderEntity order = new OrderEntity();
-            order.set_id("" + i);
+            order.setId("" + i);
             order.setIdTable("" + i);
             order.setIdsDish(dishes);
             orders.add(order);
@@ -152,14 +152,14 @@ class ServerControllerTest {
     @DisplayName("Annuler le service d'une commande")
     void testServeOrdersCancel() {
         UserEntity user = new UserEntity();
-        user.set_id("ser1");
+        user.setId("ser1");
         List<TableEntity> tables = new ArrayList<>();
         List<OrderEntity> orders = new ArrayList<>();
         List<String> dishes = new ArrayList<>();
         dishes.add("plat");
         for (int i = 0; i < 3; i++) {
             OrderEntity order = new OrderEntity();
-            order.set_id("" + i);
+            order.setId("" + i);
             order.setIdTable("" + i);
             order.setIdsDish(dishes);
             orders.add(order);
@@ -181,7 +181,7 @@ class ServerControllerTest {
     @DisplayName("Aucune commande à servir")
     void testServeOrdersNone() {
         UserEntity user = new UserEntity();
-        user.set_id("ser1");
+        user.setId("ser1");
         List<TableEntity> tables = new ArrayList<>();
         List<OrderEntity> orders = new ArrayList<>();
         when(baseService.getAllTableByServerOrHelper(anyString())).thenReturn(tables);
@@ -209,7 +209,7 @@ class ServerControllerTest {
 
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table = new TableEntity();
-        table.set_id("2");
+        table.setId("2");
         tables.add(table);
 
         List<OrderEntity> ordersActual = serverController.getOnlyServerOrders(orders, tables);
@@ -366,7 +366,7 @@ class ServerControllerTest {
 
         OrderEntity result = serverController.createOrderToSave("1", false, dishes, drinks);
 
-        order.set_id(result.get_id()); //Id généré aléatoirement
+        order.setId(result.getId()); //Id généré aléatoirement
         assertEquals(order, result);
     }
 
@@ -375,11 +375,11 @@ class ServerControllerTest {
     void testRemoveDish() {
         List<DishEntity> allDishes = new ArrayList<>();
         DishEntity dishEntity = new DishEntity();
-        dishEntity.set_id("5");
+        dishEntity.setId("5");
         dishEntity.setIdsProduct(new ArrayList<>());
         allDishes.add(dishEntity);
         DishEntity dishEntity1 = new DishEntity();
-        dishEntity1.set_id("12");
+        dishEntity1.setId("12");
         dishEntity1.setIdsProduct(new ArrayList<>());
         allDishes.add(dishEntity1);
         List<String> selection = new ArrayList<>();
@@ -400,11 +400,11 @@ class ServerControllerTest {
     void testRemoveDishNotInTheList() {
         List<DishEntity> allDishes = new ArrayList<>();
         DishEntity dishEntity = new DishEntity();
-        dishEntity.set_id("6");
+        dishEntity.setId("6");
         dishEntity.setIdsProduct(new ArrayList<>());
         allDishes.add(dishEntity);
         DishEntity dishEntity1 = new DishEntity();
-        dishEntity1.set_id("13");
+        dishEntity1.setId("13");
         dishEntity1.setIdsProduct(new ArrayList<>());
         allDishes.add(dishEntity1);
         List<String> selection = new ArrayList<>();
@@ -427,11 +427,11 @@ class ServerControllerTest {
     void testAddDish() {
         List<DishEntity> allDishes = new ArrayList<>();
         DishEntity dishEntity = new DishEntity();
-        dishEntity.set_id("5");
+        dishEntity.setId("5");
         dishEntity.setIdsProduct(new ArrayList<>());
         allDishes.add(dishEntity);
         DishEntity dishEntity1 = new DishEntity();
-        dishEntity1.set_id("8");
+        dishEntity1.setId("8");
         dishEntity1.setIdsProduct(new ArrayList<>());
         allDishes.add(dishEntity1);
         List<String> selection = new ArrayList<>();
@@ -631,11 +631,11 @@ class ServerControllerTest {
         DishEntity dish1 = new DishEntity();
         DishEntity dish2 = new DishEntity();
         DishEntity dish3 = new DishEntity();
-        dish1.set_id("Salade de pommes de terre");
+        dish1.setId("Salade de pommes de terre");
         dish1.setIdCategory("Salades");
-        dish2.set_id("Beignet de bananes");
+        dish2.setId("Beignet de bananes");
         dish2.setIdCategory("Apéro");
-        dish3.set_id("Salades de carottes");
+        dish3.setId("Salades de carottes");
         dish3.setIdCategory("Salades");
         dishes.add(dish1);
         dishes.add(dish2);
@@ -662,11 +662,11 @@ class ServerControllerTest {
         DishEntity dish1 = new DishEntity();
         DishEntity dish2 = new DishEntity();
         DishEntity dish3 = new DishEntity();
-        dish1.set_id("Salade de pommes de terre");
+        dish1.setId("Salade de pommes de terre");
         dish1.setIdCategory("Salades");
-        dish2.set_id("Beignet de bananes");
+        dish2.setId("Beignet de bananes");
         dish2.setIdCategory("Apéro");
-        dish3.set_id("Salades de carottes");
+        dish3.setId("Salades de carottes");
         dish3.setIdCategory("Salades");
         dishes.add(dish1);
         dishes.add(dish2);
@@ -693,11 +693,11 @@ class ServerControllerTest {
         DishEntity dish1 = new DishEntity();
         DishEntity dish2 = new DishEntity();
         DishEntity dish3 = new DishEntity();
-        dish1.set_id("Salade de pommes de terre");
+        dish1.setId("Salade de pommes de terre");
         dish1.setIdCategory("Salades");
-        dish2.set_id("Beignet de bananes");
+        dish2.setId("Beignet de bananes");
         dish2.setIdCategory("Apéro");
-        dish3.set_id("Salades de carottes");
+        dish3.setId("Salades de carottes");
         dish3.setIdCategory("Salades");
         dishes.add(dish1);
         dishes.add(dish2);
@@ -720,7 +720,7 @@ class ServerControllerTest {
     @DisplayName("Prend une commande mais aucune table servable")
     void testTakeOrdersButNoTableToServe() {
         UserEntity user = new UserEntity();
-        user.set_id("serveur");
+        user.setId("serveur");
         user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
 
@@ -736,11 +736,11 @@ class ServerControllerTest {
     @DisplayName("Prend une commande mais annulation")
     void testTakeOrdersCancel() {
         UserEntity user = new UserEntity();
-        user.set_id("serveur");
+        user.setId("serveur");
         user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
-        table1.set_id("1");
+        table1.setId("1");
         tables.add(table1);
 
         when(baseService.getTablesReadyToOrderByServer(anyString())).thenReturn(tables);
@@ -758,11 +758,11 @@ class ServerControllerTest {
     @DisplayName("Prend une commande mais aucun plat sur le menus")
     void testTakeOrdersNoDishTypeAvailable() {
         UserEntity user = new UserEntity();
-        user.set_id("serveur");
+        user.setId("serveur");
         user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
-        table1.set_id("1");
+        table1.setId("1");
         table1.setTableState(TableState.OCCUPIED);
         tables.add(table1);
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
@@ -784,11 +784,11 @@ class ServerControllerTest {
     @DisplayName("Prend une commande mais abandon au moment de chosir le type de plat")
     void testTakeOrdersCancelChoiceDishType() {
         UserEntity user = new UserEntity();
-        user.set_id("serveur");
+        user.setId("serveur");
         user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
-        table1.set_id("1");
+        table1.setId("1");
         table1.setTableState(TableState.OCCUPIED);
         tables.add(table1);
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
@@ -812,11 +812,11 @@ class ServerControllerTest {
     @DisplayName("Prend une commande mais annule à la fin de la procédure ")
     void testTakeOrdersCancleAllOrder() {
         UserEntity user = new UserEntity();
-        user.set_id("serveur");
+        user.setId("serveur");
         user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
-        table1.set_id("1");
+        table1.setId("1");
         table1.setTableState(TableState.OCCUPIED);
         tables.add(table1);
         HashMap<Integer, MenuUtil> menus = new HashMap<>();
@@ -851,11 +851,11 @@ class ServerControllerTest {
     @DisplayName("Prend une commande")
     void testTakeOrders() {
         UserEntity user = new UserEntity();
-        user.set_id("serveur");
+        user.setId("serveur");
         user.setRole(Role.SERVER);
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
-        table1.set_id("1");
+        table1.setId("1");
         table1.setTableState(TableState.OCCUPIED);
         tables.add(table1);
         HashMap<Integer, MenuUtil> menus = new HashMap<>();

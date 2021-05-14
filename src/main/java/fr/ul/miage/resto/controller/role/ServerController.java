@@ -6,15 +6,12 @@ import fr.ul.miage.resto.constants.DishType;
 import fr.ul.miage.resto.constants.OrderState;
 import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.constants.TableState;
-import fr.ul.miage.resto.controller.feature.LogInController;
 import fr.ul.miage.resto.dao.service.BaseService;
 import fr.ul.miage.resto.model.entity.DishEntity;
 import fr.ul.miage.resto.model.entity.OrderEntity;
 import fr.ul.miage.resto.model.entity.TableEntity;
 import fr.ul.miage.resto.model.entity.UserEntity;
 import fr.ul.miage.resto.utils.MenuUtil;
-import fr.ul.miage.resto.view.feature.LogInView;
-import fr.ul.miage.resto.view.role.DirectorView;
 import fr.ul.miage.resto.view.role.ServerView;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -34,13 +31,7 @@ public class ServerController extends RoleController {
         Role role = Launcher.getLoggedUser().getRole();
         switch (action) {
             case 0:
-                if (role.equals(Role.DIRECTOR)) {
-                    DirectorController directorController = new DirectorController(baseService, service, new DirectorView());
-                    directorController.launch(Role.DIRECTOR);
-                } else {
-                    LogInController logInController = new LogInController(baseService, service, new LogInView());
-                    logInController.disconnect();
-                }
+                goBackOrDisconnect(role, baseService, service);
                 break;
             case 1:
                 viewTables(Launcher.getLoggedUser());
@@ -68,7 +59,7 @@ public class ServerController extends RoleController {
         if (Role.DIRECTOR.equals(user.getRole())) {
             tables = baseService.getAllTables();
         } else {
-            tables = baseService.getAllTableByServerOrHelper(user.get_id());
+            tables = baseService.getAllTableByServerOrHelper(user.getId());
         }
 
         if (tables.isEmpty()) {
@@ -86,9 +77,9 @@ public class ServerController extends RoleController {
             tablesToDirty.addAll(baseService.getAllTableByState(TableState.MAIN_COURSE));
             tablesToDirty.addAll(baseService.getAllTableByState(TableState.DESSERT));
         } else {
-            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.STARTER));
-            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.MAIN_COURSE));
-            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.DESSERT));
+            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.getId(), TableState.STARTER));
+            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.getId(), TableState.MAIN_COURSE));
+            tablesToDirty.addAll(baseService.getAllTableByServerOrHelperAndState(user.getId(), TableState.DESSERT));
         }
 
         if (tablesToDirty.isEmpty()) {
@@ -113,7 +104,7 @@ public class ServerController extends RoleController {
     }
 
     protected void takeOrders(UserEntity user) {
-        List<TableEntity> tables = baseService.getTablesReadyToOrderByServer(user.get_id());
+        List<TableEntity> tables = baseService.getTablesReadyToOrderByServer(user.getId());
         if (CollectionUtils.isEmpty(tables)) {
             serverView.displayMessage("Il n'y a pas de tables où prendre de commandes. (Pas de clients, commande en cours de préparation, à servir...)");
         } else {
@@ -129,7 +120,7 @@ public class ServerController extends RoleController {
                     if (dishType != null) { //Min un plat est disponible pour ce type de plat
                         List<String> idDishes = getDishesOrdered(dishType, menus);
                         List<String> idDrinks = getDrinksOrdered();
-                        OrderEntity orderToSave = createOrderToSave(tables.get(idTableChoice).get_id(), childOrder, idDishes, idDrinks);
+                        OrderEntity orderToSave = createOrderToSave(tables.get(idTableChoice).getId(), childOrder, idDishes, idDrinks);
 
                         serverView.displayOrderToSave(orderToSave);
                         Integer choice = getIntegerInput(0, 1);
@@ -255,9 +246,9 @@ public class ServerController extends RoleController {
             DishEntity dishEntity = allDishes.get(Integer.parseInt(id));
             if (dishEntity.checkStock(baseService)) {
                 dishEntity.changeStock(baseService, false);
-                selection.add(dishEntity.get_id());
+                selection.add(dishEntity.getId());
             } else {
-                serverView.displayMessage("Stock insuffisant pour le plat: " + dishEntity.get_id());
+                serverView.displayMessage("Stock insuffisant pour le plat: " + dishEntity.getId());
             }
         }
         return selection;
@@ -269,9 +260,9 @@ public class ServerController extends RoleController {
         } else {
             for (String id : listToRemove) {
                 DishEntity dishEntity = allDishes.get(Integer.parseInt(id));
-                if (selection.contains(dishEntity.get_id())) {
+                if (selection.contains(dishEntity.getId())) {
                     dishEntity.changeStock(baseService, true);
-                    selection.remove(dishEntity.get_id());
+                    selection.remove(dishEntity.getId());
                 }
             }
         }
@@ -296,7 +287,7 @@ public class ServerController extends RoleController {
 
     protected OrderEntity createOrderToSave(String idTable, boolean childOrder, List<String> idDishes, List<String> idDrinks) {
         OrderEntity orderToSave = new OrderEntity();
-        orderToSave.set_id(new ObjectId().toString());
+        orderToSave.setId(new ObjectId().toString());
         orderToSave.setIdTable(idTable);
         orderToSave.setOrderState(OrderState.ORDERED);
         orderToSave.setChildOrder(childOrder);
@@ -318,7 +309,7 @@ public class ServerController extends RoleController {
     protected void serveOrders(UserEntity user) {
         List<OrderEntity> orders = baseService.getPreparedOrders();
         if (!Role.DIRECTOR.equals(user.getRole())) {
-            List<TableEntity> tables = baseService.getAllTableByServerOrHelper(user.get_id());
+            List<TableEntity> tables = baseService.getAllTableByServerOrHelper(user.getId());
             orders = getOnlyServerOrders(orders, tables);
         }
 
@@ -348,7 +339,7 @@ public class ServerController extends RoleController {
     protected List<OrderEntity> getOnlyServerOrders(List<OrderEntity> orders, List<TableEntity> tables) {
         for (int i = orders.size() - 1; i >= 0; i--) {
             int finalI = i;
-            if (tables.stream().noneMatch(tableEntity -> tableEntity.get_id().equals(orders.get(finalI).getIdTable()))) {
+            if (tables.stream().noneMatch(tableEntity -> tableEntity.getId().equals(orders.get(finalI).getIdTable()))) {
                 orders.remove(i);
             }
         }

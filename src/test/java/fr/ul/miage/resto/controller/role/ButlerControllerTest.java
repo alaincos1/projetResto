@@ -109,7 +109,7 @@ class ButlerControllerTest {
     @DisplayName("Vérifier l'existence d'une table par son id et son état")
     void testIsTableIdCorrectTestReturnTrue() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -124,7 +124,7 @@ class ButlerControllerTest {
     @DisplayName("Vérifier l'existence d'une table par son id et son état")
     void testIsTableIdCorrectTestReturnFalse() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -139,7 +139,7 @@ class ButlerControllerTest {
     @DisplayName("Vérifier l'existence d'une table par son id et son état")
     void testIsTableIdCorrectTestReturnFalse_FalseId() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -186,7 +186,7 @@ class ButlerControllerTest {
     @DisplayName("choix de la table correct avec id serveur")
     void testChoiceTableServerCorrectServer() {
         UserEntity user = new UserEntity();
-        user.set_id("hel1");
+        user.setId("hel1");
         user.setRole(Role.SERVER);
 
         doReturn("1").when(butlerController).getStringInput();
@@ -199,7 +199,7 @@ class ButlerControllerTest {
     @DisplayName("choix de la table incorrect avec id serveur false")
     void testChoiceTableServerCorrectServerFalse() {
         UserEntity user = new UserEntity();
-        user.set_id("hel1");
+        user.setId("hel1");
         user.setRole(Role.SERVER);
 
         doReturn("1").when(butlerController).getStringInput();
@@ -217,11 +217,11 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que la méthode retourne false quand l'utilisateur choisit une table incorrecte car le assistant est deja assigné à la table ")
     void testIsTableIdCorrectServerTestReturnFalseHelper() {
         UserEntity user = new UserEntity();
-        user.set_id("hel1");
+        user.setId("hel1");
         user.setRole(Role.HELPER);
 
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -236,11 +236,11 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que la méthode retourne true quand l'utilisateur choisit une table correcte avec serveur")
     void testIsTableIdCorrectServerTestReturnTrueServer() {
         UserEntity user = new UserEntity();
-        user.set_id("test");
+        user.setId("test");
         user.setRole(Role.SERVER);
 
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -255,11 +255,11 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que la méthode retourne true quand l'utilisateur choisit une table correcte avec assistant")
     void testIsTableIdCorrectServerTestReturnTrueHelper() {
         UserEntity user = new UserEntity();
-        user.set_id("test");
+        user.setId("test");
         user.setRole(Role.HELPER);
 
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -274,11 +274,11 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que la méthode retourne false quand l'utilisateur choisit une table incorrecte car le serveur est deja assigné à la table ")
     void testIsTableIdCorrectServerTestReturnFalseServer() {
         UserEntity user = new UserEntity();
-        user.set_id("ser1");
+        user.setId("ser1");
         user.setRole(Role.SERVER);
 
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -327,7 +327,7 @@ class ButlerControllerTest {
     @DisplayName("Verifier la taille de la liste retournée return 2")
     void testListDishTestOneOrder() {
         OrderEntity order = new OrderEntity();
-        order.set_id("1");
+        order.setId("1");
         order.setChildOrder(false);
         order.setIdTable("1");
         order.setOrderState(OrderState.SERVED);
@@ -338,7 +338,7 @@ class ButlerControllerTest {
         order.setIdsDish(list);
 
         OrderEntity order1 = new OrderEntity();
-        order1.set_id("2");
+        order1.setId("2");
         order1.setChildOrder(false);
         order1.setIdTable("2");
         order1.setOrderState(OrderState.SERVED);
@@ -346,7 +346,7 @@ class ButlerControllerTest {
         order1.setIdsDish(list);
 
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -365,7 +365,7 @@ class ButlerControllerTest {
     @DisplayName("Verifier la taille de la liste retournée return 4")
     void testListDishTestTwoOrders() {
         OrderEntity order = new OrderEntity();
-        order.set_id("1");
+        order.setId("1");
         order.setChildOrder(false);
         order.setIdTable("1");
         order.setOrderState(OrderState.SERVED);
@@ -376,7 +376,7 @@ class ButlerControllerTest {
         order.setIdsDish(list);
 
         OrderEntity order1 = new OrderEntity();
-        order1.set_id("2");
+        order1.setId("2");
         order1.setChildOrder(false);
         order1.setIdTable("1");
         order1.setOrderState(OrderState.SERVED);
@@ -386,7 +386,7 @@ class ButlerControllerTest {
         order1.setIdsDish(list1);
 
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -408,7 +408,7 @@ class ButlerControllerTest {
         listProducts.add("1");
         listProducts.add("2");
         DishEntity dish1 = new DishEntity();
-        dish1.set_id("1");
+        dish1.setId("1");
         dish1.setDishType(DishType.DESSERT);
         dish1.setIdCategory("Viande");
         dish1.setIdsProduct(listProducts);
@@ -416,7 +416,7 @@ class ButlerControllerTest {
         dish1.setPrice(15);
 
         DishEntity dish2 = new DishEntity();
-        dish2.set_id("2");
+        dish2.setId("2");
         dish2.setDishType(DishType.DESSERT);
         dish2.setIdCategory("Boisson");
         dish2.setIdsProduct(listProducts);
@@ -438,7 +438,7 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que l'édition d'une facture s'effectue")
     void testEditBillsCorrect() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -463,7 +463,7 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que l'édition d'une facture ne s'éffectue pas car pas de table au bon état")
     void testEditBillsFailedAnyTable() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -482,7 +482,7 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que l'édition d'une facture ne s'éffectue pas car la table entrée est incorrect")
     void testEditBillsFailedChoiceTable() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -504,7 +504,7 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que la table se met pas à jour quand le user choisi n'existe pas")
     void testAffectTablesToServerTestIncorrect() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -514,7 +514,7 @@ class ButlerControllerTest {
         listTable.add(table);
 
         UserEntity user = new UserEntity();
-        user.set_id("ser1");
+        user.setId("ser1");
         user.setRole(Role.SERVER);
 
         List<UserEntity> listUser = new ArrayList<>();
@@ -542,7 +542,7 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que la table se met à jour avec le nouveau serveur/assistant")
     void testAffectTablesToServerTestCorrect() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -552,7 +552,7 @@ class ButlerControllerTest {
         listTable.add(table);
 
         UserEntity user = new UserEntity();
-        user.set_id("ser2");
+        user.setId("ser2");
         user.setRole(Role.SERVER);
 
         List<UserEntity> listUser = new ArrayList<>();
@@ -582,7 +582,7 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que l'affectation des clients se fait")
     void testAffectTablesToCLientsTestCorrect() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -614,7 +614,7 @@ class ButlerControllerTest {
     @DisplayName("Vérifier que l'affectation des clients ne se fait pas si il n'y a pas de tables")
     void testAffectTablesToCLientsTestIncorrect() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -644,7 +644,7 @@ class ButlerControllerTest {
     @DisplayName("Changer l'état des commandes")
     void testChangeOrderStateTest() {
         OrderEntity order = new OrderEntity();
-        order.set_id("1");
+        order.setId("1");
         order.setChildOrder(false);
         order.setIdTable("1");
         order.setOrderState(OrderState.SERVED);
@@ -664,7 +664,7 @@ class ButlerControllerTest {
     @DisplayName("Retourne true car état de la table est correcte")
     void testStateForBillTestReturnTrue() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -677,7 +677,7 @@ class ButlerControllerTest {
     @DisplayName("Retourne false car état de la table est incorrecte")
     void testSstateForBillTestReturnFalse() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
@@ -690,14 +690,14 @@ class ButlerControllerTest {
     @DisplayName("Retourne true car état de la table est correct, des commandes ont été servi")
     void testOrderServedTestReturnTrue() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);
         table.setTableState(TableState.FREE);
 
         OrderEntity order = new OrderEntity();
-        order.set_id("1");
+        order.setId("1");
         order.setChildOrder(false);
         order.setIdTable("1");
         order.setOrderState(OrderState.SERVED);
@@ -708,7 +708,7 @@ class ButlerControllerTest {
         order.setIdsDish(list);
 
         OrderEntity order1 = new OrderEntity();
-        order1.set_id("2");
+        order1.setId("2");
         order1.setChildOrder(false);
         order1.setIdTable("1");
         order1.setOrderState(OrderState.SERVED);
@@ -730,7 +730,7 @@ class ButlerControllerTest {
     @DisplayName("Retourne false car état de la table est incorrecte, aucun commande n'a été servi")
     void testOrderServedTestReturnFalse() {
         TableEntity table = new TableEntity();
-        table.set_id("1");
+        table.setId("1");
         table.setIdHelper("hel1");
         table.setIdServer("ser1");
         table.setNbSeats(2);

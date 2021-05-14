@@ -246,7 +246,7 @@ public class BaseService {
             return;
         }
 
-        List<TableEntity> tables = getAllTableByServerOrHelper(user.get_id());
+        List<TableEntity> tables = getAllTableByServerOrHelper(user.getId());
 
         tables.forEach(table -> {
             if (user.getRole() == Role.SERVER) {

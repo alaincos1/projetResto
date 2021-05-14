@@ -6,15 +6,12 @@ import fr.ul.miage.resto.constants.DishType;
 import fr.ul.miage.resto.constants.InfoRestaurant;
 import fr.ul.miage.resto.constants.OrderState;
 import fr.ul.miage.resto.constants.Role;
-import fr.ul.miage.resto.controller.feature.LogInController;
 import fr.ul.miage.resto.dao.service.BaseService;
 import fr.ul.miage.resto.model.entity.CategoryEntity;
 import fr.ul.miage.resto.model.entity.DishEntity;
 import fr.ul.miage.resto.model.entity.OrderEntity;
 import fr.ul.miage.resto.model.entity.ProductEntity;
-import fr.ul.miage.resto.view.feature.LogInView;
 import fr.ul.miage.resto.view.role.CookView;
-import fr.ul.miage.resto.view.role.DirectorView;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,13 +32,7 @@ public class CookController extends RoleController {
         Role role = Launcher.getLoggedUser().getRole();
         switch (action) {
             case 0:
-                if (role.equals(Role.DIRECTOR)) {
-                    DirectorController directorController = new DirectorController(baseService, service, new DirectorView());
-                    directorController.launch(Role.DIRECTOR);
-                } else {
-                    LogInController logInController = new LogInController(baseService, service, new LogInView());
-                    logInController.disconnect();
-                }
+                goBackOrDisconnect(role, baseService, service);
                 break;
             case 1:
                 viewOrdersList();
@@ -110,7 +101,7 @@ public class CookController extends RoleController {
             modify = true;
         }
 
-        newDish.set_id(name);
+        newDish.setId(name);
         newDish.setPrice(getPriceDish());
         newDish.setDishType(getDishType());
         newDish.setIdCategory(getDishCategory(newDish.getDishType()));
@@ -155,7 +146,7 @@ public class CookController extends RoleController {
             }
             return newCat;
         } else {
-            return categories.get(input - 1).get_id();
+            return categories.get(input - 1).getId();
         }
     }
 
@@ -176,7 +167,7 @@ public class CookController extends RoleController {
     protected List<String> parseToIdProducts(List<ProductEntity> selection) {
         List<String> listId = new ArrayList<>();
         for (ProductEntity product : selection) {
-            listId.add(product.get_id());
+            listId.add(product.getId());
         }
         return listId;
     }
@@ -207,7 +198,7 @@ public class CookController extends RoleController {
 
         if (baseService.getCategoryById(newDish.getIdCategory()) == null) {
             CategoryEntity cat = new CategoryEntity();
-            cat.set_id(newDish.getIdCategory());
+            cat.setId(newDish.getIdCategory());
             cat.setDishType(newDish.getDishType());
             if (!baseService.save(cat)) {
                 done2 = false;

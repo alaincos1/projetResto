@@ -3,6 +3,7 @@ package fr.ul.miage.resto.dao.repository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.ul.miage.resto.view.GeneralView;
 import org.bson.Document;
 
 public class Mapper {
@@ -17,7 +18,8 @@ public class Mapper {
         try {
             json = OBJECT_MAPPER.writeValueAsString(o);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            GeneralView generalView = new GeneralView();
+            generalView.displayMessage("Problème de parsing en Document: "+ e.getMessage());
         }
         return Document.parse(json);
     }
@@ -27,7 +29,8 @@ public class Mapper {
         try {
             return OBJECT_MAPPER.readValue(doc.toJson(), clazz);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            GeneralView generalView = new GeneralView();
+            generalView.displayMessage("Problème de parsing en Objet: "+ e.getMessage());
         }
         return null;
     }

@@ -24,7 +24,7 @@ public class ButlerView extends RoleView {
         for (TableEntity table : tables) {
             if ((StringUtils.isBlank(userId) && table.getTableState().getState().equals(tableState)) ||
                     (StringUtils.isNotBlank(userId) && !userId.equals(table.getIdServer()) && !userId.equals(table.getIdHelper()))) {
-                displayMessage(ID + table.get_id() + NB_PLACES + table.getNbSeats() + SERVER
+                displayMessage(ID + table.getId() + NB_PLACES + table.getNbSeats() + SERVER
                         + table.getIdServer() + ASSISTANT + table.getIdHelper());
                 nbTables++;
             }
@@ -35,14 +35,14 @@ public class ButlerView extends RoleView {
     public void displayServersList(List<UserEntity> users) {
         for (UserEntity user : users) {
             if (user.getRole().equals(Role.SERVER) || user.getRole().equals(Role.HELPER)) {
-                displayMessage(" - " + user.get_id() + " -> " + user.getRole().getValue());
+                displayMessage(" - " + user.getId() + " -> " + user.getRole().getValue());
             }
         }
     }
 
     public void displayAllTables(List<TableEntity> tables) {
         for (TableEntity table : tables) {
-            displayMessage(ID + table.get_id() + NB_PLACES + table.getNbSeats() + SERVER
+            displayMessage(ID + table.getId() + NB_PLACES + table.getNbSeats() + SERVER
                     + table.getIdServer() + ASSISTANT + table.getIdHelper());
         }
     }
@@ -52,7 +52,7 @@ public class ButlerView extends RoleView {
                                               BaseService baseService) {
         for (TableEntity table : tables) {
             if (tableIsReserved(table, date, mealType, baseService) == null) {
-                displayMessage(ID + table.get_id() + NB_PLACES + table.getNbSeats());
+                displayMessage(ID + table.getId() + NB_PLACES + table.getNbSeats());
             }
         }
     }
@@ -63,7 +63,7 @@ public class ButlerView extends RoleView {
         for (TableEntity table : tables) {
             String name = tableIsReserved(table, date, mealType, baseService);
             if (StringUtils.isNotBlank(name) && table.getTableState().equals(TableState.BOOKED)) {
-                displayMessage(ID + table.get_id() + NB_PLACES + table.getNbSeats() + " Nom : " + name);
+                displayMessage(ID + table.getId() + NB_PLACES + table.getNbSeats() + " Nom : " + name);
                 nbBooking++;
             }
         }
@@ -73,7 +73,7 @@ public class ButlerView extends RoleView {
     private String tableIsReserved(TableEntity table, String date, MealType mealType, BaseService baseService) {
         List<BookingEntity> bookings = baseService.getAllBooking();
         for (BookingEntity booking : bookings) {
-            if (table.get_id().equals(booking.getIdTable()) && booking.getMealType().equals(mealType)
+            if (table.getId().equals(booking.getIdTable()) && booking.getMealType().equals(mealType)
                     && booking.getDate().equals(date)) {
                 return booking.getReservationName();
             }
@@ -98,7 +98,7 @@ public class ButlerView extends RoleView {
         int t = 0;
         for (TableEntity table : tables) {
             if (Boolean.TRUE.equals(butlerController.stateForBill(table) && butlerController.ordersServed(table))) {
-                displayMessage(ID + table.get_id() + NB_PLACES + table.getNbSeats());
+                displayMessage(ID + table.getId() + NB_PLACES + table.getNbSeats());
                 t++;
             }
         }

@@ -43,7 +43,7 @@ class BaseService_DishTest extends AbstractServiceTest {
 
         when(dishCollection.getDishById(anyString())).thenReturn(expected);
 
-        DishEntity actual = baseService.getDishById(expected.get_id());
+        DishEntity actual = baseService.getDishById(expected.getId());
 
         assertEqual(actual, expected);
     }
@@ -54,7 +54,7 @@ class BaseService_DishTest extends AbstractServiceTest {
 
         when(dishCollection.getDishById(anyString())).thenReturn(null);
 
-        DishEntity actual = baseService.getDishById(expected.get_id());
+        DishEntity actual = baseService.getDishById(expected.getId());
 
         Assertions.assertNull(actual);
     }
@@ -82,7 +82,7 @@ class BaseService_DishTest extends AbstractServiceTest {
 
     private void assertEqual(DishEntity actual, DishEntity expected) {
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.get_id(), expected.get_id());
+        Assertions.assertEquals(actual.getId(), expected.getId());
         Assertions.assertEquals(actual.getDishType(), expected.getDishType());
         Assertions.assertEquals(actual.getIdsProduct().size(), expected.getIdsProduct().size());
         Assertions.assertEquals(actual.getPrice(), expected.getPrice());

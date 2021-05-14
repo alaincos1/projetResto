@@ -6,12 +6,9 @@ import fr.ul.miage.resto.constants.MealType;
 import fr.ul.miage.resto.constants.OrderState;
 import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.constants.TableState;
-import fr.ul.miage.resto.controller.feature.LogInController;
 import fr.ul.miage.resto.dao.service.BaseService;
 import fr.ul.miage.resto.model.entity.*;
-import fr.ul.miage.resto.view.feature.LogInView;
 import fr.ul.miage.resto.view.role.ButlerView;
-import fr.ul.miage.resto.view.role.DirectorView;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,14 +28,7 @@ public class ButlerController extends RoleController {
         Role role = Launcher.getLoggedUser().getRole();
         switch (action) {
             case 0:
-                if (role.equals(Role.DIRECTOR)) {
-                    DirectorController directorController = new DirectorController(baseService, service,
-                            new DirectorView());
-                    directorController.launch(Role.DIRECTOR);
-                } else {
-                    LogInController logInController = new LogInController(baseService, service, new LogInView());
-                    logInController.disconnect();
-                }
+                goBackOrDisconnect(role, baseService, service);
                 break;
             case 1:
                 affectTablesToServer();
@@ -118,7 +108,7 @@ public class ButlerController extends RoleController {
                 Integer priceTotal = priceBill(listIdDishes);
                 butlerView.displayMessage("Le prix total de cette facture est " + priceTotal + " euros.");
                 BillEntity bill = new BillEntity();
-                bill.set_id(new ObjectId().toString());
+                bill.setId(new ObjectId().toString());
                 bill.setDate(service.getDate());
                 bill.setMealType(service.getMealType());
                 bill.setTotalPrice(priceTotal);
@@ -146,7 +136,7 @@ public class ButlerController extends RoleController {
     public Boolean ordersServed(TableEntity table) {
         List<OrderEntity> orders = baseService.getServedOrders();
         for (OrderEntity order : orders) {
-            if (order.getIdTable().equals(table.get_id())) {
+            if (order.getIdTable().equals(table.getId())) {
                 return true;
             }
         }
@@ -211,7 +201,7 @@ public class ButlerController extends RoleController {
         String choiceTable = choiceTable(null);
 
         BookingEntity booking = new BookingEntity();
-        booking.set_id(new ObjectId().toString());
+        booking.setId(new ObjectId().toString());
         booking.setDate(dateBooking);
         booking.setIdTable(choiceTable);
         booking.setMealType(mealTypeBooking);
@@ -332,8 +322,8 @@ public class ButlerController extends RoleController {
      */
     protected boolean isTableIdCorrectServer(String tableId, UserEntity user) {
         TableEntity table = baseService.getTableById(tableId);
-        return ObjectUtils.isNotEmpty(table) && !table.getIdServer().equals(user.get_id())
-                && !table.getIdHelper().equals(user.get_id());
+        return ObjectUtils.isNotEmpty(table) && !table.getIdServer().equals(user.getId())
+                && !table.getIdHelper().equals(user.getId());
     }
 
     /**
@@ -396,7 +386,7 @@ public class ButlerController extends RoleController {
         List<OrderEntity> orders = baseService.getServedOrders();
         List<String> dishes = new ArrayList<>();
         for (OrderEntity order : orders) {
-            if (order.getIdTable().equals(table.get_id())) {
+            if (order.getIdTable().equals(table.getId())) {
                 dishes.addAll(order.getIdsDish());
             }
         }
@@ -413,7 +403,7 @@ public class ButlerController extends RoleController {
         Integer priceOrderDouble = 0;
         for (String idDish : listIdDishes) {
             DishEntity dish = baseService.getDishById(idDish);
-            butlerView.displayMessage("- " + dish.get_id() + " : " + dish.getPrice() + " euros");
+            butlerView.displayMessage("- " + dish.getId() + " : " + dish.getPrice() + " euros");
             priceOrderDouble += dish.getPrice();
         }
         return priceOrderDouble;

@@ -3,21 +3,24 @@ package fr.ul.miage.resto.controller.role;
 import fr.ul.miage.resto.appinfo.Service;
 import fr.ul.miage.resto.constants.Features;
 import fr.ul.miage.resto.constants.Role;
+import fr.ul.miage.resto.controller.feature.LogInController;
 import fr.ul.miage.resto.dao.service.BaseService;
 import fr.ul.miage.resto.model.entity.PerformanceEntity;
 import fr.ul.miage.resto.utils.DateDto;
 import fr.ul.miage.resto.utils.DateUtil;
 import fr.ul.miage.resto.utils.InputUtil;
+import fr.ul.miage.resto.view.feature.LogInView;
+import fr.ul.miage.resto.view.role.DirectorView;
 import fr.ul.miage.resto.view.role.RoleView;
 import lombok.extern.slf4j.Slf4j;
 
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 @Slf4j
 public class RoleController {
-    private static final Random random = new Random();
+    private static final SecureRandom random = new SecureRandom();
     protected RoleView roleView = new RoleView();
     protected Integer nbActions;
     protected Role roleTemp;
@@ -97,5 +100,15 @@ public class RoleController {
 
     protected List<DateDto> getListDate(String type, String date, Integer last) {
         return DateUtil.getListDate(type, date, last);
+    }
+
+    protected void goBackOrDisconnect(Role role, BaseService baseService, Service service) {
+        if (role.equals(Role.DIRECTOR)) {
+            DirectorController directorController = new DirectorController(baseService, service, new DirectorView());
+            directorController.launch(Role.DIRECTOR);
+        } else {
+            LogInController logInController = new LogInController(baseService, service, new LogInView());
+            logInController.disconnect();
+        }
     }
 }

@@ -40,7 +40,7 @@ class BaseService_BookingTest extends AbstractServiceTest {
 
         when(bookingCollection.getBookingById(anyString())).thenReturn(expected);
 
-        BookingEntity actual = baseService.getBookingById(expected.get_id());
+        BookingEntity actual = baseService.getBookingById(expected.getId());
 
         assertEqual(actual, expected);
     }
@@ -51,7 +51,7 @@ class BaseService_BookingTest extends AbstractServiceTest {
 
         when(bookingCollection.getBookingById(anyString())).thenReturn(null);
 
-        BookingEntity actual = baseService.getBookingById(expected.get_id());
+        BookingEntity actual = baseService.getBookingById(expected.getId());
 
         Assertions.assertNull(actual);
     }
@@ -72,7 +72,7 @@ class BaseService_BookingTest extends AbstractServiceTest {
 
     private void assertEqual(BookingEntity actual, BookingEntity expected) {
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.get_id(), expected.get_id());
+        Assertions.assertEquals(actual.getId(), expected.getId());
         Assertions.assertEquals(actual.getReservationName(), expected.getReservationName());
         Assertions.assertEquals(actual.getIdTable(), expected.getIdTable());
         Assertions.assertEquals(actual.getMealType(), expected.getMealType());

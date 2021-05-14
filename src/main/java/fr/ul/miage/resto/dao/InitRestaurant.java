@@ -62,7 +62,7 @@ public class InitRestaurant {
 
         if (CollectionUtils.isNotEmpty(idsReservedTable)) {
             tableEntities.forEach(table -> {
-                if (idsReservedTable.contains(table.get_id())) {
+                if (idsReservedTable.contains(table.getId())) {
                     table.setTableState(TableState.BOOKED);
                 } else {
                     table.setTableState(TableState.FREE);
@@ -79,7 +79,7 @@ public class InitRestaurant {
         boolean directorHere = users.stream().noneMatch(userEntity -> userEntity.getRole().equals(Role.DIRECTOR));
         if (directorHere) {
             UserEntity admin = new UserEntity();
-            admin.set_id("admin");
+            admin.setId("admin");
             admin.setRole(Role.DIRECTOR);
             baseService.save(admin);
             generalView.displayMessage("Nouvel utilisateur disponible en tant que Directeur : admin");

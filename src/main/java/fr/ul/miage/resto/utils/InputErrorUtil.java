@@ -1,6 +1,7 @@
-package fr.ul.miage.resto.error;
+package fr.ul.miage.resto.utils;
 
 import fr.ul.miage.resto.constants.InfoRestaurant;
+import fr.ul.miage.resto.view.GeneralView;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
@@ -9,10 +10,15 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InputError {
+public class InputErrorUtil {
+    private static final GeneralView generalView = new GeneralView();
+
+    private InputErrorUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static Integer checkInteger(String nb, Integer borneMin, Integer borneMax) {
-        Integer toReturn;
+        int toReturn;
         try {
             toReturn = Integer.parseInt(nb);
 
@@ -49,7 +55,7 @@ public class InputError {
 
         Date auj = new Date();
         if (d.before(auj) && !format.format(auj).equals(format.format(d))) {
-            System.out.println("La date ne peut pas être dans le passé.");
+            generalView.displayMessage("La date ne peut pas être dans le passé.");
             return null;
         }
         return format.format(d);

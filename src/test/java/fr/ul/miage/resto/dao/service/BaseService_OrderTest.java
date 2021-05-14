@@ -41,7 +41,7 @@ class BaseService_OrderTest extends AbstractServiceTest {
 
         when(orderCollection.getOrderById(anyString())).thenReturn(expected);
 
-        OrderEntity actual = baseService.getOrderById(expected.get_id());
+        OrderEntity actual = baseService.getOrderById(expected.getId());
 
         assertEqual(actual, expected);
     }
@@ -52,7 +52,7 @@ class BaseService_OrderTest extends AbstractServiceTest {
 
         when(orderCollection.getOrderById(anyString())).thenReturn(null);
 
-        OrderEntity actual = baseService.getOrderById(expected.get_id());
+        OrderEntity actual = baseService.getOrderById(expected.getId());
 
         Assertions.assertNull(actual);
     }
@@ -74,7 +74,7 @@ class BaseService_OrderTest extends AbstractServiceTest {
 
     private void assertEqual(OrderEntity actual, OrderEntity expected) {
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.get_id(), expected.get_id());
+        Assertions.assertEquals(actual.getId(), expected.getId());
         Assertions.assertEquals(actual.getIdTable(), expected.getIdTable());
         Assertions.assertEquals(actual.getOrderState(), expected.getOrderState());
         Assertions.assertEquals(actual.getChildOrder(), expected.getChildOrder());

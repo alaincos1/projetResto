@@ -1,5 +1,6 @@
 package fr.ul.miage.resto.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.ul.miage.resto.constants.DishType;
 import fr.ul.miage.resto.dao.service.BaseService;
 import lombok.Data;
@@ -8,7 +9,8 @@ import java.util.List;
 
 @Data
 public class DishEntity {
-    private String _id;
+    @JsonProperty("_id")
+    private String id;
     private Integer price;
     private DishType dishType;
     private List<String> idsProduct;
@@ -22,7 +24,7 @@ public class DishEntity {
     @Override
     public String toString() {
         StringBuilder toString = new StringBuilder();
-        toString.append(_id).append(", ").append(price).append("€, ").append(dishType.getDish()).append(", (").append(idCategory).append(")\n");
+        toString.append(id).append(", ").append(price).append("€, ").append(dishType.getDish()).append(", (").append(idCategory).append(")\n");
         for (String product : idsProduct) {
             toString.append(" - ").append(product).append("\n");
         }

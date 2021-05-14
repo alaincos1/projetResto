@@ -183,7 +183,7 @@ class InitRestaurantTest {
 
     private BookingEntity createBookingEntity(MealType mealType, String date, String idTable) {
         BookingEntity bookingEntity = new BookingEntity();
-        bookingEntity.set_id(RandomStringUtils.randomAlphabetic(10));
+        bookingEntity.setId(RandomStringUtils.randomAlphabetic(10));
         bookingEntity.setMealType(mealType);
         bookingEntity.setReservationName(RandomStringUtils.randomAlphabetic(10));
         bookingEntity.setDate(date);
@@ -194,7 +194,7 @@ class InitRestaurantTest {
 
     private TableEntity createTableEntity(String id) {
         TableEntity tableEntity = easyRandom.nextObject(TableEntity.class);
-        tableEntity.set_id(id);
+        tableEntity.setId(id);
         tableEntity.setTableState(TableState.FREE);
 
         return tableEntity;

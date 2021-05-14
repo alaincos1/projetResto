@@ -37,7 +37,7 @@ class BaseService_PerformanceTest extends AbstractServiceTest {
 
         when(performanceCollection.getPerformanceById(anyString())).thenReturn(expected);
 
-        PerformanceEntity actual = baseService.getPerformanceById(expected.get_id());
+        PerformanceEntity actual = baseService.getPerformanceById(expected.getId());
 
         assertEqual(actual, expected);
     }
@@ -48,14 +48,14 @@ class BaseService_PerformanceTest extends AbstractServiceTest {
 
         when(performanceCollection.getPerformanceById(anyString())).thenReturn(null);
 
-        PerformanceEntity actual = baseService.getPerformanceById(expected.get_id());
+        PerformanceEntity actual = baseService.getPerformanceById(expected.getId());
 
         Assertions.assertNull(actual);
     }
 
     private void assertEqual(PerformanceEntity actual, PerformanceEntity expected) {
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.get_id(), expected.get_id());
+        Assertions.assertEquals(actual.getId(), expected.getId());
         Assertions.assertEquals(actual.getPreparationTime(), expected.getPreparationTime());
         Assertions.assertEquals(actual.getServiceTime(), expected.getServiceTime());
         Assertions.assertEquals(actual.getNbTableServed(), expected.getNbTableServed());

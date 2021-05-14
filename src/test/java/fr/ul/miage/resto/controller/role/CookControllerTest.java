@@ -218,7 +218,7 @@ class CookControllerTest {
         List<CategoryEntity> catList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             CategoryEntity cat = new CategoryEntity();
-            cat.set_id("" + i);
+            cat.setId("" + i);
             cat.setDishType(DishType.DESSERT);
             catList.add(cat);
         }
@@ -236,7 +236,7 @@ class CookControllerTest {
         List<CategoryEntity> catList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             CategoryEntity cat = new CategoryEntity();
-            cat.set_id("" + i);
+            cat.setId("" + i);
             cat.setDishType(DishType.DESSERT);
             catList.add(cat);
         }
@@ -255,7 +255,7 @@ class CookControllerTest {
         List<ProductEntity> prodList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             ProductEntity prod = new ProductEntity();
-            prod.set_id("" + i);
+            prod.setId("" + i);
             prodList.add(prod);
         }
         doReturn(prodList).when(cookController).parseToSelectedProducts(anyList(), anyString());
@@ -273,7 +273,7 @@ class CookControllerTest {
         List<ProductEntity> prodList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             ProductEntity prod = new ProductEntity();
-            prod.set_id("" + i);
+            prod.setId("" + i);
             prodList.add(prod);
         }
         doReturn(prodList).when(cookController).parseToSelectedProducts(anyList(), anyString());
@@ -291,7 +291,7 @@ class CookControllerTest {
         List<ProductEntity> prodList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             ProductEntity prod = new ProductEntity();
-            prod.set_id("" + i);
+            prod.setId("" + i);
             prodList.add(prod);
         }
         List<String> prodString1 = new ArrayList<>();
@@ -308,7 +308,7 @@ class CookControllerTest {
         List<ProductEntity> prodList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             ProductEntity prod = new ProductEntity();
-            prod.set_id("" + i);
+            prod.setId("" + i);
             prodList.add(prod);
         }
         String multipleChoices = "1/2/4";
@@ -327,7 +327,7 @@ class CookControllerTest {
     @DisplayName("Sauvegarde du plat")
     void testSaveDish() {
         DishEntity dish = new DishEntity();
-        dish.set_id("dish");
+        dish.setId("dish");
         dish.setDishType(DishType.DESSERT);
         dish.setIdCategory("dish");
         List<String> idsProduct = new ArrayList<>();
@@ -337,7 +337,7 @@ class CookControllerTest {
         dish.setPrice(3);
 
         CategoryEntity cat = new CategoryEntity();
-        cat.set_id("dish");
+        cat.setId("dish");
         when(baseService.getCategoryById(anyString())).thenReturn(cat);
 
         cookController.saveDish(dish, false);
@@ -350,7 +350,7 @@ class CookControllerTest {
     @DisplayName("Sauvegarde du plat modifié")
     void testSaveDishModify() {
         DishEntity dish = new DishEntity();
-        dish.set_id("dish");
+        dish.setId("dish");
         dish.setDishType(DishType.DESSERT);
         dish.setIdCategory("dish");
         List<String> idsProduct = new ArrayList<>();
@@ -360,7 +360,7 @@ class CookControllerTest {
         dish.setPrice(3);
 
         CategoryEntity cat = new CategoryEntity();
-        cat.set_id("dish");
+        cat.setId("dish");
         when(baseService.getCategoryById(anyString())).thenReturn(cat);
 
         cookController.saveDish(dish, true);
@@ -373,7 +373,7 @@ class CookControllerTest {
     @DisplayName("Sauvegarde du plat et d'une nouvelle catégorie")
     void testSaveDishNewCat() {
         DishEntity dish = new DishEntity();
-        dish.set_id("dish");
+        dish.setId("dish");
         dish.setDishType(DishType.DESSERT);
         dish.setIdCategory("dish");
         List<String> idsProduct = new ArrayList<>();
@@ -383,7 +383,7 @@ class CookControllerTest {
         dish.setPrice(3);
 
         CategoryEntity cat = new CategoryEntity();
-        cat.set_id("dish");
+        cat.setId("dish");
         when(baseService.getCategoryById(anyString())).thenReturn(null);
 
         cookController.saveDish(dish, false);

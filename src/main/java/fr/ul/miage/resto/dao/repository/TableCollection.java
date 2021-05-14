@@ -17,6 +17,10 @@ import static com.mongodb.client.model.Filters.*;
 public class TableCollection extends MongoAccess {
     MongoCollection<Document> collection = database.getCollection("tables");
 
+    private static final String SERVER = "idServer";
+    private static final String HELPER = "idHelper";
+    private static final String TABLE_STATE = "tableState";
+
     public boolean save(Object tableEntity) {
         return super.insert(Mapper.toDocument(tableEntity), collection);
     }
@@ -38,19 +42,19 @@ public class TableCollection extends MongoAccess {
     }
 
     public List<TableEntity> getAllTableByServerOrHelper(String user) {
-        return collection.find(or(eq("idServer", user), eq("idHelper", user))).into(new ArrayList<>()).stream()
+        return collection.find(or(eq(SERVER, user), eq(HELPER, user))).into(new ArrayList<>()).stream()
                 .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
                 .collect(Collectors.toList());
     }
 
     public List<TableEntity> getAllTableByServerOrHelperAndState(String user, TableState state) {
-        return collection.find(and(eq("tableState", state.toString()), or(eq("idServer", user), eq("idHelper", user)))).into(new ArrayList<>()).stream()
+        return collection.find(and(eq(TABLE_STATE, state.toString()), or(eq(SERVER, user), eq(HELPER, user)))).into(new ArrayList<>()).stream()
                 .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
                 .collect(Collectors.toList());
     }
 
     public List<TableEntity> getAllTableByState(TableState state) {
-        return collection.find(eq("tableState", state.toString())).into(new ArrayList<>()).stream()
+        return collection.find(eq(TABLE_STATE, state.toString())).into(new ArrayList<>()).stream()
                 .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
                 .collect(Collectors.toList());
     }
@@ -62,7 +66,7 @@ public class TableCollection extends MongoAccess {
     }
 
     public List<TableEntity> getAllRemovableTables() {
-        Bson filter = eq("tableState", TableState.FREE.toString());
+        Bson filter = eq(TABLE_STATE, TableState.FREE.toString());
         List<TableEntity> tables = collection.find(filter).into(new ArrayList<>()).stream()
                 .map(doc -> (TableEntity) Mapper.toObject(doc, TableEntity.class))
                 .collect(Collectors.toList());
@@ -70,7 +74,7 @@ public class TableCollection extends MongoAccess {
         List<TableEntity> resultTables = new ArrayList<>();
         List<BookingEntity> bookings = bookingCollection.getAll();
         for (TableEntity table : tables) {
-            if (bookings.stream().noneMatch(bookingEntity -> table.get_id().equals(bookingEntity.getIdTable()))) {
+            if (bookings.stream().noneMatch(bookingEntity -> table.getId().equals(bookingEntity.getIdTable()))) {
                 resultTables.add(table);
             }
         }
@@ -80,10 +84,10 @@ public class TableCollection extends MongoAccess {
     public List<TableEntity> getTablesReadyToOrderByServer(String userId) {
         Bson filterServer = null;
         if (!userId.isEmpty()) {
-            filterServer = eq("idServer", userId);
+            filterServer = eq(SERVER, userId);
         }
-        Bson filterTableState = and(not(eq("tableState", TableState.FREE.toString())),
-                not(eq("tableState", TableState.DIRTY.toString())));
+        Bson filterTableState = and(not(eq(TABLE_STATE, TableState.FREE.toString())),
+                not(eq(TABLE_STATE, TableState.DIRTY.toString())));
         Bson filters;
         if (filterServer == null) {
             filters = filterTableState;

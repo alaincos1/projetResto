@@ -40,7 +40,7 @@ class BaseService_TableTest extends AbstractServiceTest {
 
         when(tableCollection.getTableById(anyString())).thenReturn(expected);
 
-        TableEntity actual = baseService.getTableById(expected.get_id());
+        TableEntity actual = baseService.getTableById(expected.getId());
 
         assertEqual(actual, expected);
     }
@@ -51,7 +51,7 @@ class BaseService_TableTest extends AbstractServiceTest {
 
         when(tableCollection.getTableById(anyString())).thenReturn(null);
 
-        TableEntity actual = baseService.getTableById(expected.get_id());
+        TableEntity actual = baseService.getTableById(expected.getId());
 
         Assertions.assertNull(actual);
     }
@@ -72,7 +72,7 @@ class BaseService_TableTest extends AbstractServiceTest {
 
     private void assertEqual(TableEntity actual, TableEntity expected) {
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.get_id(), expected.get_id());
+        Assertions.assertEquals(actual.getId(), expected.getId());
         Assertions.assertEquals(actual.getTableState(), expected.getTableState());
         Assertions.assertEquals(actual.getNbSeats(), expected.getNbSeats());
         Assertions.assertEquals(actual.getIdServer(), expected.getIdServer());

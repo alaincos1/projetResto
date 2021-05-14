@@ -1,12 +1,10 @@
 package fr.ul.miage.resto.dao;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ul.miage.resto.dao.service.BaseService;
 import fr.ul.miage.resto.model.entity.*;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -45,9 +43,7 @@ public class InsertData {
             products.forEach(baseService::save);
             tables.forEach(baseService::save);
             dishes.forEach(baseService::save);
-        } catch (JsonMappingException exception) {
-            log.error(exception.getMessage());
-        } catch (IOException exception) {
+        } catch (Exception exception) {
             log.error(exception.getMessage());
         }
     }

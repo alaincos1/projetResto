@@ -130,7 +130,7 @@ public class DirectorController extends RoleController {
         Integer input = getIntegerInput(0, Role.values().length - 1);
 
         UserEntity userEntity = new UserEntity();
-        userEntity.set_id(id);
+        userEntity.setId(id);
         userEntity.setRole(Role.values()[input]);
 
         if (baseService.save(userEntity)) {
@@ -230,7 +230,7 @@ public class DirectorController extends RoleController {
             directorView.displayMessage("Ce produit existe déjà, entrez un autre intitulé.");
             name = getStringInput();
         }
-        product.set_id(name);
+        product.setId(name);
         directorView.displayAskAddStock(0, InfoRestaurant.MAX_STOCK.getValue());
         product.setStock(getIntegerInput(0, InfoRestaurant.MAX_STOCK.getValue()));
         return product;
@@ -297,7 +297,7 @@ public class DirectorController extends RoleController {
     //ajoute une table
     protected void addTable(List<TableEntity> tables) {
         TableEntity tableToAdd = new TableEntity();
-        tableToAdd.set_id(getFreeNumberTable(tables));
+        tableToAdd.setId(getFreeNumberTable(tables));
         tableToAdd.setTableState(TableState.FREE);
         directorView.displayMessage("Entrez un nombre de place pour cette table entre 1 et " + InfoRestaurant.MAX_SEATS.getValue() + " ");
         tableToAdd.setNbSeats(getIntegerInput(1, InfoRestaurant.MAX_SEATS.getValue()));
@@ -317,7 +317,7 @@ public class DirectorController extends RoleController {
             directorView.displayMessage("Quelle table souhaitez vous supprimer ?");
             directorView.displayTables(tables);
             int choice = getIntegerInput(1, tables.size()) - 1;
-            if (baseService.deleteTable(tables.get(choice).get_id())) {
+            if (baseService.deleteTable(tables.get(choice).getId())) {
                 directorView.displayMessage("Table supprimée !");
             } else {
                 directorView.displayError();
@@ -327,7 +327,7 @@ public class DirectorController extends RoleController {
 
     protected String getFreeNumberTable(List<TableEntity> tables) {
         List<Integer> tableId = new ArrayList<>();
-        tables.forEach(tableEntity -> tableId.add(Integer.parseInt(tableEntity.get_id())));
+        tables.forEach(tableEntity -> tableId.add(Integer.parseInt(tableEntity.getId())));
         int i = 1;
         while (tableId.contains(i) && i <= InfoRestaurant.MAX_TABLES.getValue()) {
             i++;

@@ -25,8 +25,8 @@ public class UserCollection extends MongoAccess {
     @Override
     public boolean update(Object o) {
         UserEntity user = (UserEntity) o;
-        if (user.getRole() == Role.DIRECTOR && getUserById(user.get_id()).getRole() != Role.DIRECTOR && collection.countDocuments(new Document("role", Role.DIRECTOR.toString())) >= 1 ||
-                user.getRole() == Role.BUTLER && getUserById(user.get_id()).getRole() != Role.BUTLER && collection.countDocuments(new Document("role", Role.BUTLER.toString())) >= 1) {
+        if (user.getRole() == Role.DIRECTOR && getUserById(user.getId()).getRole() != Role.DIRECTOR && collection.countDocuments(new Document("role", Role.DIRECTOR.toString())) >= 1 ||
+                user.getRole() == Role.BUTLER && getUserById(user.getId()).getRole() != Role.BUTLER && collection.countDocuments(new Document("role", Role.BUTLER.toString())) >= 1) {
             return false;
         }
         return super.update(Mapper.toDocument(o), collection);
@@ -48,7 +48,7 @@ public class UserCollection extends MongoAccess {
             return false;
         }
 
-        Document doc = new Document("_id", user.get_id());
+        Document doc = new Document("_id", user.getId());
         return collection.deleteOne(doc).getDeletedCount() == 1;
     }
 

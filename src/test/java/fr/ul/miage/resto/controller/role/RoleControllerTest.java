@@ -51,7 +51,7 @@ class RoleControllerTest {
         when(service.getDate()).thenReturn("2021/09/30");
         when(service.getMealType()).thenReturn(MealType.DINNER);
         PerformanceEntity perf = new PerformanceEntity();
-        perf.set_id("2021/09/30DINNER");
+        perf.setId("2021/09/30DINNER");
         perf.setNbOrder(5);
         perf.setNbTableServed(9);
         perf.setPreparationTime(120);
@@ -69,7 +69,7 @@ class RoleControllerTest {
         when(service.getDate()).thenReturn("2021/09/30");
         when(service.getMealType()).thenReturn(MealType.DINNER);
         PerformanceEntity perf = new PerformanceEntity();
-        perf.set_id("2021/09/30DINNER");
+        perf.setId("2021/09/30DINNER");
         perf.setNbOrder(5);
         perf.setNbTableServed(9);
         perf.setPreparationTime(120);

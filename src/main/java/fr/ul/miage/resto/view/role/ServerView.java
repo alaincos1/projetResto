@@ -68,7 +68,7 @@ public class ServerView extends RoleView {
                 cat = dish.getIdCategory();
                 displayMessage("--- " + cat + " ---");
             }
-            displayMessage(" " + i + ") " + dish.get_id() + ", Prix: " + dish.getPrice());
+            displayMessage(" " + i + ") " + dish.getId() + ", Prix: " + dish.getPrice());
             i++;
         }
     }

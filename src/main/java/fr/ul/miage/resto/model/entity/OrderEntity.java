@@ -1,5 +1,6 @@
 package fr.ul.miage.resto.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.ul.miage.resto.constants.DishType;
 import fr.ul.miage.resto.constants.OrderState;
 import fr.ul.miage.resto.constants.TableState;
@@ -10,7 +11,8 @@ import java.util.List;
 
 @Data
 public class OrderEntity {
-    private String _id;
+    @JsonProperty("_id")
+    private String id;
     private OrderState orderState;
     private Boolean childOrder;
     private Integer rank;
@@ -28,8 +30,8 @@ public class OrderEntity {
     }
 
     public void giveStockBack(BaseService baseService) {
-        for (String id : idsDish) {
-            DishEntity dishEntity = baseService.getDishById(id);
+        for (String idDish : idsDish) {
+            DishEntity dishEntity = baseService.getDishById(idDish);
             dishEntity.changeStock(baseService, true);
         }
     }

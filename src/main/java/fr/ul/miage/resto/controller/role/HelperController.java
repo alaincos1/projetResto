@@ -4,12 +4,9 @@ import fr.ul.miage.resto.Launcher;
 import fr.ul.miage.resto.appinfo.Service;
 import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.constants.TableState;
-import fr.ul.miage.resto.controller.feature.LogInController;
 import fr.ul.miage.resto.dao.service.BaseService;
 import fr.ul.miage.resto.model.entity.TableEntity;
 import fr.ul.miage.resto.model.entity.UserEntity;
-import fr.ul.miage.resto.view.feature.LogInView;
-import fr.ul.miage.resto.view.role.DirectorView;
 import fr.ul.miage.resto.view.role.HelperView;
 import lombok.AllArgsConstructor;
 
@@ -26,13 +23,7 @@ public class HelperController extends RoleController {
         Role role = Launcher.getLoggedUser().getRole();
         switch (action) {
             case 0:
-                if (role.equals(Role.DIRECTOR)) {
-                    DirectorController directorController = new DirectorController(baseService, service, new DirectorView());
-                    directorController.launch(Role.DIRECTOR);
-                } else {
-                    LogInController logInController = new LogInController(baseService, service, new LogInView());
-                    logInController.disconnect();
-                }
+                goBackOrDisconnect(role, baseService, service);
                 break;
             case 1:
                 viewTables(Launcher.getLoggedUser());
@@ -50,7 +41,7 @@ public class HelperController extends RoleController {
         if (Role.DIRECTOR.equals(user.getRole())) {
             tables = baseService.getAllTables();
         } else {
-            tables = baseService.getAllTableByServerOrHelper(user.get_id());
+            tables = baseService.getAllTableByServerOrHelper(user.getId());
         }
 
         if (tables.isEmpty()) {
@@ -66,7 +57,7 @@ public class HelperController extends RoleController {
         if (Role.DIRECTOR.equals(user.getRole())) {
             tablesToClean = baseService.getAllTableByState(TableState.DIRTY);
         } else {
-            tablesToClean = baseService.getAllTableByServerOrHelperAndState(user.get_id(), TableState.DIRTY);
+            tablesToClean = baseService.getAllTableByServerOrHelperAndState(user.getId(), TableState.DIRTY);
         }
 
         if (tablesToClean.isEmpty()) {

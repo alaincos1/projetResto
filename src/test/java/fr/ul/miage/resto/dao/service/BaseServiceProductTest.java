@@ -37,7 +37,7 @@ class BaseServiceProductTest extends AbstractServiceTest {
 
         when(productCollection.getProductById(anyString())).thenReturn(expected);
 
-        ProductEntity actual = baseService.getProductById(expected.get_id());
+        ProductEntity actual = baseService.getProductById(expected.getId());
 
         assertEqual(actual, expected);
     }
@@ -48,14 +48,14 @@ class BaseServiceProductTest extends AbstractServiceTest {
 
         when(productCollection.getProductById(anyString())).thenReturn(null);
 
-        ProductEntity actual = baseService.getProductById(expected.get_id());
+        ProductEntity actual = baseService.getProductById(expected.getId());
 
         Assertions.assertNull(actual);
     }
 
     private void assertEqual(ProductEntity actual, ProductEntity expected) {
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.get_id(), expected.get_id());
+        Assertions.assertEquals(actual.getId(), expected.getId());
         Assertions.assertEquals(actual.getStock(), expected.getStock());
     }
 }

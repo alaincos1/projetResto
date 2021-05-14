@@ -37,7 +37,7 @@ class BaseService_MenuTest extends AbstractServiceTest {
 
         when(categoryCollection.getCategoryById(anyString())).thenReturn(expected);
 
-        CategoryEntity actual = baseService.getCategoryById(expected.get_id());
+        CategoryEntity actual = baseService.getCategoryById(expected.getId());
 
         assertEqual(actual, expected);
     }
@@ -48,13 +48,13 @@ class BaseService_MenuTest extends AbstractServiceTest {
 
         when(categoryCollection.getCategoryById(anyString())).thenReturn(null);
 
-        CategoryEntity actual = baseService.getCategoryById(expected.get_id());
+        CategoryEntity actual = baseService.getCategoryById(expected.getId());
 
         Assertions.assertNull(actual);
     }
 
     private void assertEqual(CategoryEntity actual, CategoryEntity expected) {
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.get_id(), expected.get_id());
+        Assertions.assertEquals(actual.getId(), expected.getId());
     }
 }

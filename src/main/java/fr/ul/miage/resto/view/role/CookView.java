@@ -46,7 +46,7 @@ public class CookView extends RoleView {
         List<String> choices = new ArrayList<>();
         displayMessage(" 0) Nouvelle catégorie");
         for (CategoryEntity category : categories) {
-            choices.add(category.get_id());
+            choices.add(category.getId());
         }
         displayChoice(choices, 1, true);
     }
@@ -54,7 +54,7 @@ public class CookView extends RoleView {
     public void displayProducts(List<ProductEntity> productEntities) {
         List<String> choices = new ArrayList<>();
         for (ProductEntity product : productEntities) {
-            choices.add(product.get_id());
+            choices.add(product.getId());
         }
         displayChoice(choices, 1, true);
     }

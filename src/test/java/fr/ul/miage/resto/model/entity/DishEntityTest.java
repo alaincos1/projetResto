@@ -39,10 +39,10 @@ class DishEntityTest {
         dishEntity.setIdsProduct(products);
 
         ProductEntity product1 = new ProductEntity();
-        product1.set_id(SALAD);
+        product1.setId(SALAD);
         product1.setStock(15);
         ProductEntity product2 = new ProductEntity();
-        product2.set_id(TOMATO);
+        product2.setId(TOMATO);
         product2.setStock(10);
         when(baseService.getProductById(anyString())).thenReturn(product1).thenReturn(product2);
 
@@ -61,10 +61,10 @@ class DishEntityTest {
         dishEntity.setIdsProduct(products);
 
         ProductEntity product1 = new ProductEntity();
-        product1.set_id(SALAD);
+        product1.setId(SALAD);
         product1.setStock(15);
         ProductEntity product2 = new ProductEntity();
-        product2.set_id(TOMATO);
+        product2.setId(TOMATO);
         product2.setStock(0);
         when(baseService.getProductById(anyString())).thenReturn(product1).thenReturn(product2);
 
@@ -83,16 +83,16 @@ class DishEntityTest {
         dishEntity.setIdsProduct(products);
 
         ProductEntity product1 = new ProductEntity();
-        product1.set_id(SALAD);
+        product1.setId(SALAD);
         product1.setStock(15);
         ProductEntity product2 = new ProductEntity();
-        product2.set_id(TOMATO);
+        product2.setId(TOMATO);
         product2.setStock(0);
         ProductEntity productExpected1 = new ProductEntity();
-        productExpected1.set_id(SALAD);
+        productExpected1.setId(SALAD);
         productExpected1.setStock(16);
         ProductEntity productExpected2 = new ProductEntity();
-        productExpected2.set_id(TOMATO);
+        productExpected2.setId(TOMATO);
         productExpected2.setStock(1);
 
         when(baseService.getProductById(anyString())).thenReturn(product1).thenReturn(product2);
@@ -113,16 +113,16 @@ class DishEntityTest {
         dishEntity.setIdsProduct(products);
 
         ProductEntity product1 = new ProductEntity();
-        product1.set_id(SALAD);
+        product1.setId(SALAD);
         product1.setStock(15);
         ProductEntity product2 = new ProductEntity();
-        product2.set_id(TOMATO);
+        product2.setId(TOMATO);
         product2.setStock(18);
         ProductEntity productExpected1 = new ProductEntity();
-        productExpected1.set_id(SALAD);
+        productExpected1.setId(SALAD);
         productExpected1.setStock(14);
         ProductEntity productExpected2 = new ProductEntity();
-        productExpected2.set_id(TOMATO);
+        productExpected2.setId(TOMATO);
         productExpected2.setStock(17);
 
         when(baseService.getProductById(anyString())).thenReturn(product1).thenReturn(product2);

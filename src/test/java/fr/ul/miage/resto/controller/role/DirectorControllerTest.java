@@ -84,7 +84,7 @@ class DirectorControllerTest {
     void testCreateProduct() {
         ProductEntity productExpected = new ProductEntity();
         productExpected.setStock(50);
-        productExpected.set_id("Sucre");
+        productExpected.setId("Sucre");
 
         doReturn("Sucre").when(directorController).getStringInput();
         when(baseService.getProductById(anyString())).thenReturn(null);
@@ -100,7 +100,7 @@ class DirectorControllerTest {
     void testCreateProductalreadyExist() {
         ProductEntity productExpected = new ProductEntity();
         productExpected.setStock(50);
-        productExpected.set_id("Sucre");
+        productExpected.setId("Sucre");
 
         doReturn("Sel").doReturn("Sucre").when(directorController).getStringInput();
         when(baseService.getProductById(anyString())).thenReturn(new ProductEntity()).thenReturn(null);
@@ -116,7 +116,7 @@ class DirectorControllerTest {
     void testSaveProduct() {
         ProductEntity productExpected = new ProductEntity();
         productExpected.setStock(50);
-        productExpected.set_id("Sucre");
+        productExpected.setId("Sucre");
         doReturn(false).when(directorController).doAgain();
 
         directorController.saveProduct(productExpected);
@@ -132,11 +132,11 @@ class DirectorControllerTest {
         for (int i = 0; i < 3; i++) {
             ProductEntity product = new ProductEntity();
             product.setStock(i + 5);
-            product.set_id("" + i);
+            product.setId("" + i);
             products.add(product);
         }
         ProductEntity productExpected = new ProductEntity();
-        productExpected.set_id("1");
+        productExpected.setId("1");
         productExpected.setStock(56);
         doReturn(50).when(directorController).getIntegerInput(anyInt(), anyInt());
 
@@ -152,11 +152,11 @@ class DirectorControllerTest {
         for (int i = 0; i < 2; i++) {
             ProductEntity product = new ProductEntity();
             product.setStock(i + 99);
-            product.set_id("" + i);
+            product.setId("" + i);
             products.add(product);
         }
         ProductEntity productExpected = new ProductEntity();
-        productExpected.set_id("0");
+        productExpected.setId("0");
         productExpected.setStock(100);
         doReturn(1).when(directorController).getIntegerInput(anyInt(), anyInt());
 
@@ -173,7 +173,7 @@ class DirectorControllerTest {
         for (int i = 0; i < 3; i++) {
             ProductEntity product = new ProductEntity();
             product.setStock(i + 5);
-            product.set_id("" + i);
+            product.setId("" + i);
             products.add(product);
         }
         when(baseService.getAllProducts()).thenReturn(products);
@@ -194,7 +194,7 @@ class DirectorControllerTest {
         for (int i = 0; i < 3; i++) {
             ProductEntity product = new ProductEntity();
             product.setStock(i + 5);
-            product.set_id("" + i);
+            product.setId("" + i);
             products.add(product);
         }
         when(baseService.getAllProducts()).thenReturn(products);
@@ -215,7 +215,7 @@ class DirectorControllerTest {
         for (int i = 0; i < 3; i++) {
             ProductEntity product = new ProductEntity();
             product.setStock(i + 5);
-            product.set_id("" + i);
+            product.setId("" + i);
             products.add(product);
         }
         when(baseService.getAllProducts()).thenReturn(products);
@@ -415,7 +415,7 @@ class DirectorControllerTest {
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 1; i < 101; i++) {
             TableEntity table = new TableEntity();
-            table.set_id("" + i);
+            table.setId("" + i);
             tables.add(table);
         }
 
@@ -434,7 +434,7 @@ class DirectorControllerTest {
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 1; i < 5; i++) {
             TableEntity table = new TableEntity();
-            table.set_id("" + i);
+            table.setId("" + i);
             tables.add(table);
         }
 
@@ -453,7 +453,7 @@ class DirectorControllerTest {
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 1; i < 5; i++) {
             TableEntity table = new TableEntity();
-            table.set_id("" + i);
+            table.setId("" + i);
             tables.add(table);
         }
 
@@ -472,7 +472,7 @@ class DirectorControllerTest {
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 1; i < 5; i++) {
             TableEntity table = new TableEntity();
-            table.set_id("" + i);
+            table.setId("" + i);
             tables.add(table);
         }
 
@@ -504,7 +504,7 @@ class DirectorControllerTest {
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 1; i < 5; i++) {
             TableEntity table = new TableEntity();
-            table.set_id("" + i);
+            table.setId("" + i);
             tables.add(table);
         }
 
@@ -534,7 +534,7 @@ class DirectorControllerTest {
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 1; i < 5; i++) {
             TableEntity table = new TableEntity();
-            table.set_id("" + i);
+            table.setId("" + i);
             tables.add(table);
         }
 
@@ -549,12 +549,12 @@ class DirectorControllerTest {
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 1; i < 3; i++) {
             TableEntity table = new TableEntity();
-            table.set_id("" + i);
+            table.setId("" + i);
             tables.add(table);
         }
 
         TableEntity table = new TableEntity();
-        table.set_id("5");
+        table.setId("5");
         tables.add(table);
 
         String result = directorController.getFreeNumberTable(tables);

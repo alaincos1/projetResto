@@ -18,7 +18,7 @@ public class DirectorView extends RoleView {
                 "\n 1) Nouveau produit");
         List<String> choices = new ArrayList<>();
         for (ProductEntity product : products) {
-            choices.add(product.get_id() + ", Stock: " + product.getStock());
+            choices.add(product.getId() + ", Stock: " + product.getStock());
         }
         displayChoice(choices, 2, true);
     }
@@ -52,7 +52,7 @@ public class DirectorView extends RoleView {
         displayMessage("Selectionnez l'employé à " + action.toLowerCase() + "\n 0) Annuler");
         List<String> choices = new ArrayList<>();
         for (UserEntity user : users) {
-            choices.add(user.get_id());
+            choices.add(user.getId());
         }
         displayChoice(choices, 1, true);
     }
@@ -77,7 +77,7 @@ public class DirectorView extends RoleView {
             List<String> choice = dishs.stream()
                     .filter(dish -> dish.getDishType() == dishType)
                     .sorted(DishEntity::orderDishByType)
-                    .map(DishEntity::get_id)
+                    .map(DishEntity::getId)
                     .collect(Collectors.toList());
 
             if (CollectionUtils.isNotEmpty(choice)) {
@@ -91,8 +91,8 @@ public class DirectorView extends RoleView {
 
     public void displayPerf(List<PerformanceEntity> perfs) {
         for (PerformanceEntity perf : perfs) {
-            String date = perf.get_id().substring(0, 10);
-            String type = perf.get_id().substring(10);
+            String date = perf.getId().substring(0, 10);
+            String type = perf.getId().substring(10);
             MealType meal = MealType.valueOf(type);
             int meanPrep = perf.getPreparationTime() / perf.getNbOrder();
             int meanServ = perf.getServiceTime() / perf.getNbTableServed();

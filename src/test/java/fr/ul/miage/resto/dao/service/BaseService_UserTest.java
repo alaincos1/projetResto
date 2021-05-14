@@ -41,7 +41,7 @@ class BaseService_UserTest extends AbstractServiceTest {
 
         when(userCollection.getUserById(anyString())).thenReturn(expected);
 
-        UserEntity actual = baseService.getUserById(expected.get_id());
+        UserEntity actual = baseService.getUserById(expected.getId());
 
         assertEqual(actual, expected);
     }
@@ -52,7 +52,7 @@ class BaseService_UserTest extends AbstractServiceTest {
 
         when(userCollection.getUserById(anyString())).thenReturn(null);
 
-        UserEntity actual = baseService.getUserById(expected.get_id());
+        UserEntity actual = baseService.getUserById(expected.getId());
 
         Assertions.assertNull(actual);
     }
@@ -135,7 +135,7 @@ class BaseService_UserTest extends AbstractServiceTest {
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             TableEntity table = easyRandom.nextObject(TableEntity.class);
-            table.setIdServer(user.get_id());
+            table.setIdServer(user.getId());
             tables.add(table);
         }
 
@@ -154,7 +154,7 @@ class BaseService_UserTest extends AbstractServiceTest {
         List<TableEntity> tables = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             TableEntity table = easyRandom.nextObject(TableEntity.class);
-            table.setIdHelper(user.get_id());
+            table.setIdHelper(user.getId());
             tables.add(table);
         }
 
@@ -177,7 +177,7 @@ class BaseService_UserTest extends AbstractServiceTest {
 
     private void assertEqual(UserEntity actual, UserEntity expected) {
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.get_id(), expected.get_id());
+        Assertions.assertEquals(actual.getId(), expected.getId());
         Assertions.assertEquals(actual.getRole(), expected.getRole());
     }
 }

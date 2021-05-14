@@ -1,11 +1,13 @@
 package fr.ul.miage.resto.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.ul.miage.resto.constants.TableState;
 import lombok.Data;
 
 @Data
 public class TableEntity {
-    private String _id;
+    @JsonProperty("_id")
+    private String id;
     private TableState tableState;
     private Integer nbSeats;
     private String idServer;
@@ -13,9 +15,7 @@ public class TableEntity {
 
     @Override
     public String toString() {
-        StringBuilder toString = new StringBuilder();
-        toString.append("Table n°").append(_id).append(", nombre de places: ").append(nbSeats).append(", état: ").append(tableState.getState());
-        toString.append("\n    -> serveur: ").append((idServer == null) ? "-" : idServer).append(", assistant: ").append((idHelper == null) ? "-" : idHelper);
-        return toString.toString();
+        return "Table n°" + id + ", nombre de places: " + nbSeats + ", état: " + tableState.getState() +
+                "\n    -> serveur: " + ((idServer == null) ? "-" : idServer) + ", assistant: " + ((idHelper == null) ? "-" : idHelper);
     }
 }

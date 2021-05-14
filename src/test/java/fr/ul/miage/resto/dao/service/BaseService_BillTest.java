@@ -43,7 +43,7 @@ class BaseService_BillTest extends AbstractServiceTest {
 
         when(billCollection.getBillById(anyString())).thenReturn(expected);
 
-        BillEntity actual = baseService.getBillById(expected.get_id());
+        BillEntity actual = baseService.getBillById(expected.getId());
 
         assertEqual(actual, expected);
     }
@@ -54,7 +54,7 @@ class BaseService_BillTest extends AbstractServiceTest {
 
         when(billCollection.getBillById(anyString())).thenReturn(null);
 
-        BillEntity actual = baseService.getBillById(expected.get_id());
+        BillEntity actual = baseService.getBillById(expected.getId());
 
         Assertions.assertNull(actual);
     }
@@ -80,7 +80,7 @@ class BaseService_BillTest extends AbstractServiceTest {
 
     private void assertEqual(BillEntity actual, BillEntity expected) {
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.get_id(), expected.get_id());
+        Assertions.assertEquals(actual.getId(), expected.getId());
         Assertions.assertEquals(actual.getDate(), expected.getDate());
         Assertions.assertEquals(actual.getMealType(), expected.getMealType());
         Assertions.assertEquals(actual.getTotalPrice(), expected.getTotalPrice());

@@ -1,9 +1,11 @@
 package fr.ul.miage.resto.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class ProductEntity {
-    private String _id;
+    @JsonProperty("_id")
+    private String id;
     private Integer stock;
 }
