@@ -509,6 +509,7 @@ class ServerControllerTest {
     @DisplayName("Ajout de boisson")
     void testGetDrinksOrdered() {
         List<DishEntity> drinks = new ArrayList<>();
+        drinks.add(new DishEntity());
         doReturn(true).when(serverController).askDrinksOrder();
         when(baseService.getDestockableDishesByDishType(DishType.DRINK)).thenReturn(drinks);
         doReturn(new ArrayList<>()).when(serverController).getDishesOrdered(any(DishType.class), any());
@@ -516,6 +517,18 @@ class ServerControllerTest {
         serverController.getDrinksOrdered();
 
         verify(serverController, times(1)).getDishesOrdered(eq(DishType.DRINK), any());
+    }
+
+    @Test
+    @DisplayName("Ajout de boisson mais aucune boisson")
+    void testGetDrinksOrderedNoDrinks() {
+        List<DishEntity> drinks = new ArrayList<>();
+        doReturn(true).when(serverController).askDrinksOrder();
+        when(baseService.getDestockableDishesByDishType(DishType.DRINK)).thenReturn(drinks);
+
+        serverController.getDrinksOrdered();
+
+        verify(serverView, times(1)).displayMessage("Aucune boisson disponible.");
     }
 
     @Test
