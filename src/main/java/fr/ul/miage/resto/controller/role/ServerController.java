@@ -191,7 +191,11 @@ public class ServerController extends RoleMenuController {
         HashMap<Integer, MenuUtil> menu = new HashMap<>();
         List<DishEntity> drinks = baseService.getDestockableDishesByDishType(DishType.DRINK);
         menu.put(1, new MenuUtil(DishType.DRINK, !(drinks == null || drinks.isEmpty()), drinks));
-        return getDishesOrdered(DishType.DRINK, menu);
+        if(!CollectionUtils.isEmpty(drinks)) {
+            return getDishesOrdered(DishType.DRINK, menu);
+        }
+        serverView.displayMessage("Aucune boisson disponible.");
+        return new ArrayList<>();
     }
 
     protected boolean askDrinksOrder() {
