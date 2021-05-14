@@ -9,6 +9,7 @@ import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Filters.*;
@@ -38,7 +39,7 @@ public class BillCollection extends MongoAccess {
 
         return collection.find(filter).into(new ArrayList<>()).stream()
                 .map(document -> document == null ? null : (BillEntity) Mapper.toObject(document, BillEntity.class))
-                .filter(billEntity -> billEntity != null)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 }

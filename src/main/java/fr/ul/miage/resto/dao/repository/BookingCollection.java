@@ -2,7 +2,6 @@ package fr.ul.miage.resto.dao.repository;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.result.DeleteResult;
 import fr.ul.miage.resto.model.entity.BookingEntity;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -36,6 +35,6 @@ public class BookingCollection extends MongoAccess {
 
     public void deletePastBookings(String date) {
         Bson doc = Filters.lt("date", date);
-        DeleteResult dr = collection.deleteMany(doc);
+        collection.deleteMany(doc);
     }
 }

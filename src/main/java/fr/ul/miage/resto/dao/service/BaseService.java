@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -27,7 +26,7 @@ public class BaseService {
     private final ProductCollection productCollection;
     private final TableCollection tableCollection;
     private final UserCollection userCollection;
-    Map<Class, MongoAccess> map;
+    Map<? extends Class, MongoAccess> map;
 
     public BaseService(BillCollection billCollection,
                        BookingCollection bookingCollection,
@@ -231,7 +230,7 @@ public class BaseService {
                 .flatMap(List::stream)
                 .collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum))
                 .entrySet().stream()
-                .max(Comparator.comparing(Map.Entry::getValue)).orElse(null);
+                .max(Map.Entry.comparingByValue()).orElse(null);
     }
 
     protected boolean updateUser(UserEntity user) {

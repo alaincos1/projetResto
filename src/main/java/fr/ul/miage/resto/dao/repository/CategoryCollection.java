@@ -31,7 +31,7 @@ public class CategoryCollection extends MongoAccess {
 
     public List<CategoryEntity> getCategoriesByDishType(DishType dishType) {
         return collection.find(eq("dishType", dishType.toString())).sort(Sorts.ascending("_id"))
-                .into(new ArrayList<Document>()).stream().map(doc -> (CategoryEntity) Mapper.toObject(doc, CategoryEntity.class))
+                .into(new ArrayList<>()).stream().map(doc -> (CategoryEntity) Mapper.toObject(doc, CategoryEntity.class))
                 .collect(Collectors.toList());
     }
 }

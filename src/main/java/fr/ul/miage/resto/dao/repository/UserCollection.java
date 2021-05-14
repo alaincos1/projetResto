@@ -38,7 +38,7 @@ public class UserCollection extends MongoAccess {
     }
 
     public List<UserEntity> getAll() {
-        return collection.find().into(new ArrayList<Document>()).stream()
+        return collection.find().into(new ArrayList<>()).stream()
                 .map(doc -> (UserEntity) Mapper.toObject(doc, UserEntity.class))
                 .collect(Collectors.toList());
     }

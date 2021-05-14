@@ -6,7 +6,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
-
 public abstract class MongoAccess {
     MongoClient mongoClient = MongoClients.create();
     MongoDatabase database = mongoClient.getDatabase("bdd_restaurant");

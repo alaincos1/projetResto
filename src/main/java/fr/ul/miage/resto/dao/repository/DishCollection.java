@@ -16,6 +16,7 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class DishCollection extends MongoAccess {
     MongoCollection<Document> collection = database.getCollection("dishes");
+    private static final String ON_THE_MENU = "onTheMenu";
 
     public boolean save(Object dishEntity) {
         return super.insert(Mapper.toDocument(dishEntity), collection);
@@ -32,20 +33,20 @@ public class DishCollection extends MongoAccess {
     }
 	
 	public List<DishEntity> getDishOnTheMenuByDishType(DishType dishType) {
-        Bson filter = and(eq("onTheMenu",true), eq("dishType", dishType.toString()));
-        return collection.find(filter).sort(Sorts.ascending("idCategory")).into(new ArrayList<Document>()).stream()
+        Bson filter = and(eq(ON_THE_MENU,true), eq("dishType", dishType.toString()));
+        return collection.find(filter).sort(Sorts.ascending("idCategory")).into(new ArrayList<>()).stream()
                 .map(doc -> (DishEntity) Mapper.toObject(doc, DishEntity.class))
                 .collect(Collectors.toList());
     }
 
     public List<DishEntity> getAllDishesNotOnMenu() {
-        return collection.find(new Document("onTheMenu", false)).into(new ArrayList<>()).stream()
+        return collection.find(new Document(ON_THE_MENU, false)).into(new ArrayList<>()).stream()
                 .map(doc -> (DishEntity) Mapper.toObject(doc, DishEntity.class))
                 .collect(Collectors.toList());
     }
 
     public List<DishEntity> getAllDishesOnTheMenu() {
-        return collection.find(new Document("onTheMenu", true)).into(new ArrayList<>()).stream()
+        return collection.find(new Document(ON_THE_MENU, true)).into(new ArrayList<>()).stream()
                 .map(doc -> (DishEntity) Mapper.toObject(doc, DishEntity.class))
                 .collect(Collectors.toList());
     }

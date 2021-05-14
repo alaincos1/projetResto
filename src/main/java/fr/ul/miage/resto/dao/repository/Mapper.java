@@ -6,12 +6,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.Document;
 
 public class Mapper {
-    public static ObjectMapper mapper = new ObjectMapper();
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private Mapper() {
+        throw new IllegalStateException("Mapper class");
+    }
 
     public static Document toDocument(Object o) {
         String json = null;
         try {
-            json = mapper.writeValueAsString(o);
+            json = OBJECT_MAPPER.writeValueAsString(o);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -19,10 +23,9 @@ public class Mapper {
     }
 
     public static Object toObject(Document doc, Class clazz) {
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
+        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
-            return mapper.readValue(doc.toJson(), clazz);
+            return OBJECT_MAPPER.readValue(doc.toJson(), clazz);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

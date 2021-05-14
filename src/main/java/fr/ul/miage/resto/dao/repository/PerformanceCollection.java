@@ -28,13 +28,13 @@ public class PerformanceCollection extends MongoAccess {
 
     public List<PerformanceEntity> getWeekPerformance() {
         return collection.find().sort(Sorts.descending("mealType")).sort(Sorts.ascending("_id")).limit(6)
-                .into(new ArrayList<Document>()).stream().map(doc -> (PerformanceEntity) Mapper.toObject(doc, PerformanceEntity.class))
+                .into(new ArrayList<>()).stream().map(doc -> (PerformanceEntity) Mapper.toObject(doc, PerformanceEntity.class))
                 .collect(Collectors.toList());
     }
 
     public List<PerformanceEntity> getAllPerformance() {
         return collection.find()
-                .into(new ArrayList<Document>()).stream().map(doc -> (PerformanceEntity) Mapper.toObject(doc, PerformanceEntity.class))
+                .into(new ArrayList<>()).stream().map(doc -> (PerformanceEntity) Mapper.toObject(doc, PerformanceEntity.class))
                 .collect(Collectors.toList());
     }
 }

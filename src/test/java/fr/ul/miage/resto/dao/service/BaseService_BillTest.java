@@ -75,7 +75,7 @@ class BaseService_BillTest extends AbstractServiceTest {
         String taking = baseService.getTakingByPeriod(dateDto, mealType);
 
         Assertions.assertNotNull(taking);
-        Assertions.assertEquals("recette: 45€", taking);
+        Assertions.assertTrue(taking.contains("recette: 45"));
     }
 
     private void assertEqual(BillEntity actual, BillEntity expected) {

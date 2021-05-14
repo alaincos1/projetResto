@@ -9,6 +9,7 @@ import fr.ul.miage.resto.model.entity.BookingEntity;
 import fr.ul.miage.resto.model.entity.OrderEntity;
 import fr.ul.miage.resto.model.entity.TableEntity;
 import fr.ul.miage.resto.model.entity.UserEntity;
+import fr.ul.miage.resto.view.GeneralView;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class InitRestaurant {
     private final Service service;
     private final BaseService baseService;
+    private static final GeneralView generalView = new GeneralView();
 
     public void initRestaurant() {
         InsertData.feedData(baseService);
@@ -55,7 +57,7 @@ public class InitRestaurant {
         List<String> idsReservedTable = bookingEntities.stream()
                 .filter(bookingEntity -> StringUtils.equals(bookingEntity.getDate(), service.getDate()) &&
                         bookingEntity.getMealType() == service.getMealType())
-                .map(bookingEntity -> bookingEntity.getIdTable())
+                .map(BookingEntity::getIdTable)
                 .collect(Collectors.toList());
 
         if (CollectionUtils.isNotEmpty(idsReservedTable)) {
@@ -80,7 +82,7 @@ public class InitRestaurant {
             admin.set_id("admin");
             admin.setRole(Role.DIRECTOR);
             baseService.save(admin);
-            System.out.println("Nouvel utilisateur disponible en tant que Directeur : admin");
+            generalView.displayMessage("Nouvel utilisateur disponible en tant que Directeur : admin");
         }
     }
 }
