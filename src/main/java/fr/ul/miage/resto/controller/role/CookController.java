@@ -22,12 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class CookController extends RoleMenuController {
+public class CookController extends RoleController {
+    private static final String MINUS_THAN = "moins de";
+    private static final String CHAR = " caractères";
+    private static final String YES_NO = "\n O) Non \n 1) Oui";
     private final BaseService baseService;
     private final Service service;
     private final CookView cookView;
-    private static final String MINUS_THAN = "moins de";
-    private static final String CHAR = " caractères";
 
     @Override
     public void callAction(Integer action) {
@@ -74,13 +75,14 @@ public class CookController extends RoleMenuController {
         List<OrderEntity> orders = baseService.getNotPreparedOrders();
         if (!orders.isEmpty()) {
             cookView.displayOrdersList(orders);
-            cookView.displayWhichOrderPrepared();
+            cookView.displayMessage("\nEntrez le numéro de la commande prête à être servie ou 0 pour annuler.");
             int input = getIntegerInput(0, orders.size()) - 1;
             if (input != -1) {
                 orders.get(input).setOrderState(OrderState.PREPARED);
                 baseService.update(orders.get(input));
                 savePerformance(service, baseService, "preparationTime", 15, 30);
-                cookView.displayOrderPrepared(orders.get(input).getIdTable());
+                cookView.displayMessage("La commande pour la table " + orders.get(input).getIdTable() + " est prête !" +
+                        "\nVoulez vous déclarer une autre commande terminée ?" + YES_NO);
                 if (doAgain()) {
                     setOrderReady();
                 }
@@ -97,7 +99,9 @@ public class CookController extends RoleMenuController {
         cookView.displayAskInput("le nom du plat", MINUS_THAN + InfoRestaurant.MAX_LENGTH_NAME.getValue() + CHAR);
         String name = getStringInput();
         if (baseService.getDishById(name) != null) {
-            cookView.displayModifyOrCancel();
+            cookView.displayMessage("Le plat existe déjà. Modifier ou annuler ?" +
+                    "\n O) Annuler" +
+                    "\n 1) Modifier");
             Integer choice = getIntegerInput(0, 1);
             if (choice == 0) {
                 launch(Role.COOK);
@@ -113,7 +117,10 @@ public class CookController extends RoleMenuController {
         newDish.setIdsProduct(getDishProducts());
         newDish.setOnTheMenu(false);
 
-        cookView.displayDish(newDish);
+        cookView.displayMessage(newDish.toString());
+        cookView.displayMessage("Voulez vous" +
+                "\n 0) Abandonner ce plat" +
+                "\n 1) Sauvegarder ce plat");
         if (getIntegerInput(0, 1) == 1) {
             saveDish(newDish, modify);
         } else {
@@ -158,7 +165,7 @@ public class CookController extends RoleMenuController {
         cookView.displayProducts(productEntities);
         List<ProductEntity> selection = parseToSelectedProducts(productEntities, getStringMultipleChoices(1, productEntities.size()));
         cookView.displayProducts(selection);
-        cookView.displayProductsOkOrNot();
+        cookView.displayMessage("Ces ingrédients vous conviennent-il ?" + YES_NO);
         if (getIntegerInput(0, 1) == 0) {
             return getDishProducts();
         } else {
@@ -211,14 +218,15 @@ public class CookController extends RoleMenuController {
 
     protected void endCooking() {
         if (!service.isEndNewClients()) {
-            cookView.displayAskEndCooking();
+            cookView.displayMessage("Souhaitez vous annoncer la fin de prise en charge des nouveaux clients ? Choix définitif." +
+                    YES_NO);
             Integer input = getIntegerInput(0, 1);
             if (input == 1) {
                 service.setEndNewClients(true);
-                cookView.displayEnded();
+                cookView.displayMessage("La fin de prise en charge des nouveaux clients est annoncée.");
             }
         } else {
-            cookView.displayAlreadyEnded();
+            cookView.displayMessage("La fin de prise en charge des nouveaux clients a déjà été annoncée.");
         }
         launch(Role.COOK);
     }

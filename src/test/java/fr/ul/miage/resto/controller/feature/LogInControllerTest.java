@@ -34,7 +34,7 @@ class LogInControllerTest {
 
         logInController.askUserId();
 
-        verify(logInView, times(0)).displayLogInError();
+        verify(logInView, times(0)).displayMessage("Utilisateur inconnu, veuillez recommencer.");
     }
 
     @Test
@@ -45,7 +45,7 @@ class LogInControllerTest {
         doCallRealMethod().doNothing().when(logInController).askUserId();
         logInController.askUserId();
 
-        verify(logInView, times(1)).displayLogInError();
+        verify(logInView, times(1)).displayMessage("Utilisateur inconnu, veuillez recommencer.");
     }
 
     @Test
@@ -55,7 +55,7 @@ class LogInControllerTest {
 
         logInController.disconnect();
 
-        verify(logInView, times(1)).displayDisconnect();
+        verify(logInView, times(1)).displayMessage("Vous êtes déconnecté.e");
         verify(logInController, times(1)).launch();
         assertNull(Launcher.getLoggedUser());
     }

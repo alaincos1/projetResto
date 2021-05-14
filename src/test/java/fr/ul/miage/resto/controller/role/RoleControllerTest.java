@@ -14,12 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.*;
 
-@DisplayName("RoleMenuController")
+@DisplayName("RoleController")
 @ExtendWith(MockitoExtension.class)
-class RoleMenuControllerTest {
+class RoleControllerTest {
     @Spy
     @InjectMocks
-    RoleMenuController roleMenuController;
+    RoleController roleController;
 
     @Test
     @DisplayName("Sauvegarde les performances pour une commande prête : nouveau fichier de performances et service")
@@ -28,7 +28,7 @@ class RoleMenuControllerTest {
         when(service.getMealType()).thenReturn(MealType.DINNER);
         when(baseService.getPerformanceById(anyString())).thenReturn(null);
 
-        roleMenuController.savePerformance(service, baseService, "serviceTime", 30, 120);
+        roleController.savePerformance(service, baseService, "serviceTime", 30, 120);
 
         verify(baseService, times(1)).save(any(PerformanceEntity.class));
     }
@@ -40,7 +40,7 @@ class RoleMenuControllerTest {
         when(service.getMealType()).thenReturn(MealType.DINNER);
         when(baseService.getPerformanceById(anyString())).thenReturn(null);
 
-        roleMenuController.savePerformance(service, baseService, "preparationTime", 15, 30);
+        roleController.savePerformance(service, baseService, "preparationTime", 15, 30);
 
         verify(baseService, times(1)).save(any(PerformanceEntity.class));
     }
@@ -58,7 +58,7 @@ class RoleMenuControllerTest {
         perf.setServiceTime(140);
         when(baseService.getPerformanceById(anyString())).thenReturn(perf);
 
-        roleMenuController.savePerformance(service, baseService, "serviceTime", 30, 120);
+        roleController.savePerformance(service, baseService, "serviceTime", 30, 120);
 
         verify(baseService, times(1)).update(any(PerformanceEntity.class));
     }
@@ -76,7 +76,7 @@ class RoleMenuControllerTest {
         perf.setServiceTime(140);
         when(baseService.getPerformanceById(anyString())).thenReturn(perf);
 
-        roleMenuController.savePerformance(service, baseService, "preparationTime", 15, 30);
+        roleController.savePerformance(service, baseService, "preparationTime", 15, 30);
 
         verify(baseService, times(1)).update(any(PerformanceEntity.class));
     }

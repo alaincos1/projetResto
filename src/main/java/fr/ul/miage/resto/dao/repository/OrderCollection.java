@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 import static com.mongodb.client.model.Filters.*;
 
 public class OrderCollection extends MongoAccess {
-    MongoCollection<Document> collection = database.getCollection("orders");
     private static final String ORDER_STATE = "orderState";
     private static final String CHILD_ORDER = "childOrder";
+    MongoCollection<Document> collection = database.getCollection("orders");
 
     public boolean save(Object orderEntity) {
         return super.insert(Mapper.toDocument(orderEntity), collection);

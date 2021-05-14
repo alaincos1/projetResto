@@ -94,7 +94,7 @@ class ServerControllerTest {
 
         serverController.setTablesDirty(user);
 
-        verify(serverView, times(1)).displayNoTablesToDirty();
+        verify(serverView, times(1)).displayMessage("Aucune table à déclarer pour être débarassée.");
         verify(baseService, times(0)).update(any(TableEntity.class));
     }
 
@@ -190,7 +190,7 @@ class ServerControllerTest {
 
         serverController.serveOrders(user);
 
-        verify(serverView, times(1)).displayNoOrdersToServe();
+        verify(serverView, times(1)).displayMessage("Il n'y a aucune commande à servir");
         verify(baseService, times(0)).update(any(OrderEntity.class));
     }
 
@@ -729,7 +729,7 @@ class ServerControllerTest {
 
         serverController.takeOrders(user);
 
-        verify(serverView, times(1)).displayNoTableToTakeOrders();
+        verify(serverView, times(1)).displayMessage("Il n'y a pas de tables où prendre de commandes. (Pas de clients, commande en cours de préparation, à servir...)");
     }
 
     @Test
@@ -749,7 +749,8 @@ class ServerControllerTest {
 
         serverController.takeOrders(user);
 
-        verify(serverView, times(1)).displayAskTableToServe();
+        verify(serverView, times(1)).displayMessage("À quelle table souhaitez vous prendre une commande ?" +
+                "\n 0) Annuler");
         verify(serverController, times(0)).getMenusAvailable(any(TableState.class));
     }
 

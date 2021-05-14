@@ -1,6 +1,7 @@
 package fr.ul.miage.resto.controller.role;
 
 import fr.ul.miage.resto.appinfo.Service;
+import fr.ul.miage.resto.constants.InfoRestaurant;
 import fr.ul.miage.resto.constants.MealType;
 import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.dao.service.BaseService;
@@ -51,7 +52,7 @@ class DirectorControllerTest {
         directorController.endService();
 
         verify(service, times(1)).setEndService(true);
-        verify(directorView, times(1)).displayEnded();
+        verify(directorView, times(1)).displayMessage("La fin du service (des prises des commandes) est annoncée.");
     }
 
     @Test
@@ -64,7 +65,7 @@ class DirectorControllerTest {
         directorController.endService();
 
         verify(service, times(0)).setEndService(true);
-        verify(directorView, times(0)).displayEnded();
+        verify(directorView, times(0)).displayMessage("La fin du service (des prises des commandes) est annoncée.");
     }
 
     @Test
@@ -75,7 +76,7 @@ class DirectorControllerTest {
 
         directorController.endService();
 
-        verify(directorView, times(1)).displayAlreadyEnded();
+        verify(directorView, times(1)).displayMessage("La fin du service (des prises des commandes) a déjà été annoncée.");
     }
 
     @Test
@@ -162,7 +163,7 @@ class DirectorControllerTest {
         ProductEntity productActual = directorController.addStockProduct(products, 1);
 
         assertEquals(productExpected, productActual);
-        verify(directorView, times(1)).displayStockMax();
+        verify(directorView, times(1)).displayMessage("Stock maximal pour ce produit. Entrez un autre produit.");
     }
 
     @Test
@@ -424,7 +425,7 @@ class DirectorControllerTest {
 
         directorController.manageTables();
 
-        verify(directorView, times(1)).displayEnoughTables();
+        verify(directorView, times(1)).displayMessage("Il y a déjà le maximum de tables possible: " + InfoRestaurant.MAX_TABLES.getValue());
     }
 
     @Test
@@ -483,7 +484,7 @@ class DirectorControllerTest {
 
         verify(directorController, times(0)).addTable(anyList());
         verify(directorController, times(0)).removeTable();
-        verify(directorView, times(0)).displayEnoughTables();
+        verify(directorView, times(0)).displayMessage("Il y a déjà le maximum de tables possible: " + InfoRestaurant.MAX_TABLES.getValue());
     }
 
     @Test
@@ -524,7 +525,7 @@ class DirectorControllerTest {
 
         directorController.removeTable();
 
-        verify(directorView, times(1)).displayNoTableCanBeRemoved();
+        verify(directorView, times(1)).displayMessage("Aucune table est supprimable (Clients attablés, réservations, etc...)");
     }
 
     @Test
@@ -592,7 +593,7 @@ class DirectorControllerTest {
 
         directorController.manageDayMenu();
 
-        verify(directorView, times(1)).displayNoDishsOnTheMenu();
+        verify(directorView, times(1)).displayMessage("Il n'y a pas de plats dans le menu");
     }
 
     @Test
@@ -605,7 +606,7 @@ class DirectorControllerTest {
 
         directorController.manageDayMenu();
 
-        verify(directorView, times(1)).displayNoDishsNotOntheMenu();
+        verify(directorView, times(1)).displayMessage("Il n'y a aucuns plats d'enregistrés ou ils sont déjà tous dans le menu");
     }
 
     @Test
@@ -739,7 +740,7 @@ class DirectorControllerTest {
 
         directorController.analyses(type, last);
 
-        verify(directorView, times(1)).simpleDisplay(anyString());
+        verify(directorView, times(1)).displayMessage(anyString());
     }
 
     @Test
@@ -750,7 +751,7 @@ class DirectorControllerTest {
 
         directorController.analysesMostFamous();
 
-        verify(directorView, times(1)).displayMostFamous(any());
+        verify(directorView, times(1)).displayMessage(any());
     }
 
     @Test

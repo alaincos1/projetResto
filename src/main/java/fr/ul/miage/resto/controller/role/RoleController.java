@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Random;
 
 @Slf4j
-public class RoleMenuController {
+public class RoleController {
+    private static final Random random = new Random();
     protected RoleView roleView = new RoleView();
     protected Integer nbActions;
     protected Role roleTemp;
-    private static final Random random = new Random();
 
     public void launch(Role role) {
         this.roleTemp = role;

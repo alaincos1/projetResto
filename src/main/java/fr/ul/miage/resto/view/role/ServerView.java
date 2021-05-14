@@ -5,139 +5,91 @@ import fr.ul.miage.resto.model.entity.OrderEntity;
 import fr.ul.miage.resto.model.entity.TableEntity;
 import fr.ul.miage.resto.utils.MenuUtil;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ServerView extends RoleView {
+    private static final String CANCEL = "\n 0) Annuler";
 
     public void displayNoTablesAffected() {
-        System.out.println("Aucune table ne vous est affectée.");
+        displayMessage("Aucune table ne vous est affectée.");
     }
 
     public void displayTablesAffected(List<TableEntity> tables) {
-        int i = 1;
+        List<String> choices = new ArrayList<>();
         for (TableEntity table : tables) {
-            System.out.println(" " + i + ") " + table.toString());
-            i++;
+            choices.add(table.toString());
         }
-    }
-
-    public void displayNoTablesToDirty() {
-        System.out.println("Aucune table à déclarer pour être débarassée.");
+        displayChoice(choices, 1, true);
     }
 
     public void displayTablesToDirty(List<TableEntity> tablesToDirty) {
-        System.out.println("Quelle table est à débarasser ?" +
-                "\n 0) Annuler");
-        int i = 1;
+        displayMessage("Quelle table est à débarasser ?" + CANCEL);
+        List<String> choices = new ArrayList<>();
         for (TableEntity table : tablesToDirty) {
-            System.out.println(" " + i + ") " + table.toString());
-            i++;
+            choices.add(table.toString());
         }
-    }
-
-    public void displayTableDirtyDoAgain() {
-        System.out.println("Table déclarée à débarasser ! Voulez vous en déclarer une autre ?" +
-                "\n 0) Non" +
-                "\n 1) Oui");
-    }
-
-    public void displayNoOrdersToServe() {
-        System.out.println("Il n'y a aucune commande à servir");
+        displayChoice(choices, 1, true);
     }
 
     public void displayOrdersToServe(List<OrderEntity> orders) {
-        System.out.println("Quelle commande souhaitez vous servir ?" +
-                "\n 0) Annuler");
-        int i = 1;
+        displayMessage("Quelle commande souhaitez vous servir ?" + CANCEL);
+        List<String> choices = new ArrayList<>();
         for (OrderEntity order : orders) {
-            System.out.println(" " + i + ") Table n°" + order.getIdTable() + ", état: " + order.getOrderState() + ", nombre de plats: " + order.getIdsDish().size());
-            i++;
+            choices.add(" Table n°" + order.getIdTable() + ", état: " + order.getOrderState() + ", nombre de plats: " + order.getIdsDish().size());
         }
+        displayChoice(choices, 1, true);
     }
 
-    public void displayOrderServeAgain() {
-        System.out.println("Commande servie ! Voulez vous en servir une autre ?" +
-                "\n 0) Non" +
-                "\n 1) Oui");
-    }
-
-    public void displayNoTableToTakeOrders() {
-        System.out.println("Il n'y a pas de tables où prendre de commandes. (Pas de clients, commande en cours de préparation, à servir...)");
-    }
-
-    public void displayAskTableToServe() {
-        System.out.println("À quelle table souhaitez vous prendre une commande ?" +
-                "\n 0) Annuler");
-    }
-
-    public void displayAskChildOrder() {
-        System.out.println("Est-ce une commande enfant ?" +
-                "\n 0) Non" +
-                "\n 1) Oui");
-    }
-
-    public void displayChoiceDishType(HashMap<Integer, MenuUtil> menus) {
-        System.out.println("Quel type de plats compose cette commande ?" +
-                "\n 0) Annuler");
+    public void displayChoiceDishType(Map<Integer, MenuUtil> menus) {
+        displayMessage("Quel type de plats compose cette commande ?" + CANCEL);
+        List<String> choices = new ArrayList<>();
         for (int i = 1; i < menus.size() + 1; i++) {
             if (menus.get(i).isDishesAvailable()) {
-                System.out.println(" " + i + ") " + menus.get(i).getDishType().getDish());
+                choices.add(menus.get(i).getDishType().getDish());
             } else {
-                System.out.println(" " + i + ") " + menus.get(i).getDishType().getDish() + " : Désolé. Il n'y a aucun plat disponible. Annuler.");
+                choices.add(menus.get(i).getDishType().getDish() + " : Désolé. Il n'y a aucun plat disponible. Annuler.");
             }
         }
-    }
-
-    public void displayAskDrinksOrder() {
-        System.out.println("Voulez vous des boissons ?" +
-                "\n 0) Non" +
-                "\n 1) Oui");
+        displayChoice(choices, 1, true);
     }
 
     public void displayNoDishOnTheMenu() {
-        System.out.println("Il n'y a pas de plats sur le menu.");
+        displayMessage("Il n'y a pas de plats sur le menu.");
     }
 
     public void displayMenuByCat(List<DishEntity> allDishes) {
         int i = 0;
         String cat = allDishes.get(0).getIdCategory();
-        System.out.println("--- " + cat + " ---");
+        displayMessage("--- " + cat + " ---");
         for (DishEntity dish : allDishes) {
             if (!dish.getIdCategory().equals(cat)) {
                 cat = dish.getIdCategory();
-                System.out.println("--- " + cat + " ---");
+                displayMessage("--- " + cat + " ---");
             }
-            System.out.println(" " + i + ") " + dish.get_id() + ", Prix: " + dish.getPrice());
+            displayMessage(" " + i + ") " + dish.get_id() + ", Prix: " + dish.getPrice());
             i++;
         }
     }
 
     public void displayNoDishInTheOrder() {
-        System.out.println("Il est impossible de valider ou supprimer des plats d'une commande vide.");
+        displayMessage("Il est impossible de valider ou supprimer des plats d'une commande vide.");
     }
 
     public void displayOrderChoice() {
-        System.out.println("Entrez votre choix. \"-a 1/2/6\" pour ajouter, \"-d 1/6\" pour supprimer, \"-v\" pour valider.");
-    }
-
-    public void displayNotEnoughStockForDish(DishEntity dishEntity) {
-        System.out.println("Stock insuffisant pour le plat: " + dishEntity.get_id());
+        displayMessage("Entrez votre choix. \"-a 1/2/6\" pour ajouter, \"-d 1/6\" pour supprimer, \"-v\" pour valider.");
     }
 
     public void displayOrderToSave(OrderEntity orderToSave) {
-        if(orderToSave.getChildOrder()){
-            System.out.println("- Commande Enfant");
+        if (Boolean.TRUE.equals(orderToSave.getChildOrder())) {
+            displayMessage("- Commande Enfant");
         }
-        for (String dish : orderToSave.getIdsDish()){
-            System.out.println(" - "+dish);
+        for (String dish : orderToSave.getIdsDish()) {
+            displayMessage(" - " + dish);
         }
-        System.out.println("Validez vous cette commande ?" +
+        displayMessage("Validez vous cette commande ?" +
                 "\n 0) Non" +
                 "\n 1) Oui");
-    }
-
-    public void displayEndService() {
-        System.out.println("Fin du service, aucune prise de commande possible.");
     }
 }

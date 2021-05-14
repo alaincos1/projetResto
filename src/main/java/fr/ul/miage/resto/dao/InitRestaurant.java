@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class InitRestaurant {
+    private static final GeneralView generalView = new GeneralView();
     private final Service service;
     private final BaseService baseService;
-    private static final GeneralView generalView = new GeneralView();
 
     public void initRestaurant() {
         InsertData.feedData(baseService);
@@ -77,7 +77,7 @@ public class InitRestaurant {
     protected void initUsers() {
         List<UserEntity> users = baseService.getAllUsers();
         boolean directorHere = users.stream().noneMatch(userEntity -> userEntity.getRole().equals(Role.DIRECTOR));
-        if(directorHere){
+        if (directorHere) {
             UserEntity admin = new UserEntity();
             admin.set_id("admin");
             admin.setRole(Role.DIRECTOR);

@@ -60,7 +60,7 @@ class ButlerControllerTest {
         doNothing().when(butlerController).launch(any(Role.class));
 
         butlerController.choiceMealTypeWithDate(dateBooking);
-        verify(butlerView, times(1)).displayBookingImpossible();
+        verify(butlerView, times(1)).displayMessage("Impossible de créer une réservation pour aujourd'hui.");
     }
 
     @Test
@@ -70,7 +70,7 @@ class ButlerControllerTest {
         String dateToday = "2021/04/30";
 
         when(service.getDate()).thenReturn(dateToday);
-        doNothing().when(butlerView).displayBookingService();
+        doNothing().when(butlerView).displayMessage(anyString());
         doReturn(0).when(butlerController).getIntegerInput(anyInt(), anyInt());
 
         MealType toTested = butlerController.choiceMealTypeWithDate(dateBooking);
@@ -84,7 +84,7 @@ class ButlerControllerTest {
         String dateToday = "2021/04/30";
 
         when(service.getDate()).thenReturn(dateToday);
-        doNothing().when(butlerView).displayBookingService();
+        doNothing().when(butlerView).displayMessage(anyString());
         doReturn(1).when(butlerController).getIntegerInput(anyInt(), anyInt());
 
         MealType toTested = butlerController.choiceMealTypeWithDate(dateBooking);
@@ -302,11 +302,11 @@ class ButlerControllerTest {
         service.setMealType(MealType.DINNER);
         List<TableEntity> tables = baseService.getAllTables();
         when(butlerView.displayAllTablesWithBooking(tables, service.getDate(), service.getMealType(), baseService)).thenReturn(0);
-        doNothing().when(butlerView).displayAnyBooking();
+        doNothing().when(butlerView).displayMessage(anyString());
 
         butlerController.choiceReservation(baseService.getAllTables(), 1);
 
-        verify(butlerView, times(1)).displayAnyBooking();
+        verify(butlerView, times(1)).displayMessage("Il n'y a pas de réservation ce jour.");
     }
 
     @Test
@@ -429,7 +429,7 @@ class ButlerControllerTest {
 
         when(baseService.getDishById("1")).thenReturn(dish1);
         when(baseService.getDishById("2")).thenReturn(dish2);
-        doNothing().when(butlerView).displayDishes(anyString(), anyInt());
+        doNothing().when(butlerView).displayMessage(anyString());
 
         assertEquals(20, butlerController.priceBill(listDish));
     }
@@ -444,10 +444,10 @@ class ButlerControllerTest {
         table.setNbSeats(2);
         table.setTableState(TableState.DESSERT);
 
-        doReturn(2).when(butlerView).displayAllTablesForBill(anyList(), any(BaseService.class));
-        when(butlerView.orderServed(table, baseService)).thenReturn(true);
-        when(butlerView.stateForBill(table)).thenReturn(true);
-        doNothing().when(butlerView).displayChoiceTableForBill();
+        doReturn(2).when(butlerView).displayAllTablesForBill(anyList(), any(ButlerController.class));
+        doReturn(true).when(butlerController).ordersServed(table);
+        doReturn(true).when(butlerController).stateForBill(table);
+        doNothing().when(butlerView).displayMessage(anyString());
         doReturn("1").when(butlerController).getStringInput();
         when(baseService.getTableById(anyString())).thenReturn(table);
         doNothing().when(butlerController).saveObject(any());
@@ -469,13 +469,13 @@ class ButlerControllerTest {
         table.setNbSeats(2);
         table.setTableState(TableState.DESSERT);
 
-        doReturn(0).when(butlerView).displayAllTablesForBill(anyList(), any(BaseService.class));
-        doNothing().when(butlerView).displayBillImpossible();
+        doReturn(0).when(butlerView).displayAllTablesForBill(anyList(), any(ButlerController.class));
+        doNothing().when(butlerView).displayMessage(anyString());
         doNothing().when(butlerController).launch(any(Role.class));
 
         butlerController.editBills();
 
-        verify(butlerView, times(1)).displayBillImpossible();
+        verify(butlerView, times(1)).displayMessage("Aucune facture ne peut-être éditée.");
     }
 
     @Test
@@ -490,7 +490,7 @@ class ButlerControllerTest {
 
         doReturn("3").when(butlerController).getStringInput();
         when(baseService.getTableById(anyString())).thenReturn(null);
-        doReturn(2).when(butlerView).displayAllTablesForBill(anyList(), any(BaseService.class));
+        doReturn(2).when(butlerView).displayAllTablesForBill(anyList(), any(ButlerController.class));
         doNothing().when(butlerView).displayInputIncorrect();
         doNothing().when(butlerController).launch(any(Role.class));
         doCallRealMethod().doNothing().when(butlerController).editBills();
@@ -523,7 +523,7 @@ class ButlerControllerTest {
         when(baseService.getAllUsers()).thenReturn(listUser);
         when(baseService.getAllTables()).thenReturn(listTable);
         doNothing().when(butlerView).displayAllTables(listTable);
-        doNothing().when(butlerView).displayChoiceServer();
+        doNothing().when(butlerView).displayMessage(anyString());
         doNothing().when(butlerView).displayServersList(listUser);
         doReturn("test").when(butlerController).getUserIdInput();
         when(baseService.getUserById(anyString())).thenReturn(null);
@@ -561,11 +561,10 @@ class ButlerControllerTest {
         when(baseService.getAllUsers()).thenReturn(listUser);
         when(baseService.getAllTables()).thenReturn(listTable);
         doNothing().when(butlerView).displayAllTables(listTable);
-        doNothing().when(butlerView).displayChoiceServer();
+        doNothing().when(butlerView).displayMessage(anyString());
         doNothing().when(butlerView).displayServersList(listUser);
         doReturn("ser2").when(butlerController).getUserIdInput();
         when(baseService.getUserById(anyString())).thenReturn(user);
-        doNothing().when(butlerView).displayChoiceTableServer(anyString());
         doReturn(1).when(butlerView).displayTablesList(listTable, "ser2", null);
         doReturn("1").when(butlerController).choiceTableServer(user);
         doNothing().when(butlerController).launch(Role.BUTLER);
@@ -593,7 +592,7 @@ class ButlerControllerTest {
         listTable.add(table);
 
         when(baseService.getAllTables()).thenReturn(listTable);
-        doNothing().when(butlerView).displayIsABill();
+        doNothing().when(butlerView).displayMessage(anyString());
 
         doReturn(0).when(butlerController).getIntegerInput(anyInt(), anyInt());
         doReturn("1").when(butlerController).choiceReservation(listTable, 0);
@@ -624,12 +623,11 @@ class ButlerControllerTest {
         List<TableEntity> listTable = new ArrayList<>();
 
         when(baseService.getAllTables()).thenReturn(listTable);
-        doNothing().when(butlerView).displayIsABill();
+        doNothing().when(butlerView).displayMessage(anyString());
 
         doReturn(0).when(butlerController).getIntegerInput(anyInt(), anyInt());
         doReturn("1").when(butlerController).choiceReservation(listTable, 0);
         doReturn(0).when(butlerView).displayTablesList(listTable, null, "Libre");
-        doNothing().when(butlerView).displayAnyTableFree();
         doNothing().when(butlerController).launch(any(Role.class));
 
         when(baseService.getTableById(anyString())).thenReturn(table);
@@ -638,7 +636,7 @@ class ButlerControllerTest {
         butlerController.affectTablesToClients();
 
         verify(butlerView, times(0)).displayChoiceTableClient();
-        verify(butlerView, times(1)).displayAnyTableFree();
+        verify(butlerView, times(1)).displayMessage("Malheureusement, notre restaurant est complet !");
         verify(butlerController, times(2)).launch(any(Role.class));
     }
 
@@ -660,6 +658,89 @@ class ButlerControllerTest {
 
         butlerController.changeOrderState();
         verify(butlerController, times(1)).updateObject(any(OrderEntity.class));
+    }
+
+    @Test
+    @DisplayName("Retourne true car état de la table est correcte")
+    void testStateForBillTestReturnTrue() {
+        TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.DESSERT);
+
+        assertTrue(butlerController.stateForBill(table));
+    }
+
+    @Test
+    @DisplayName("Retourne false car état de la table est incorrecte")
+    void testSstateForBillTestReturnFalse() {
+        TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.FREE);
+
+        assertFalse(butlerController.stateForBill(table));
+    }
+
+    @Test
+    @DisplayName("Retourne true car état de la table est correct, des commandes ont été servi")
+    void testOrderServedTestReturnTrue() {
+        TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.FREE);
+
+        OrderEntity order = new OrderEntity();
+        order.set_id("1");
+        order.setChildOrder(false);
+        order.setIdTable("1");
+        order.setOrderState(OrderState.SERVED);
+        order.setRank(1);
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        order.setIdsDish(list);
+
+        OrderEntity order1 = new OrderEntity();
+        order1.set_id("2");
+        order1.setChildOrder(false);
+        order1.setIdTable("1");
+        order1.setOrderState(OrderState.SERVED);
+        order1.setRank(1);
+        List<String> list1 = new ArrayList<>();
+        list1.add("1");
+        order1.setIdsDish(list1);
+
+        List<OrderEntity> listOrder = new ArrayList<>();
+        listOrder.add(order);
+        listOrder.add(order1);
+
+        when(baseService.getServedOrders()).thenReturn(listOrder);
+
+        assertTrue(butlerController.ordersServed(table));
+    }
+
+    @Test
+    @DisplayName("Retourne false car état de la table est incorrecte, aucun commande n'a été servi")
+    void testOrderServedTestReturnFalse() {
+        TableEntity table = new TableEntity();
+        table.set_id("1");
+        table.setIdHelper("hel1");
+        table.setIdServer("ser1");
+        table.setNbSeats(2);
+        table.setTableState(TableState.FREE);
+
+        List<OrderEntity> listOrder = new ArrayList<>();
+
+        when(baseService.getServedOrders()).thenReturn(listOrder);
+
+        assertFalse(butlerController.ordersServed(table));
     }
 
 }

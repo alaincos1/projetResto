@@ -90,7 +90,7 @@ class HelperControllerTest {
 
         helperController.cleanTables(user);
 
-        verify(helperView, times(1)).displayNoTablesToClean();
+        verify(helperView, times(1)).displayMessage("Aucune table à nettoyer.");
         verify(baseService, times(0)).update(any(TableEntity.class));
     }
 

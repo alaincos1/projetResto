@@ -40,7 +40,7 @@ public class StartController {
     }
 
     public void askMealDate() {
-        startView.displayAskDate();
+        startView.displayMessage("Veuillez choisir la date du service au format  \"AAAA/MM/JJ\" :");
         date = getDateInput();
     }
 
@@ -48,7 +48,7 @@ public class StartController {
         service = new Service();
         service.setMealType(mealType);
         service.setDate(date);
-        startView.displayService(service);
+        startView.displayMessage("Service du jour : " + service.getMealType().getMealValue() + " " + service.getDate());
     }
 
     public void launchLogin() {

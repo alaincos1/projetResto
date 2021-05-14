@@ -24,11 +24,11 @@ public class LogInController {
     }
 
     public void askUserId() {
-        logInView.displayLogIn();
+        logInView.displayMessage("Veuillez vous connecter avec votre identifiant : ");
         String input = getUserIdInput();
         UserEntity user = baseService.getUserById(input);
         if (user == null) {
-            logInView.displayLogInError();
+            logInView.displayMessage("Utilisateur inconnu, veuillez recommencer.");
             askUserId();
         } else {
             Launcher.setLoggedUser(user);
@@ -36,7 +36,7 @@ public class LogInController {
     }
 
     protected void connectUserAccordingRole(Role role) {
-        RoleMenuController controller = null;
+        RoleController controller = null;
         switch (role) {
             case DIRECTOR:
                 controller = new DirectorController(baseService, service, new DirectorView());
@@ -54,14 +54,14 @@ public class LogInController {
                 controller = new HelperController(baseService, service, new HelperView());
                 break;
         }
-        if(controller != null) {
+        if (controller != null) {
             controller.launch(role);
         }
     }
 
     public void disconnect() {
         Launcher.setLoggedUser(null);
-        logInView.displayDisconnect();
+        logInView.displayMessage("Vous êtes déconnecté.e");
         launch();
     }
 

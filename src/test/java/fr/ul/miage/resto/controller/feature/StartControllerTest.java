@@ -60,6 +60,6 @@ class StartControllerTest {
         startController.setDate("2022/09/30");
         startController.createService();
 
-        verify(startView, times(1)).displayService(any(Service.class));
+        verify(startView, times(1)).displayMessage("Service du jour : "+MealType.LUNCH.getMealValue()+" 2022/09/30");
     }
 }

@@ -15,7 +15,7 @@ public class TableEntity {
     public String toString() {
         StringBuilder toString = new StringBuilder();
         toString.append("Table n°").append(_id).append(", nombre de places: ").append(nbSeats).append(", état: ").append(tableState.getState());
-        toString.append("\n    -> serveur: ").append((idServer==null)?"-":idServer).append(", assistant: ").append((idHelper==null)?"-":idHelper);
+        toString.append("\n    -> serveur: ").append((idServer == null) ? "-" : idServer).append(", assistant: ").append((idHelper == null) ? "-" : idHelper);
         return toString.toString();
     }
 }

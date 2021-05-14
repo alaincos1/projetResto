@@ -18,9 +18,9 @@ public class OrderEntity {
     private String idTable;
 
     public TableState getDishType(BaseService baseService) {
-        for(String dish : idsDish){
+        for (String dish : idsDish) {
             DishEntity dishEntity = baseService.getDishById(dish);
-            if(!dishEntity.getDishType().equals(DishType.DRINK)){
+            if (!dishEntity.getDishType().equals(DishType.DRINK)) {
                 return TableState.valueOf(dishEntity.getDishType().toString());
             }
         }
@@ -28,7 +28,7 @@ public class OrderEntity {
     }
 
     public void giveStockBack(BaseService baseService) {
-        for(String id : idsDish){
+        for (String id : idsDish) {
             DishEntity dishEntity = baseService.getDishById(id);
             dishEntity.changeStock(baseService, true);
         }

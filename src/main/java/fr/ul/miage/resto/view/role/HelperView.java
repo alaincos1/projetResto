@@ -2,6 +2,7 @@ package fr.ul.miage.resto.view.role;
 
 import fr.ul.miage.resto.model.entity.TableEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HelperView extends RoleView {
@@ -16,23 +17,13 @@ public class HelperView extends RoleView {
         serverView.displayTablesAffected(tables);
     }
 
-    public void displayNoTablesToClean() {
-        System.out.println("Aucune table à nettoyer.");
-    }
-
     public void displayTablesToClean(List<TableEntity> tablestoClean) {
-        System.out.println("Quelle table souhaitez vous nettoyer ?" +
+        displayMessage("Quelle table souhaitez vous nettoyer ?" +
                 "\n 0) Annuler");
-        int i = 1;
+        List<String> choices = new ArrayList<>();
         for (TableEntity table : tablestoClean) {
-            System.out.println(" " + i + ") " + table.toString());
-            i++;
+            choices.add(table.toString());
         }
-    }
-
-    public void displayTableCleanedDoAgain() {
-        System.out.println("Table nettoyée ! Voulez vous en nettoyer une autre ?" +
-                "\n 0) Non" +
-                "\n 1) Oui");
+        displayChoice(choices, 1, true);
     }
 }

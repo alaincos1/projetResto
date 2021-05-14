@@ -403,7 +403,7 @@ class CookControllerTest {
         cookController.endCooking();
 
         verify(service, times(1)).setEndNewClients(true);
-        verify(cookView, times(1)).displayEnded();
+        verify(cookView, times(1)).displayMessage("La fin de prise en charge des nouveaux clients est annoncée.");
     }
 
     @Test
@@ -416,7 +416,7 @@ class CookControllerTest {
         cookController.endCooking();
 
         verify(service, times(0)).setEndNewClients(true);
-        verify(cookView, times(0)).displayEnded();
+        verify(cookView, times(0)).displayMessage("La fin de prise en charge des nouveaux clients est annoncée.");
     }
 
     @Test
@@ -428,6 +428,6 @@ class CookControllerTest {
 
         cookController.endCooking();
 
-        verify(cookView, times(1)).displayAlreadyEnded();
+        verify(cookView, times(1)).displayMessage("La fin de prise en charge des nouveaux clients a déjà été annoncée.");
     }
 }

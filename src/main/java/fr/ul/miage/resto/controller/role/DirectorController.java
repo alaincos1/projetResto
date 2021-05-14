@@ -7,15 +7,13 @@ import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.constants.TableState;
 import fr.ul.miage.resto.controller.feature.LogInController;
 import fr.ul.miage.resto.dao.service.BaseService;
-import fr.ul.miage.resto.model.entity.DishEntity;
-import fr.ul.miage.resto.model.entity.ProductEntity;
-import fr.ul.miage.resto.model.entity.TableEntity;
-import fr.ul.miage.resto.model.entity.UserEntity;
+import fr.ul.miage.resto.model.entity.*;
 import fr.ul.miage.resto.utils.DateDto;
 import fr.ul.miage.resto.view.feature.LogInView;
 import fr.ul.miage.resto.view.role.*;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,11 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import fr.ul.miage.resto.model.entity.*;
-import org.apache.commons.lang3.StringUtils;
-
 @AllArgsConstructor
-public class DirectorController extends RoleMenuController {
+public class DirectorController extends RoleController {
     private final BaseService baseService;
     private final Service service;
     private final DirectorView directorView;
@@ -110,7 +105,9 @@ public class DirectorController extends RoleMenuController {
     }
 
     protected void promoteEmployee(UserEntity user) {
-        directorView.displayDirectionRole();
+        directorView.displayMessage("Selectionnez le role de l'employé." +
+                "\n 0) " + Role.DIRECTOR +
+                "\n 1) " + Role.BUTLER);
         int choice = getIntegerInput(0, 1);
         Role newRole = choice == 0 ? Role.DIRECTOR : Role.BUTLER;
 
@@ -126,7 +123,7 @@ public class DirectorController extends RoleMenuController {
     }
 
     protected void addEmployee() {
-        directorView.displayIdChoice();
+        directorView.displayMessage("Renseignez l'identifiant de l'employé.");
         String id = getUserIdInput();
 
         directorView.displayRoleChoice();
@@ -187,9 +184,9 @@ public class DirectorController extends RoleMenuController {
                 }
             } else {
                 if (choice == 2) {
-                    directorView.displayNoDishsNotOntheMenu();
+                    directorView.displayMessage("Il n'y a aucuns plats d'enregistrés ou ils sont déjà tous dans le menu");
                 } else {
-                    directorView.displayNoDishsOnTheMenu();
+                    directorView.displayMessage("Il n'y a pas de plats dans le menu");
                 }
             }
         }
@@ -227,10 +224,10 @@ public class DirectorController extends RoleMenuController {
     //Créé un nouveau produit et son stock
     protected ProductEntity createProduct() {
         ProductEntity product = new ProductEntity();
-        directorView.displayAskNameProduct();
+        directorView.displayMessage("Entrez le nom du produit.");
         String name = getStringInput();
         while (baseService.getProductById(name) != null) {
-            directorView.displayProductAlreadyExist();
+            directorView.displayMessage("Ce produit existe déjà, entrez un autre intitulé.");
             name = getStringInput();
         }
         product.set_id(name);
@@ -243,7 +240,7 @@ public class DirectorController extends RoleMenuController {
     protected ProductEntity addStockProduct(List<ProductEntity> products, Integer input) {
         ProductEntity product = products.get(input);
         while (product.getStock() == InfoRestaurant.MAX_STOCK.getValue()) {
-            directorView.displayStockMax();
+            directorView.displayMessage("Stock maximal pour ce produit. Entrez un autre produit.");
             input = getIntegerInput(1, products.size()) - 1;
             product = products.get(input);
         }
@@ -257,11 +254,13 @@ public class DirectorController extends RoleMenuController {
     //Sauvegarde le produit mis à jour ou créé
     protected void saveProduct(ProductEntity product) {
         if (baseService.update(product) || baseService.save(product)) {
-            directorView.displayProductSave();
+            directorView.displayMessage("Le produit et son stock sont sauvegardés.");
         } else {
             directorView.displayError();
         }
-        directorView.displayManageStockAgain();
+        directorView.displayMessage("Souhaitez vous ajouter du stock à un autre produit ?" +
+                "\n O) Non" +
+                "\n 1) Oui");
         if (doAgain()) {
             manageStocks();
         }
@@ -272,16 +271,21 @@ public class DirectorController extends RoleMenuController {
         List<TableEntity> tables = baseService.getAllTables();
         Integer i;
         if (tables.isEmpty()) {
-            directorView.displayNoTables();
-            directorView.displayAskAddTable();
+            directorView.displayMessage("Il n'y a aucune table.");
+            directorView.displayMessage("Souhaitez vous ajouter une table ?" +
+                    "\n O) Annuler" +
+                    "\n 1) Ajouter");
             i = getIntegerInput(0, 1);
         } else {
             directorView.displayTables(tables);
-            directorView.displayAskAddRemoveTable();
+            directorView.displayMessage("Souhaitez vous ajouter ou supprimer une table ?" +
+                    "\n O) Annuler" +
+                    "\n 1) Ajouter" +
+                    "\n 2) Supprimer");
             i = getIntegerInput(0, 2);
         }
         if (i == 1 && tables.size() == InfoRestaurant.MAX_TABLES.getValue()) {
-            directorView.displayEnoughTables();
+            directorView.displayMessage("Il y a déjà le maximum de tables possible: " + InfoRestaurant.MAX_TABLES.getValue());
         } else if (i == 1) {
             addTable(tables);
         } else if (i == 2) {
@@ -295,10 +299,10 @@ public class DirectorController extends RoleMenuController {
         TableEntity tableToAdd = new TableEntity();
         tableToAdd.set_id(getFreeNumberTable(tables));
         tableToAdd.setTableState(TableState.FREE);
-        directorView.displayAskNumberSeats();
+        directorView.displayMessage("Entrez un nombre de place pour cette table entre 1 et " + InfoRestaurant.MAX_SEATS.getValue() + " ");
         tableToAdd.setNbSeats(getIntegerInput(1, InfoRestaurant.MAX_SEATS.getValue()));
         if (baseService.save(tableToAdd)) {
-            directorView.displayTableAdded();
+            directorView.displayMessage("Table ajoutée !");
         } else {
             directorView.displayError();
         }
@@ -308,13 +312,13 @@ public class DirectorController extends RoleMenuController {
     protected void removeTable() {
         List<TableEntity> tables = baseService.getAllRemovableTables();
         if (tables.isEmpty()) {
-            directorView.displayNoTableCanBeRemoved();
+            directorView.displayMessage("Aucune table est supprimable (Clients attablés, réservations, etc...)");
         } else {
-            directorView.displayAskTableToRemove();
+            directorView.displayMessage("Quelle table souhaitez vous supprimer ?");
             directorView.displayTables(tables);
             int choice = getIntegerInput(1, tables.size()) - 1;
             if (baseService.deleteTable(tables.get(choice).get_id())) {
-                directorView.displayTableRemoved();
+                directorView.displayMessage("Table supprimée !");
             } else {
                 directorView.displayError();
             }
@@ -378,7 +382,7 @@ public class DirectorController extends RoleMenuController {
 
                 if (choiceDate > 0) {
                     DateDto dateDto = dates.get(choiceDate - 1);
-                    directorView.simpleDisplay(baseService.getTakingByPeriod(dateDto, mealType));
+                    directorView.displayMessage(baseService.getTakingByPeriod(dateDto, mealType));
                 }
             }
         }
@@ -387,7 +391,7 @@ public class DirectorController extends RoleMenuController {
     protected void analysesMostFamous() {
         Map.Entry<String, Integer> mostFamous = baseService.getMostFamousDish();
         if (mostFamous != null) {
-            directorView.displayMostFamous(mostFamous);
+            directorView.displayMessage(mostFamous.getKey() + ": " + mostFamous.getValue());
         } else {
             directorView.displayError();
         }
@@ -430,15 +434,17 @@ public class DirectorController extends RoleMenuController {
     //Met fin à la prise des commandes, fin de service
     protected void endService() {
         if (!service.isEndService()) {
-            directorView.displayAskEndService();
+            directorView.displayMessage("Souhaitez vous annoncer la fin du service (des prises des commandes) ? Choix définitif." +
+                    "\n O) Non" +
+                    "\n 1) Oui");
             Integer input = getIntegerInput(0, 1);
             if (input == 1) {
                 service.setEndNewClients(true);
                 service.setEndService(true);
-                directorView.displayEnded();
+                directorView.displayMessage("La fin du service (des prises des commandes) est annoncée.");
             }
         } else {
-            directorView.displayAlreadyEnded();
+            directorView.displayMessage("La fin du service (des prises des commandes) a déjà été annoncée.");
         }
         launch(Role.DIRECTOR);
     }

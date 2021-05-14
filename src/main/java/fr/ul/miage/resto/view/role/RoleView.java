@@ -4,29 +4,32 @@ import fr.ul.miage.resto.constants.Features;
 import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.view.GeneralView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RoleView extends GeneralView {
     public void displayMenu(Role roleTemp) {
-        System.out.println("\n --- \n " +
-                "En tant que " + roleTemp.getValue() + " choisissez une action : \n" +
-                " 0) Retour (déconnexion si aucun menu supérieur)");
-        int i = 1;
+        displayMessage("\n --- \n " +
+                "En tant que " + roleTemp.getValue() + " choisissez une action : ");
+        List<String> choices = new ArrayList<>();
+        choices.add("Retour (déconnexion si aucun menu supérieur)");
         for (Features feature : Features.values()) {
             if (feature.getRole().equals(roleTemp)) {
-                System.out.println(" " + i + ") " + feature.getLabel());
-                i++;
+                choices.add(feature.getLabel());
             }
         }
+        displayChoice(choices, 0, true);
     }
 
     public void displayAskReturnMainMenu() {
-        System.out.println("\n Entrez 0 pour revenir au menu principal.");
+        displayMessage("\n Entrez 0 pour revenir au menu principal.");
     }
 
     public void displayError() {
-        System.out.println("Abandon/erreur. L'action n'a pas été effectuée");
+        displayMessage("Abandon/erreur. L'action n'a pas été effectuée");
     }
 
     public void displaySuccess() {
-        System.out.println("Opération effectuée");
+        displayMessage("Opération effectuée");
     }
 }

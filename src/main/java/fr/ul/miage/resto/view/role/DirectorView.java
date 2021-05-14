@@ -1,124 +1,47 @@
 package fr.ul.miage.resto.view.role;
 
 import fr.ul.miage.resto.constants.DishType;
-import fr.ul.miage.resto.constants.InfoRestaurant;
 import fr.ul.miage.resto.constants.MealType;
 import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.model.entity.*;
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DirectorView extends RoleView {
-    public void displayAskEndService() {
-        System.out.println("Souhaitez vous annoncer la fin du service (des prises des commandes) ? Choix définitif." +
-                "\n O) Non" +
-                "\n 1) Oui");
-    }
-
-    public void displayEnded() {
-        System.out.println("La fin du service (des prises des commandes) est annoncée.");
-    }
-
-    public void displayAlreadyEnded() {
-        System.out.println("La fin du service (des prises des commandes) a déjà été annoncée.");
-    }
 
     public void displayStock(List<ProductEntity> products) {
-        System.out.println("Sélectionner le produit auquel ajouter du stock: " +
+        displayMessage("Sélectionner le produit auquel ajouter du stock: " +
                 "\n 0) Annuler" +
                 "\n 1) Nouveau produit");
-        int i = 2;
+        List<String> choices = new ArrayList<>();
         for (ProductEntity product : products) {
-            System.out.println(" " + i + ") " + product.get_id() + ", Stock: " + product.getStock());
-            i++;
+            choices.add(product.get_id() + ", Stock: " + product.getStock());
         }
-    }
-
-    public void displayManageStockAgain() {
-        System.out.println("Souhaitez vous ajouter du stock à un autre produit ?" +
-                "\n O) Non" +
-                "\n 1) Oui");
-    }
-
-    public void displayProductSave() {
-        System.out.println("Le produit et son stock sont sauvegardés.");
+        displayChoice(choices, 2, true);
     }
 
     public void displayAskAddStock(int min, int max) {
-        System.out.println("Entrez le stock à ajouter au stock initial. Entre " + min + " et " + max + ": ");
-    }
-
-    public void displayStockMax() {
-        System.out.println("Stock maximal pour ce produit. Entrez un autre produit.");
-    }
-
-    public void displayProductAlreadyExist() {
-        System.out.println("Ce produit existe déjà, entrez un autre intitulé.");
-    }
-
-    public void displayAskNameProduct() {
-        System.out.println("Entrez le nom du produit.");
-    }
-
-    public void displayNoTables() {
-        System.out.println("Il n'y a aucune table.");
+        displayMessage("Entrez le stock à ajouter au stock initial. Entre " + min + " et " + max + ": ");
     }
 
     public void displayTables(List<TableEntity> tables) {
-        int i = 1;
+        List<String> choices = new ArrayList<>();
         for (TableEntity table : tables) {
-            System.out.println(" " + i + ") " + table.toString());
-            i++;
+            choices.add(table.toString());
         }
-    }
-
-    public void displayAskAddRemoveTable() {
-        System.out.println("Souhaitez vous ajouter ou supprimer une table ?" +
-                "\n O) Annuler" +
-                "\n 1) Ajouter" +
-                "\n 2) Supprimer");
-    }
-
-    public void displayAskAddTable() {
-        System.out.println("Souhaitez vous ajouter une table ?" +
-                "\n O) Annuler" +
-                "\n 1) Ajouter");
-    }
-
-    public void displayEnoughTables() {
-        System.out.println("Il y a déjà le maximum de tables possible: " + InfoRestaurant.MAX_TABLES.getValue());
-    }
-
-    public void displayTableAdded() {
-        System.out.println("Table ajoutée !");
-    }
-
-    public void displayTableRemoved() {
-        System.out.println("Table supprimée !");
-    }
-
-    public void displayAskNumberSeats() {
-        System.out.println("Entrez un nombre de place pour cette table entre 1 et " + InfoRestaurant.MAX_SEATS.getValue() + " ");
-    }
-
-    public void displayAskTableToRemove() {
-        System.out.println("Quelle table souhaitez vous supprimer ?");
-    }
-
-    public void displayNoTableCanBeRemoved() {
-        System.out.println("Aucune table est supprimable (Clients attablés, réservations, etc...)");
+        displayChoice(choices, 1, true);
     }
 
     public void displayManage(List<String> actions, String toManage) {
-        System.out.println("Selectionnez une action.");
-        System.out.println("0) Annuler");
-        int i = 0;
-        for (i = 0; i < actions.size(); i++) {
-            System.out.println((i + 1) + ") " + actions.get(i) + " " + toManage);
+        displayMessage("Selectionnez une action. \n 0) Annuler");
+        List<String> choices = new ArrayList<>();
+        for (String action : actions) {
+            choices.add(action + " " + toManage);
         }
+        displayChoice(choices, 1, true);
     }
 
     public void displayManage(List<String> actions) {
@@ -126,54 +49,30 @@ public class DirectorView extends RoleView {
     }
 
     public void displayEmployees(String action, List<UserEntity> users) {
-        System.out.println("Selectionnez l'employé à " + action.toLowerCase());
-        System.out.println("0) Annuler");
-        for (int i = 0; i < users.size(); i++) {
-            System.out.println((i + 1) + ") " + users.get(i).get_id());
+        displayMessage("Selectionnez l'employé à " + action.toLowerCase() + "\n 0) Annuler");
+        List<String> choices = new ArrayList<>();
+        for (UserEntity user : users) {
+            choices.add(user.get_id());
         }
-    }
-
-    public void displayIdChoice() {
-        System.out.println("Renseignez l'identifiant de l'employé.");
+        displayChoice(choices, 1, true);
     }
 
     public void displayRoleChoice() {
-        System.out.println("Selectionnez le role de l'employé.");
-        for (int i = 0; i < Role.values().length; i++) {
-            System.out.println(i + ") " + Role.values()[i]);
+        displayMessage("Selectionnez le role de l'employé.");
+        List<String> choices = new ArrayList<>();
+        for (Role role : Role.values()) {
+            choices.add(role.getValue());
         }
-    }
-
-    public void displayDirectionRole() {
-        System.out.println("Selectionnez le role de l'employé.");
-        System.out.println("0) " + Role.DIRECTOR);
-        System.out.println("1) " + Role.BUTLER);
-    }
-
-    public void displayNoDishsOnTheMenu() {
-        System.out.println("Il n'y a pas de plats dans le menu");
-    }
-
-    public void displayNoDishsNotOntheMenu() {
-        System.out.println("Il n'y a aucuns plats d'enregistrés ou ils sont déjà tous dans le menu");
-    }
-
-    public void displayChoice(List<String> choice, Integer startIndex, boolean withIndex) {
-        for (String display : choice) {
-            if (withIndex) {
-                System.out.print(startIndex++ + ") ");
-            }
-            System.out.println(display);
-        }
+        displayChoice(choices, 1, true);
     }
 
     // nécessite une liste triée
     public void displayDishChoice(List<DishEntity> dishs, boolean withIndex) {
         if (withIndex) {
-            System.out.println("0) Annuler");
+            displayMessage("0) Annuler");
         }
 
-        Integer startIndex = 1;
+        int startIndex = 1;
         for (DishType dishType : DishType.values()) {
             List<String> choice = dishs.stream()
                     .filter(dish -> dish.getDishType() == dishType)
@@ -182,10 +81,10 @@ public class DirectorView extends RoleView {
                     .collect(Collectors.toList());
 
             if (CollectionUtils.isNotEmpty(choice)) {
-                System.out.println(dishType.getDish());
+                displayMessage(dishType.getDish());
                 displayChoice(choice, startIndex, withIndex);
                 startIndex += choice.size();
-                System.out.println();
+                displayMessage("\n");
             }
         }
     }
@@ -201,13 +100,5 @@ public class DirectorView extends RoleView {
                     "\n     - Préparation des commandes : " + meanPrep + " min/commande" +
                     "\n     - Rotation des clients : " + meanServ + " min/table");
         }
-    }
-
-    public void displayMostFamous(Map.Entry<String, Integer> mostFamous) {
-        System.out.println(mostFamous.getKey() + ": " + mostFamous.getValue());
-    }
-
-    public void simpleDisplay(String toDisplay) {
-        System.out.println(toDisplay);
     }
 }

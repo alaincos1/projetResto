@@ -23,7 +23,8 @@ import org.bson.types.ObjectId;
 import java.util.*;
 
 @AllArgsConstructor
-public class ServerController extends RoleMenuController {
+public class ServerController extends RoleController {
+    private static final String YES_NO = "\n O) Non \n 1) Oui";
     private final BaseService baseService;
     private final Service service;
     private final ServerView serverView;
@@ -51,7 +52,7 @@ public class ServerController extends RoleMenuController {
                 if (!service.isEndService()) {
                     takeOrders(Launcher.getLoggedUser());
                 } else {
-                    serverView.displayEndService();
+                    serverView.displayMessage("Fin du service, aucune prise de commande possible.");
                 }
                 break;
             case 4:
@@ -91,14 +92,15 @@ public class ServerController extends RoleMenuController {
         }
 
         if (tablesToDirty.isEmpty()) {
-            serverView.displayNoTablesToDirty();
+            serverView.displayMessage("Aucune table à déclarer pour être débarassée.");
         } else {
             serverView.displayTablesToDirty(tablesToDirty);
             int choice = getIntegerInput(0, tablesToDirty.size()) - 1;
             if (choice != -1) {
                 tablesToDirty.get(choice).setTableState(TableState.DIRTY);
                 if (baseService.update(tablesToDirty.get(choice))) {
-                    serverView.displayTableDirtyDoAgain();
+                    serverView.displayMessage("Table déclarée à débarasser ! Voulez vous en déclarer une autre ?" +
+                            YES_NO);
                     if (doAgain()) {
                         setTablesDirty(user);
                     }
@@ -113,9 +115,10 @@ public class ServerController extends RoleMenuController {
     protected void takeOrders(UserEntity user) {
         List<TableEntity> tables = baseService.getTablesReadyToOrderByServer(user.get_id());
         if (CollectionUtils.isEmpty(tables)) {
-            serverView.displayNoTableToTakeOrders();
+            serverView.displayMessage("Il n'y a pas de tables où prendre de commandes. (Pas de clients, commande en cours de préparation, à servir...)");
         } else {
-            serverView.displayAskTableToServe();
+            serverView.displayMessage("À quelle table souhaitez vous prendre une commande ?" +
+                    "\n 0) Annuler");
             serverView.displayTablesAffected(tables);
             int idTableChoice = getIntegerInput(0, tables.size()) - 1;
             if (idTableChoice != -1) {
@@ -191,7 +194,7 @@ public class ServerController extends RoleMenuController {
         HashMap<Integer, MenuUtil> menu = new HashMap<>();
         List<DishEntity> drinks = baseService.getDestockableDishesByDishType(DishType.DRINK);
         menu.put(1, new MenuUtil(DishType.DRINK, !(drinks == null || drinks.isEmpty()), drinks));
-        if(!CollectionUtils.isEmpty(drinks)) {
+        if (!CollectionUtils.isEmpty(drinks)) {
             return getDishesOrdered(DishType.DRINK, menu);
         }
         serverView.displayMessage("Aucune boisson disponible.");
@@ -199,7 +202,7 @@ public class ServerController extends RoleMenuController {
     }
 
     protected boolean askDrinksOrder() {
-        serverView.displayAskDrinksOrder();
+        serverView.displayMessage("Voulez vous des boissons ?" + YES_NO);
         return getIntegerInput(0, 1) == 1;
     }
 
@@ -254,7 +257,7 @@ public class ServerController extends RoleMenuController {
                 dishEntity.changeStock(baseService, false);
                 selection.add(dishEntity.get_id());
             } else {
-                serverView.displayNotEnoughStockForDish(dishEntity);
+                serverView.displayMessage("Stock insuffisant pour le plat: " + dishEntity.get_id());
             }
         }
         return selection;
@@ -287,7 +290,7 @@ public class ServerController extends RoleMenuController {
     }
 
     protected Boolean askChildOrder() {
-        serverView.displayAskChildOrder();
+        serverView.displayMessage("Est-ce une commande enfant ?" + YES_NO);
         return getIntegerInput(0, 1) == 1;
     }
 
@@ -320,7 +323,7 @@ public class ServerController extends RoleMenuController {
         }
 
         if (orders.isEmpty()) {
-            serverView.displayNoOrdersToServe();
+            serverView.displayMessage("Il n'y a aucune commande à servir");
         } else {
             serverView.displayOrdersToServe(orders);
             int choice = getIntegerInput(0, orders.size()) - 1;
@@ -330,7 +333,7 @@ public class ServerController extends RoleMenuController {
                 table.setTableState(orders.get(choice).getDishType(baseService));
 
                 if (baseService.update(orders.get(choice)) && baseService.update(table)) {
-                    serverView.displayOrderServeAgain();
+                    serverView.displayMessage("Commande servie ! Voulez vous en servir une autre ?" + YES_NO);
                     if (doAgain()) {
                         serveOrders(user);
                     }

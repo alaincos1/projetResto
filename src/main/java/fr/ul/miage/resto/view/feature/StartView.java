@@ -1,23 +1,18 @@
 package fr.ul.miage.resto.view.feature;
 
-import fr.ul.miage.resto.appinfo.Service;
 import fr.ul.miage.resto.constants.MealType;
+import fr.ul.miage.resto.view.GeneralView;
 
-public class StartView {
+import java.util.ArrayList;
+import java.util.List;
 
+public class StartView extends GeneralView {
     public void displayMealType() {
-        System.out.println("Veuillez choisir le type de service :");
-        int i = 1;
+        displayMessage("Veuillez choisir le type de service :");
+        List<String> choices = new ArrayList<>();
         for (MealType mealType : MealType.values()) {
-            System.out.println(i++ + ") " + mealType.getMealValue());
+            choices.add(mealType.getMealValue());
         }
-    }
-
-    public void displayAskDate() {
-        System.out.println("Veuillez choisir la date du service au format  \"AAAA/MM/JJ\" :");
-    }
-
-    public void displayService(Service service) {
-        System.out.println("Service du jour : " + service.getMealType().getMealValue() + " " + service.getDate());
+        displayChoice(choices, 1, true);
     }
 }

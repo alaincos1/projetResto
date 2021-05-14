@@ -1,16 +1,6 @@
 package fr.ul.miage.resto.view.feature;
 
-public class LogInView {
+import fr.ul.miage.resto.view.GeneralView;
 
-    public void displayLogIn() {
-        System.out.println("Veuillez vous connecter avec votre identifiant : ");
-    }
-
-    public void displayDisconnect() {
-        System.out.println("Vous êtes déconnecté.e");
-    }
-
-    public void displayLogInError() {
-        System.out.println("Utilisateur inconnu, veuillez recommencer.");
-    }
+public class LogInView extends GeneralView {
 }

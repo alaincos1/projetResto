@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 
 @AllArgsConstructor
-public class HelperController extends RoleMenuController {
+public class HelperController extends RoleController {
     private final BaseService baseService;
     private final Service service;
     private final HelperView helperView;
@@ -70,14 +70,16 @@ public class HelperController extends RoleMenuController {
         }
 
         if (tablesToClean.isEmpty()) {
-            helperView.displayNoTablesToClean();
+            helperView.displayMessage("Aucune table à nettoyer.");
         } else {
             helperView.displayTablesToClean(tablesToClean);
             int choice = getIntegerInput(0, tablesToClean.size()) - 1;
             if (choice != -1) {
                 tablesToClean.get(choice).setTableState(TableState.FREE);
                 if (baseService.update(tablesToClean.get(choice))) {
-                    helperView.displayTableCleanedDoAgain();
+                    helperView.displayMessage("Table nettoyée ! Voulez vous en nettoyer une autre ?" +
+                            "\n 0) Non" +
+                            "\n 1) Oui");
                     if (doAgain()) {
                         cleanTables(user);
                     }
