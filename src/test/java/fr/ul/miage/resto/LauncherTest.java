@@ -4,10 +4,12 @@ import fr.ul.miage.resto.appinfo.Service;
 import fr.ul.miage.resto.constants.MealType;
 import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.model.entity.UserEntity;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DisplayName("Launcher")
 class LauncherTest {
 
     @Test

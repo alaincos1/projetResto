@@ -27,13 +27,13 @@ public class RoleController {
 
     public void launch(Role role) {
         this.roleTemp = role;
-        setNbActions();
+        nbActions = setNbActions();
         Integer action = askAction();
         callAction(action);
     }
 
-    public void setNbActions() {
-        nbActions = (int) Arrays.stream(Features.values()).filter(
+    public int setNbActions() {
+        return (int) Arrays.stream(Features.values()).filter(
                 features -> features.getRole().equals(roleTemp)).count();
     }
 

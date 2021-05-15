@@ -23,7 +23,7 @@ public class Launcher {
         startController.launch();
     }
 
-    private static void initBaseService() {
+    protected static void initBaseService() {
         baseService = new BaseService(new BillCollection(),
                 new BookingCollection(),
                 new DishCollection(),

@@ -12,7 +12,7 @@ public class InputUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    private static String getUserInput() {
+    protected static String getUserInput() {
         return scanner.nextLine();
     }
 
