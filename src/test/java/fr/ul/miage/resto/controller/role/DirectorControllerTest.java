@@ -1,5 +1,6 @@
 package fr.ul.miage.resto.controller.role;
 
+import fr.ul.miage.resto.Launcher;
 import fr.ul.miage.resto.appinfo.Service;
 import fr.ul.miage.resto.constants.InfoRestaurant;
 import fr.ul.miage.resto.constants.MealType;
@@ -12,9 +13,7 @@ import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.AbstractMap;
@@ -848,5 +847,233 @@ class DirectorControllerTest {
         List<Integer> results = directorController.getAllPerfStats(perfs);
 
         assertEquals(expected, results);
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction goBackOrDisconnect")
+    void testCallAction0() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).goBackOrDisconnect(any(Role.class), any(), any());
+
+            directorController.callAction(0);
+
+            verify(directorController, times(1)).goBackOrDisconnect(any(Role.class), any(), any());
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction manageEmployees")
+    void testCallAction1() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).manageEmployees();
+
+            directorController.callAction(1);
+
+            verify(directorController, times(1)).manageEmployees();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction manageDayMenu")
+    void testCallAction2() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).manageDayMenu();
+
+            directorController.callAction(2);
+
+            verify(directorController, times(1)).manageDayMenu();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction manageStocks")
+    void testCallAction3() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).manageStocks();
+
+            directorController.callAction(3);
+
+            verify(directorController, times(1)).manageStocks();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction manageTables")
+    void testCallAction4() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).manageTables();
+
+            directorController.callAction(4);
+
+            verify(directorController, times(1)).manageTables();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction analysesIncomes")
+    void testCallAction5() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).analysesIncomes();
+
+            directorController.callAction(5);
+
+            verify(directorController, times(1)).analysesIncomes();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction analysesPerformances")
+    void testCallAction6() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).analysesPerformances();
+
+            directorController.callAction(6);
+
+            verify(directorController, times(1)).analysesPerformances();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction endService")
+    void testCallAction7() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).endService();
+
+            directorController.callAction(7);
+
+            verify(directorController, times(1)).endService();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction fonctionnalités Maître d'hôtel")
+    void testCallAction8() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).launchController(any(), eq(Role.BUTLER));
+
+            directorController.callAction(8);
+
+            verify(directorController, times(1)).launchController(any(), eq(Role.BUTLER));
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction fonctionnalités serveur")
+    void testCallAction9() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).launchController(any(), eq(Role.SERVER));
+
+            directorController.callAction(9);
+
+            verify(directorController, times(1)).launchController(any(), eq(Role.SERVER));
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction fonctionnalités assistant")
+    void testCallAction10() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).launchController(any(), eq(Role.HELPER));
+
+            directorController.callAction(10);
+
+            verify(directorController, times(1)).launchController(any(), eq(Role.HELPER));
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction fonctionnalités cuisinier")
+    void testCallAction11() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(directorController).launchController(any(), eq(Role.COOK));
+
+            directorController.callAction(11);
+
+            verify(directorController, times(1)).launchController(any(), eq(Role.COOK));
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction Default")
+    void testCallActionDefault() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.DIRECTOR);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+
+            directorController.callAction(-1);
+
+            verify(directorController, times(0)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(directorController, times(0)).manageEmployees();
+            verify(directorController, times(0)).manageDayMenu();
+            verify(directorController, times(0)).manageStocks();
+            verify(directorController, times(0)).manageTables();
+            verify(directorController, times(0)).analysesIncomes();
+            verify(directorController, times(0)).analysesPerformances();
+            verify(directorController, times(0)).endService();
+            verify(directorController, times(0)).launchController(any(), any(Role.class));
+        }
     }
 }

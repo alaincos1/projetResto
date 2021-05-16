@@ -15,11 +15,10 @@ import java.util.stream.Collectors;
 import static com.mongodb.client.model.Filters.*;
 
 public class TableCollection extends MongoAccess {
-    MongoCollection<Document> collection = database.getCollection("tables");
-
     private static final String SERVER = "idServer";
     private static final String HELPER = "idHelper";
     private static final String TABLE_STATE = "tableState";
+    MongoCollection<Document> collection = database.getCollection("tables");
 
     public boolean save(Object tableEntity) {
         return super.insert(Mapper.toDocument(tableEntity), collection);

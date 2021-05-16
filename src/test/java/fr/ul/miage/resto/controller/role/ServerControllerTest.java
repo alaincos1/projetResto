@@ -1,5 +1,7 @@
 package fr.ul.miage.resto.controller.role;
 
+import fr.ul.miage.resto.Launcher;
+import fr.ul.miage.resto.appinfo.Service;
 import fr.ul.miage.resto.constants.DishType;
 import fr.ul.miage.resto.constants.OrderState;
 import fr.ul.miage.resto.constants.Role;
@@ -14,9 +16,7 @@ import fr.ul.miage.resto.view.role.ServerView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -33,6 +33,8 @@ class ServerControllerTest {
     ServerView serverView;
     @Mock
     BaseService baseService;
+    @Mock
+    Service service;
     @Spy
     @InjectMocks
     ServerController serverController;
@@ -884,5 +886,127 @@ class ServerControllerTest {
 
         verify(serverView, times(1)).displaySuccess();
         verify(baseService, times(1)).save(any(OrderEntity.class));
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction goBackOrDisconnect")
+    void testCallAction0() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.SERVER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(serverController).goBackOrDisconnect(any(Role.class), any(), any());
+
+            serverController.callAction(0);
+
+            verify(serverController, times(1)).goBackOrDisconnect(any(Role.class), any(), any());
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction viewTables")
+    void testCallAction1() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.SERVER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(serverController).viewTables(any(UserEntity.class));
+
+            serverController.callAction(1);
+
+            verify(serverController, times(1)).viewTables(any(UserEntity.class));
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction setTablesDirty")
+    void testCallAction2() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.SERVER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(serverController).setTablesDirty(any(UserEntity.class));
+
+            serverController.callAction(2);
+
+            verify(serverController, times(1)).setTablesDirty(any(UserEntity.class));
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction takeOrders")
+    void testCallAction3() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.SERVER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(serverController).takeOrders(any(UserEntity.class));
+
+            serverController.callAction(3);
+
+            verify(serverController, times(1)).takeOrders(any(UserEntity.class));
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction takeOrders")
+    void testCallAction3bis() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.SERVER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            when(service.isEndService()).thenReturn(true);
+
+            serverController.callAction(3);
+
+            verify(serverView, times(1)).displayMessage("Fin du service, aucune prise de commande possible.");
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction serveOrders")
+    void testCallAction4() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.SERVER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(serverController).serveOrders(any(UserEntity.class));
+
+            serverController.callAction(4);
+
+            verify(serverController, times(1)).serveOrders(any(UserEntity.class));
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction Default")
+    void testCallActionDefault() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.SERVER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+
+            serverController.callAction(-1);
+
+            verify(serverController, times(0)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(serverController, times(0)).viewTables(any(UserEntity.class));
+            verify(serverController, times(0)).setTablesDirty(any(UserEntity.class));
+            verify(serverController, times(0)).takeOrders(any(UserEntity.class));
+            verify(serverController, times(0)).serveOrders(any(UserEntity.class));
+        }
     }
 }

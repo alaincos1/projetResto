@@ -19,7 +19,7 @@ public class Mapper {
             json = OBJECT_MAPPER.writeValueAsString(o);
         } catch (JsonProcessingException e) {
             GeneralView generalView = new GeneralView();
-            generalView.displayMessage("Problème de parsing en Document: "+ e.getMessage());
+            generalView.displayMessage("Problème de parsing en Document: " + e.getMessage());
         }
         return Document.parse(json);
     }
@@ -30,7 +30,7 @@ public class Mapper {
             return OBJECT_MAPPER.readValue(doc.toJson(), clazz);
         } catch (JsonProcessingException e) {
             GeneralView generalView = new GeneralView();
-            generalView.displayMessage("Problème de parsing en Objet: "+ e.getMessage());
+            generalView.displayMessage("Problème de parsing en Objet: " + e.getMessage());
         }
         return null;
     }

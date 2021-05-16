@@ -5,11 +5,9 @@ import fr.ul.miage.resto.constants.InfoRestaurant;
 import fr.ul.miage.resto.constants.MealType;
 import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.constants.TableState;
-import fr.ul.miage.resto.controller.feature.LogInController;
 import fr.ul.miage.resto.dao.service.BaseService;
 import fr.ul.miage.resto.model.entity.*;
 import fr.ul.miage.resto.utils.DateDto;
-import fr.ul.miage.resto.view.feature.LogInView;
 import fr.ul.miage.resto.view.role.*;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -29,14 +27,10 @@ public class DirectorController extends RoleController {
 
     @Override
     public void callAction(Integer action) {
-        ButlerController butlerController = new ButlerController(baseService, service, new ButlerView());
-        ServerController serverController = new ServerController(baseService, service, new ServerView());
-        HelperController helperController = new HelperController(baseService, service, new HelperView());
-        CookController cookController = new CookController(baseService, service, new CookView());
+        RoleController controller;
         switch (action) {
             case 0:
-                LogInController logInController = new LogInController(baseService, service, new LogInView());
-                logInController.disconnect();
+                goBackOrDisconnect(Role.DIRECTOR, baseService, service);
                 break;
             case 1:
                 manageEmployees();
@@ -60,20 +54,28 @@ public class DirectorController extends RoleController {
                 endService();
                 break;
             case 8:
-                butlerController.launch(Role.BUTLER);
+                controller = new ButlerController(baseService, service, new ButlerView());
+                launchController(controller, Role.BUTLER);
                 break;
             case 9:
-                serverController.launch(Role.SERVER);
+                controller = new ServerController(baseService, service, new ServerView());
+                launchController(controller, Role.SERVER);
                 break;
             case 10:
-                helperController.launch(Role.HELPER);
+                controller = new HelperController(baseService, service, new HelperView());
+                launchController(controller, Role.HELPER);
                 break;
             case 11:
-                cookController.launch(Role.COOK);
+                controller = new CookController(baseService, service, new CookView());
+                launchController(controller, Role.COOK);
                 break;
             default:
                 break;
         }
+    }
+
+    protected void launchController(RoleController controller, Role role) {
+        controller.launch(role);
     }
 
     protected void manageEmployees() {
