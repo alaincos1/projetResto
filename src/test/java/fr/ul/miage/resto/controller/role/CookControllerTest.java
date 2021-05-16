@@ -1,21 +1,17 @@
 package fr.ul.miage.resto.controller.role;
 
+import fr.ul.miage.resto.Launcher;
 import fr.ul.miage.resto.appinfo.Service;
 import fr.ul.miage.resto.constants.DishType;
 import fr.ul.miage.resto.constants.OrderState;
 import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.dao.service.BaseService;
-import fr.ul.miage.resto.model.entity.CategoryEntity;
-import fr.ul.miage.resto.model.entity.DishEntity;
-import fr.ul.miage.resto.model.entity.OrderEntity;
-import fr.ul.miage.resto.model.entity.ProductEntity;
+import fr.ul.miage.resto.model.entity.*;
 import fr.ul.miage.resto.view.role.CookView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -429,5 +425,110 @@ class CookControllerTest {
         cookController.endCooking();
 
         verify(cookView, times(1)).displayMessage("La fin de prise en charge des nouveaux clients a déjà été annoncée.");
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction goBackOrDisconnect")
+    void testCallAction0() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.COOK);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(cookController).goBackOrDisconnect(any(Role.class), any(), any());
+
+            cookController.callAction(0);
+
+            verify(cookController, times(1)).goBackOrDisconnect(any(Role.class), any(), any());
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction viewOrdersList")
+    void testCallAction1() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.COOK);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(cookController).viewOrdersList();
+
+            cookController.callAction(1);
+
+            verify(cookController, times(1)).viewOrdersList();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction setOrderReady")
+    void testCallAction2() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.COOK);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(cookController).setOrderReady();
+
+            cookController.callAction(2);
+
+            verify(cookController, times(1)).setOrderReady();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction createDish")
+    void testCallAction3() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.COOK);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(cookController).createDish();
+
+            cookController.callAction(3);
+
+            verify(cookController, times(1)).createDish();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction endCooking")
+    void testCallAction4() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.COOK);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(cookController).endCooking();
+
+            cookController.callAction(4);
+
+            verify(cookController, times(1)).endCooking();
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction Default")
+    void testCallActionDefault() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.HELPER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+
+            cookController.callAction(-1);
+
+            verify(cookController, times(0)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(cookController, times(0)).viewOrdersList();
+            verify(cookController, times(0)).setOrderReady();
+            verify(cookController, times(0)).createDish();
+            verify(cookController, times(0)).endCooking();
+        }
     }
 }

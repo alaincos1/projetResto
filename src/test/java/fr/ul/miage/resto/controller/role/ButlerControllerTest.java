@@ -1,5 +1,6 @@
 package fr.ul.miage.resto.controller.role;
 
+import fr.ul.miage.resto.Launcher;
 import fr.ul.miage.resto.appinfo.Service;
 import fr.ul.miage.resto.constants.*;
 import fr.ul.miage.resto.dao.service.BaseService;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -742,5 +745,203 @@ class ButlerControllerTest {
 
         assertFalse(butlerController.ordersServed(table));
     }
+    
+    @Test
+    @DisplayName("Vérifie le callAction goBackOrDisconnect")
+    void testCallAction0() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.BUTLER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(butlerController).goBackOrDisconnect(any(Role.class), any(), any());
 
+            butlerController.callAction(0);
+
+            verify(butlerController, times(1)).goBackOrDisconnect(any(Role.class), any(), any());
+        }
+    }
+    
+    @Test
+    @DisplayName("Vérifie le callAction affectTablesToServer")
+    void testCallAction1() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.BUTLER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(butlerController).affectTablesToServer();
+
+            butlerController.callAction(1);
+
+            verify(butlerController, times(1)).affectTablesToServer();
+        }
+    }
+    
+    @Test
+    @DisplayName("Vérifie le callAction editBills")
+    void testCallAction2() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.BUTLER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(butlerController).editBills();
+
+            butlerController.callAction(2);
+
+            verify(butlerController, times(1)).editBills();
+        }
+    }
+    
+    @Test
+    @DisplayName("Vérifie le callAction affectTablesToServer si la fin du service a été annoncé")
+    void testCallAction3() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.BUTLER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doReturn(true).when(service).isEndNewClients();
+            doNothing().when(butlerController).launch(any(Role.class));
+            doNothing().when(butlerView).displayMessage(anyString());
+
+            butlerController.callAction(3);
+
+            verify(butlerView, times(1)).displayMessage(anyString());
+            verify(butlerController, times(1)).launch(any(Role.class));
+        }
+    }
+    
+    @Test
+    @DisplayName("Vérifie le callAction affectTablesToServer si la fin du service n'a pas été annoncé")
+    void testCallAction3bis() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.BUTLER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            
+            doReturn(false).when(service).isEndNewClients();
+            doNothing().when(butlerController).affectTablesToClients();
+
+            butlerController.callAction(3);
+
+            verify(butlerController, times(1)).affectTablesToClients();
+        }
+    }
+   
+    
+    @Test
+    @DisplayName("Vérifie le callAction takeBookings")
+    void testCallAction4() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.BUTLER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(butlerController).takeBookings();
+
+            butlerController.callAction(4);
+
+            verify(butlerController, times(1)).takeBookings();
+        }
+    }
+    
+    @Test
+    @DisplayName("Vérifie le callAction default")
+    void testCallActionDefault() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.BUTLER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+
+            butlerController.callAction(-1);
+            
+            verify(butlerController, times(0)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(butlerController, times(0)).affectTablesToServer();
+            verify(butlerController, times(0)).takeBookings();
+            verify(butlerController, times(0)).editBills();
+            verify(butlerController, times(0)).affectTablesToClients();
+            verify(butlerView, times(0)).displayMessage(anyString());
+            verify(butlerController, times(0)).launch(any(Role.class));
+        }
+    }
+    
+    
+    @Test
+    @DisplayName("Update d'un objet réussi")
+    void testUpdateObjectOk() {
+    	doReturn(true).when(baseService).update(any());
+        doNothing().when(butlerView).displaySuccess();
+
+        butlerController.updateObject(new Object());
+        
+        verify(butlerView, times(1)).displaySuccess();
+    }
+
+    @Test
+    @DisplayName("Update d'un objet fail")
+    void testUpdateObjectKo() {
+    	doReturn(false).when(baseService).update(any());
+        doNothing().when(butlerView).displayError();
+        doNothing().when(butlerController).launch(any(Role.class));
+
+        butlerController.updateObject(new Object());
+        
+        verify(butlerView, times(1)).displayError();
+        verify(butlerController, times(1)).launch(any(Role.class));
+    }
+    
+    @Test
+    @DisplayName("Save d'un objet réussi")
+    void testSaveObjectOk() {
+    	doReturn(true).when(baseService).save(any());
+        doNothing().when(butlerView).displaySuccess();
+
+        butlerController.saveObject(new Object());
+        
+        verify(butlerView, times(1)).displaySuccess();
+    }
+    
+    @Test
+    @DisplayName("Save d'un objet fail")
+    void testSaveObjectKo() {
+    	doReturn(false).when(baseService).save(any());
+        doNothing().when(butlerView).displayError();
+        doNothing().when(butlerController).launch(any(Role.class));
+
+        butlerController.saveObject(new Object());
+        
+        verify(butlerView, times(1)).displayError();
+        verify(butlerController, times(1)).launch(any(Role.class));
+    }
+    
+    @Test
+    @DisplayName("Prendre une reservation")
+    void testTakeBookings() {
+        doNothing().when(butlerView).displayMessage(anyString());
+        doNothing().when(butlerView).displayAllTablesWithNoBooking(anyList(), anyString(), any(MealType.class), any());
+        doNothing().when(butlerView).displayChoiceTableClient();
+    	doReturn("2021/05/05").when(butlerController).getDateInput();
+    	doReturn(MealType.LUNCH).when(butlerController).choiceMealTypeWithDate(anyString());
+    	doReturn("1").when(butlerController).getStringInput();
+    	doReturn("1").when(butlerController).choiceTable(null);
+    	
+        doNothing().when(butlerController).launch(any(Role.class));
+        doNothing().when(butlerController).saveObject(any());
+
+        butlerController.takeBookings();
+        
+        verify(butlerController, times(1)).launch(any(Role.class));
+        verify(butlerController, times(1)).saveObject(any(BookingEntity.class));
+    }
 }
