@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class BaseService_CategoryTest extends AbstractServiceTest {
+class BaseService_CategoryTest extends AbstractServiceTest {
     @Test
     void testSaveOrder() {
         CategoryEntity categoryEntity = easyRandom.nextObject(CategoryEntity.class);
@@ -61,7 +61,7 @@ public class BaseService_CategoryTest extends AbstractServiceTest {
     @Test
     void testGetCategoriesByDishType() {
         CategoryEntity categoryEntity = easyRandom.nextObject(CategoryEntity.class);
-        List<CategoryEntity> expected = new ArrayList<>(Arrays.asList(categoryEntity));
+        List<CategoryEntity> expected = new ArrayList<>(Collections.singletonList(categoryEntity));
 
         DishType dishType = easyRandom.nextObject(DishType.class);
 
