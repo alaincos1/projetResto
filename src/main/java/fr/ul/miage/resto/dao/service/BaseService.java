@@ -233,31 +233,6 @@ public class BaseService {
                 .max(Map.Entry.comparingByValue()).orElse(null);
     }
 
-    protected boolean updateUser(UserEntity user) {
-        if (userCollection.update(user)) {
-            removeUserFromAllTable(user);
-            return true;
-        }
-        return false;
-    }
-
-    protected void removeUserFromAllTable(UserEntity user) {
-        if (user.getRole() != Role.SERVER && user.getRole() != Role.HELPER) {
-            return;
-        }
-
-        List<TableEntity> tables = getAllTableByServerOrHelper(user.getId());
-
-        tables.forEach(table -> {
-            if (user.getRole() == Role.SERVER) {
-                table.setIdServer("");
-            } else {
-                table.setIdHelper("");
-            }
-            save(table);
-        });
-    }
-
     public List<TableEntity> getTablesReadyToOrderByServer(String userId) {
         if (getUserById(userId).getRole().equals(Role.DIRECTOR)) {
             return tableCollection.getTablesReadyToOrderByServer(StringUtils.EMPTY);
@@ -283,5 +258,30 @@ public class BaseService {
 
     public List<PerformanceEntity> getAllPerformance() {
         return performanceCollection.getAllPerformance();
+    }
+
+    protected boolean updateUser(UserEntity user) {
+        if (userCollection.update(user)) {
+            removeUserFromAllTable(user);
+            return true;
+        }
+        return false;
+    }
+
+    protected void removeUserFromAllTable(UserEntity user) {
+        if (user.getRole() != Role.SERVER && user.getRole() != Role.HELPER) {
+            return;
+        }
+
+        List<TableEntity> tables = getAllTableByServerOrHelper(user.getId());
+
+        tables.forEach(table -> {
+            if (user.getRole() == Role.SERVER) {
+                table.setIdServer("");
+            } else {
+                table.setIdHelper("");
+            }
+            save(table);
+        });
     }
 }

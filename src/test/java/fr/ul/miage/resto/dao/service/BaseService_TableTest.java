@@ -1,6 +1,8 @@
 package fr.ul.miage.resto.dao.service;
 
+import fr.ul.miage.resto.constants.TableState;
 import fr.ul.miage.resto.model.entity.TableEntity;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -63,9 +65,83 @@ class BaseService_TableTest extends AbstractServiceTest {
             expected.add(easyRandom.nextObject(TableEntity.class));
         }
 
-        when(baseService.getAllTables()).thenReturn(expected);
+        when(tableCollection.getAll()).thenReturn(expected);
 
         List<TableEntity> actual = baseService.getAllTables();
+
+        assertEqual(actual, expected);
+    }
+
+    @Test
+    void testGetAllTableByServerOrHelper() {
+        String user = RandomStringUtils.randomAlphabetic(10);
+
+        List<TableEntity> expected = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            expected.add(easyRandom.nextObject(TableEntity.class));
+        }
+
+        when(tableCollection.getAllTableByServerOrHelper(anyString())).thenReturn(expected);
+
+        List<TableEntity> actual = baseService.getAllTableByServerOrHelper(user);
+
+        assertEqual(actual, expected);
+    }
+
+    @Test
+    void testGetAllTableByServerOrHelperAndState() {
+        String user = RandomStringUtils.randomAlphabetic(10);
+        TableState tableState = easyRandom.nextObject(TableState.class);
+
+        List<TableEntity> expected = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            expected.add(easyRandom.nextObject(TableEntity.class));
+        }
+
+        when(tableCollection.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(expected);
+
+        List<TableEntity> actual = baseService.getAllTableByServerOrHelperAndState(user, tableState);
+
+        assertEqual(actual, expected);
+    }
+
+    @Test
+    void testGetAllTableByState() {
+        TableState tableState = easyRandom.nextObject(TableState.class);
+
+        List<TableEntity> expected = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            expected.add(easyRandom.nextObject(TableEntity.class));
+        }
+
+        when(tableCollection.getAllTableByState(any(TableState.class))).thenReturn(expected);
+
+        List<TableEntity> actual = baseService.getAllTableByState(tableState);
+
+        assertEqual(actual, expected);
+    }
+
+    @Test
+    void testDeleteTable() {
+        String idTable = RandomStringUtils.randomAlphabetic(10);
+
+        when(tableCollection.delete(anyString())).thenReturn(true);
+
+        boolean actual = baseService.deleteTable(idTable);
+
+        Assertions.assertTrue(actual);
+    }
+
+    @Test
+    void testGetAllRemovableTables() {
+        List<TableEntity> expected = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            expected.add(easyRandom.nextObject(TableEntity.class));
+        }
+
+        when(tableCollection.getAllRemovableTables()).thenReturn(expected);
+
+        List<TableEntity> actual = baseService.getAllRemovableTables();
 
         assertEqual(actual, expected);
     }

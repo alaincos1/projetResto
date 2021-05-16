@@ -58,16 +58,44 @@ class BaseService_OrderTest extends AbstractServiceTest {
     }
 
     @Test
-    void testGetAllBooking() {
+    void testGetAllNotCheckedOrder() {
         List<OrderEntity> expected = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             expected.add(easyRandom.nextObject(OrderEntity.class));
             expected.get(i).setOrderState(OrderState.ORDERED);
         }
 
-        when(baseService.getAllNotCheckedOrder()).thenReturn(expected);
+        when(orderCollection.getAllNotChecked()).thenReturn(expected);
 
         List<OrderEntity> actual = baseService.getAllNotCheckedOrder();
+
+        assertEqual(actual, expected);
+    }
+
+    @Test
+    void testGetPreparedOrders() {
+        List<OrderEntity> expected = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            expected.add(easyRandom.nextObject(OrderEntity.class));
+        }
+
+        when(orderCollection.getPreparedOrders()).thenReturn(expected);
+
+        List<OrderEntity> actual = baseService.getPreparedOrders();
+
+        assertEqual(actual, expected);
+    }
+
+    @Test
+    void testGetServedOrders() {
+        List<OrderEntity> expected = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            expected.add(easyRandom.nextObject(OrderEntity.class));
+        }
+
+        when(orderCollection.getServedOrders()).thenReturn(expected);
+
+        List<OrderEntity> actual = baseService.getServedOrders();
 
         assertEqual(actual, expected);
     }
