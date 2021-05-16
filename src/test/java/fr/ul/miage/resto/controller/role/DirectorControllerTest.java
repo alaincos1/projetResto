@@ -8,6 +8,7 @@ import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.dao.service.BaseService;
 import fr.ul.miage.resto.model.entity.*;
 import fr.ul.miage.resto.utils.DateDto;
+import fr.ul.miage.resto.utils.InputUtil;
 import fr.ul.miage.resto.view.role.DirectorView;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.DisplayName;
@@ -858,11 +859,11 @@ class DirectorControllerTest {
             user.setRole(Role.DIRECTOR);
             utilities.when(Launcher::getLoggedUser)
                     .thenReturn(user);
-            doNothing().when(directorController).goBackOrDisconnect(any(Role.class), any(), any());
+            doNothing().when(directorController).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
 
             directorController.callAction(0);
 
-            verify(directorController, times(1)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(directorController, times(1)).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
         }
     }
 
@@ -1065,7 +1066,7 @@ class DirectorControllerTest {
 
             directorController.callAction(-1);
 
-            verify(directorController, times(0)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(directorController, times(0)).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
             verify(directorController, times(0)).manageEmployees();
             verify(directorController, times(0)).manageDayMenu();
             verify(directorController, times(0)).manageStocks();
@@ -1075,5 +1076,15 @@ class DirectorControllerTest {
             verify(directorController, times(0)).endService();
             verify(directorController, times(0)).launchController(any(), any(Role.class));
         }
+    }
+
+    @Test
+    @DisplayName("Appelle la méthode launch du controlleur")
+    void testLaunchController(@Mock RoleController roleController) {
+        doNothing().when(roleController).launch(any(Role.class));
+
+        directorController.launchController(roleController, Role.DIRECTOR);
+
+        verify(roleController, times(1)).launch(Role.DIRECTOR);
     }
 }

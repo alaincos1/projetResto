@@ -102,8 +102,8 @@ public class RoleController {
         return DateUtil.getListDate(type, date, last);
     }
 
-    protected void goBackOrDisconnect(Role role, BaseService baseService, Service service) {
-        if (role.equals(Role.DIRECTOR)) {
+    protected void goBackOrDisconnect(Role role, BaseService baseService, Service service, boolean realDirector) {
+        if (role.equals(Role.DIRECTOR) && !realDirector) {
             DirectorController directorController = new DirectorController(baseService, service, new DirectorView());
             directorController.launch(Role.DIRECTOR);
         } else {

@@ -31,7 +31,7 @@ public class ServerController extends RoleController {
         Role role = Launcher.getLoggedUser().getRole();
         switch (action) {
             case 0:
-                goBackOrDisconnect(role, baseService, service);
+                goBackOrDisconnect(role, baseService, service, false);
                 break;
             case 1:
                 viewTables(Launcher.getLoggedUser());

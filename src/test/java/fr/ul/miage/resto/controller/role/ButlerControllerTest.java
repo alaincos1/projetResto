@@ -755,11 +755,11 @@ class ButlerControllerTest {
             user.setRole(Role.BUTLER);
             utilities.when(Launcher::getLoggedUser)
                     .thenReturn(user);
-            doNothing().when(butlerController).goBackOrDisconnect(any(Role.class), any(), any());
+            doNothing().when(butlerController).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
 
             butlerController.callAction(0);
 
-            verify(butlerController, times(1)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(butlerController, times(1)).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
         }
     }
     
@@ -866,7 +866,7 @@ class ButlerControllerTest {
 
             butlerController.callAction(-1);
             
-            verify(butlerController, times(0)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(butlerController, times(0)).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
             verify(butlerController, times(0)).affectTablesToServer();
             verify(butlerController, times(0)).takeBookings();
             verify(butlerController, times(0)).editBills();

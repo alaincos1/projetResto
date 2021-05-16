@@ -897,11 +897,11 @@ class ServerControllerTest {
             user.setRole(Role.SERVER);
             utilities.when(Launcher::getLoggedUser)
                     .thenReturn(user);
-            doNothing().when(serverController).goBackOrDisconnect(any(Role.class), any(), any());
+            doNothing().when(serverController).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
 
             serverController.callAction(0);
 
-            verify(serverController, times(1)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(serverController, times(1)).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
         }
     }
 
@@ -1002,7 +1002,7 @@ class ServerControllerTest {
 
             serverController.callAction(-1);
 
-            verify(serverController, times(0)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(serverController, times(0)).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
             verify(serverController, times(0)).viewTables(any(UserEntity.class));
             verify(serverController, times(0)).setTablesDirty(any(UserEntity.class));
             verify(serverController, times(0)).takeOrders(any(UserEntity.class));

@@ -30,7 +30,7 @@ public class DirectorController extends RoleController {
         RoleController controller;
         switch (action) {
             case 0:
-                goBackOrDisconnect(Role.DIRECTOR, baseService, service);
+                goBackOrDisconnect(Role.DIRECTOR, baseService, service, true);
                 break;
             case 1:
                 manageEmployees();

@@ -123,11 +123,11 @@ class HelperControllerTest {
             user.setRole(Role.HELPER);
             utilities.when(Launcher::getLoggedUser)
                     .thenReturn(user);
-            doNothing().when(helperController).goBackOrDisconnect(any(Role.class), any(), any());
+            doNothing().when(helperController).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
 
             helperController.callAction(0);
 
-            verify(helperController, times(1)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(helperController, times(1)).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
         }
     }
 
@@ -178,7 +178,7 @@ class HelperControllerTest {
             helperController.callAction(-1);
 
             verify(helperController, times(0)).viewTables(any(UserEntity.class));
-            verify(helperController, times(0)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(helperController, times(0)).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
             verify(helperController, times(0)).cleanTables(any(UserEntity.class));
         }
     }

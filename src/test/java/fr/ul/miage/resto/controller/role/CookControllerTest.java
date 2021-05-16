@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.*;
 
 @DisplayName("CookController")
@@ -436,11 +437,11 @@ class CookControllerTest {
             user.setRole(Role.COOK);
             utilities.when(Launcher::getLoggedUser)
                     .thenReturn(user);
-            doNothing().when(cookController).goBackOrDisconnect(any(Role.class), any(), any());
+            doNothing().when(cookController).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
 
             cookController.callAction(0);
 
-            verify(cookController, times(1)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(cookController, times(1)).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
         }
     }
 
@@ -524,7 +525,7 @@ class CookControllerTest {
 
             cookController.callAction(-1);
 
-            verify(cookController, times(0)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(cookController, times(0)).goBackOrDisconnect(any(Role.class), any(), any(), anyBoolean());
             verify(cookController, times(0)).viewOrdersList();
             verify(cookController, times(0)).setOrderReady();
             verify(cookController, times(0)).createDish();

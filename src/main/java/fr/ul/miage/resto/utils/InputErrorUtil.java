@@ -54,7 +54,7 @@ public class InputErrorUtil {
         }
 
         Date auj = new Date();
-        if (d.before(auj)) {
+        if (d.before(auj) && !format.format(auj).equals(format.format(d))) {
             generalView.displayMessage("La date ne peut pas être dans le passé.");
             return null;
         }
