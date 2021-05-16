@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -175,9 +176,30 @@ class BaseService_UserTest extends AbstractServiceTest {
         verify(baseService, times(0)).save(any(TableEntity.class));
     }
 
+    @Test
+    void testGetAllUsers() {
+        UserEntity user = easyRandom.nextObject(UserEntity.class);
+        List<UserEntity> expected = new ArrayList<>(Arrays.asList(user));
+
+        when(userCollection.getAll()).thenReturn(expected);
+
+        List<UserEntity> actual = baseService.getAllUsers();
+
+        assertEqual(actual, expected);
+    }
+
     private void assertEqual(UserEntity actual, UserEntity expected) {
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(actual.getId(), expected.getId());
         Assertions.assertEquals(actual.getRole(), expected.getRole());
+    }
+
+    private void assertEqual(List<UserEntity> actual, List<UserEntity> expected) {
+        Assertions.assertNotNull(actual);
+        Assertions.assertEquals(actual.size(), expected.size());
+
+        for (int i = 0; i < actual.size(); i++) {
+            assertEqual(actual.get(i), expected.get(i));
+        }
     }
 }

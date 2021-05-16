@@ -10,8 +10,6 @@ import fr.ul.miage.resto.view.role.HelperView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -48,6 +46,22 @@ class HelperControllerTest {
     }
 
     @Test
+    @DisplayName("Afficher les tables")
+    void testViewTablesWithDirector() {
+        UserEntity user = new UserEntity();
+        user.setId("hel1");
+        user.setRole(Role.DIRECTOR);
+        List<TableEntity> tables = new ArrayList<>();
+        tables.add(new TableEntity());
+        when(baseService.getAllTables()).thenReturn(tables);
+        doNothing().when(helperController).askMainMenu();
+
+        helperController.viewTables(user);
+
+        verify(helperView, times(1)).displayTablesAffected(anyList());
+    }
+
+    @Test
     @DisplayName("Aucune table à afficher")
     void testViewNoneTables() {
         UserEntity user = new UserEntity();
@@ -69,15 +83,17 @@ class HelperControllerTest {
         List<TableEntity> tables = new ArrayList<>();
         tables.add(new TableEntity());
         tables.get(0).setTableState(TableState.DIRTY);
+
         when(baseService.getAllTableByServerOrHelperAndState(anyString(), any(TableState.class))).thenReturn(tables);
         doReturn(1).when(helperController).getIntegerInput(anyInt(), anyInt());
+        when(baseService.update(any())).thenReturn(true);
+        doReturn(true).when(helperController).doAgain();
         doNothing().when(helperController).launch(Role.HELPER);
+        doCallRealMethod().doNothing().when(helperController).cleanTables(any(UserEntity.class));
 
         helperController.cleanTables(user);
 
-        verify(helperView, times(1)).displayTablesToClean(anyList());
-        verify(baseService, times(1)).update(any(TableEntity.class));
-        assertEquals(TableState.FREE, tables.get(0).getTableState());
+        verify(helperController, times(2)).cleanTables(any(UserEntity.class));
     }
 
     @Test
@@ -112,6 +128,22 @@ class HelperControllerTest {
         verify(helperView, times(1)).displayTablesToClean(anyList());
         verify(baseService, times(0)).update(any(TableEntity.class));
         assertEquals(TableState.DIRTY, tables.get(0).getTableState());
+    }
+
+    @Test
+    @DisplayName("Aucune table à nettoyer")
+    void testCleanNoneTablesWithDirector() {
+        UserEntity user = new UserEntity();
+        user.setId("hel1");
+        user.setRole(Role.DIRECTOR);
+        List<TableEntity> tables = new ArrayList<>();
+        when(baseService.getAllTableByState(any(TableState.class))).thenReturn(tables);
+        doNothing().when(helperController).launch(Role.HELPER);
+
+        helperController.cleanTables(user);
+
+        verify(helperView, times(1)).displayMessage("Aucune table à nettoyer.");
+        verify(baseService, times(0)).update(any(TableEntity.class));
     }
 
     @Test

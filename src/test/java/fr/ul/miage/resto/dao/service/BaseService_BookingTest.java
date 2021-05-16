@@ -1,6 +1,7 @@
 package fr.ul.miage.resto.dao.service;
 
 import fr.ul.miage.resto.model.entity.BookingEntity;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class BaseService_BookingTest extends AbstractServiceTest {
     @Test
@@ -63,11 +64,19 @@ class BaseService_BookingTest extends AbstractServiceTest {
             expected.add(easyRandom.nextObject(BookingEntity.class));
         }
 
-        when(baseService.getAllBooking()).thenReturn(expected);
+        when(bookingCollection.getAll()).thenReturn(expected);
 
         List<BookingEntity> actual = baseService.getAllBooking();
 
         assertEqual(actual, expected);
+    }
+
+    @Test
+    void testDeletePastBooking() {
+        String date = RandomStringUtils.randomAlphabetic(10);
+        baseService.deletePastBooking(date);
+
+        verify(bookingCollection, times(1)).deletePastBookings(anyString());
     }
 
     private void assertEqual(BookingEntity actual, BookingEntity expected) {
