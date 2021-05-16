@@ -62,5 +62,25 @@
     ],
     "idCategory": "Gâteau",
     "onTheMenu": true
+  },
+  {
+    "_id": "Coca-Cola",
+    "price": 3,
+    "dishType": "DRINK",
+    "idsProduct": [
+      "Coca-Cola"
+    ],
+    "idCategory": "Boisson Gazeuse",
+    "onTheMenu": true
+  },
+  {
+    "_id": "Menthe à l'eau",
+    "price": 2,
+    "dishType": "DRINK",
+    "idsProduct": [
+      "Sirop de menthe"
+    ],
+    "idCategory": "Sirop",
+    "onTheMenu": true
   }
 ]

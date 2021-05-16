@@ -18,5 +18,13 @@
   {
     "_id": "Gâteau",
     "dishType": "DESSERT"
+  },
+  {
+    "_id": "Sirop",
+    "dishType": "DRINK"
+  },
+  {
+    "_id": "Boisson Gazeuse",
+    "dishType": "DRINK"
   }
 ]

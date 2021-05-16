@@ -4,20 +4,20 @@
     "idTable": "1",
     "reservationName": "resa1",
     "mealType": "DINNER",
-    "date": "2021/05/05"
+    "date": "2021/06/10"
   },
   {
     "_id": "2",
     "idTable": "2",
     "reservationName": "resa2",
     "mealType": "LUNCH",
-    "date": "2021/05/05"
+    "date": "2021/06/10"
   },
   {
     "_id": "3",
     "idTable": "6",
     "reservationName": "resa3",
     "mealType": "LUNCH",
-    "date": "2021/05/05"
+    "date": "2021/06/10"
   }
 ]

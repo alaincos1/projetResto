@@ -3,42 +3,42 @@
     "_id": "1",
     "nbSeats": 4,
     "tableState": "FREE",
-    "idServer": "ser1",
-    "idHelper": "hel1"
+    "idServer": "serveur1",
+    "idHelper": "assistant2"
   },
   {
     "_id": "2",
     "nbSeats": 4,
     "tableState": "FREE",
-    "idServer": "ser1",
-    "idHelper": "hel1"
+    "idServer": "serveur1",
+    "idHelper": "assistant1"
   },
   {
     "_id": "3",
     "nbSeats": 4,
     "tableState": "FREE",
-    "idServer": "ser1",
-    "idHelper": "hel1"
+    "idServer": "serveur2",
+    "idHelper": "assistant2"
   },
   {
     "_id": "4",
     "nbSeats": 2,
     "tableState": "FREE",
-    "idServer": "ser2",
-    "idHelper": "hel2"
+    "idServer": "serveur1",
+    "idHelper": "assistant1"
   },
   {
     "_id": "5",
     "nbSeats": 2,
     "tableState": "FREE",
-    "idServer": "ser2",
-    "idHelper": "hel2"
+    "idServer": "serveur2",
+    "idHelper": "assistant1"
   },
   {
     "_id": "6",
     "nbSeats": 2,
     "tableState": "FREE",
-    "idServer": "ser2",
-    "idHelper": "hel2"
+    "idServer": "serveur1",
+    "idHelper": "assistant2"
   }
 ]
