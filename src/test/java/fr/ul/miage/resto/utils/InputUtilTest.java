@@ -16,30 +16,22 @@ class InputUtilTest {
     @Test
     @DisplayName("Récupère l'input")
     void testGetIntegerInput() {
-        try (MockedStatic<InputErrorUtil> utilities = Mockito.mockStatic(InputErrorUtil.class)) {
-            utilities.when(() -> InputErrorUtil.checkInteger("0", 0, 0))
-                    .thenReturn(0);
-            try (MockedStatic<InputUtil> utilities2 = Mockito.mockStatic(InputUtil.class)) {
-                utilities2.when(InputUtil::getUserInput)
-                        .thenReturn("0");
+        try (MockedStatic<InputUtil> utilities = Mockito.mockStatic(InputUtil.class)) {
+            utilities.when(InputUtil::getUserInput)
+                    .thenReturn("0");
 
-                assertEquals(0, InputUtil.getIntegerInput(0, 0));
-            }
+            assertEquals(0, InputUtil.getIntegerInput(0, 0));
         }
     }
 
     @Test
     @DisplayName("Récupère l'input")
     void testGetIntegerInputTwice() {
-        try (MockedStatic<InputErrorUtil> utilities = Mockito.mockStatic(InputErrorUtil.class)) {
-            utilities.when(() -> InputErrorUtil.checkInteger("0", 0, 0))
-                    .thenReturn(null).thenReturn(0);
-            try (MockedStatic<InputUtil> utilities2 = Mockito.mockStatic(InputUtil.class)) {
-                utilities2.when(InputUtil::getUserInput)
-                        .thenReturn("1").thenReturn("0");
+        try (MockedStatic<InputUtil> utilities = Mockito.mockStatic(InputUtil.class)) {
+            utilities.when(InputUtil::getUserInput)
+                    .thenReturn("1").thenReturn("0");
 
-                assertEquals(0, InputUtil.getIntegerInput(0, 0));
-            }
+            assertEquals(0, InputUtil.getIntegerInput(0, 0));
         }
     }
 }

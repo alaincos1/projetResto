@@ -36,7 +36,7 @@ public class LogInController {
     }
 
     protected void connectUserAccordingRole(Role role) {
-        RoleController controller = null;
+        RoleController controller;
         switch (role) {
             case DIRECTOR:
                 controller = new DirectorController(baseService, service, new DirectorView());
@@ -51,12 +51,15 @@ public class LogInController {
                 controller = new ServerController(baseService, service, new ServerView());
                 break;
             case HELPER:
+            default:
                 controller = new HelperController(baseService, service, new HelperView());
                 break;
         }
-        if (controller != null) {
-            controller.launch(role);
-        }
+        launchController(controller, role);
+    }
+
+    protected void launchController(RoleController controller, Role role) {
+        controller.launch(role);
     }
 
     public void disconnect() {

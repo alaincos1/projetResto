@@ -1,5 +1,6 @@
 package fr.ul.miage.resto.controller.role;
 
+import fr.ul.miage.resto.Launcher;
 import fr.ul.miage.resto.constants.Role;
 import fr.ul.miage.resto.constants.TableState;
 import fr.ul.miage.resto.dao.service.BaseService;
@@ -9,9 +10,9 @@ import fr.ul.miage.resto.view.role.HelperView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -111,5 +112,74 @@ class HelperControllerTest {
         verify(helperView, times(1)).displayTablesToClean(anyList());
         verify(baseService, times(0)).update(any(TableEntity.class));
         assertEquals(TableState.DIRTY, tables.get(0).getTableState());
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction goBackOrDisconnect")
+    void testCallAction0() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.HELPER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(helperController).goBackOrDisconnect(any(Role.class), any(), any());
+
+            helperController.callAction(0);
+
+            verify(helperController, times(1)).goBackOrDisconnect(any(Role.class), any(), any());
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction viewTables")
+    void testCallAction1() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.HELPER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(helperController).viewTables(any(UserEntity.class));
+
+            helperController.callAction(1);
+
+            verify(helperController, times(1)).viewTables(any(UserEntity.class));
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction cleanTables")
+    void testCallAction2() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.HELPER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+            doNothing().when(helperController).cleanTables(any(UserEntity.class));
+
+            helperController.callAction(2);
+
+            verify(helperController, times(1)).cleanTables(any(UserEntity.class));
+        }
+    }
+
+    @Test
+    @DisplayName("Vérifie le callAction Default")
+    void testCallActionDefault() {
+        try (MockedStatic<Launcher> utilities = Mockito.mockStatic(Launcher.class)) {
+            UserEntity user = new UserEntity();
+            user.setId("user");
+            user.setRole(Role.HELPER);
+            utilities.when(Launcher::getLoggedUser)
+                    .thenReturn(user);
+
+            helperController.callAction(-1);
+
+            verify(helperController, times(0)).viewTables(any(UserEntity.class));
+            verify(helperController, times(0)).goBackOrDisconnect(any(Role.class), any(), any());
+            verify(helperController, times(0)).cleanTables(any(UserEntity.class));
+        }
     }
 }

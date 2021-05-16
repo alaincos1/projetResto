@@ -113,31 +113,35 @@ public class ServerController extends RoleController {
             serverView.displayTablesAffected(tables);
             int idTableChoice = getIntegerInput(0, tables.size()) - 1;
             if (idTableChoice != -1) {
-                HashMap<Integer, MenuUtil> menus = getMenusAvailable(tables.get(idTableChoice).getTableState());
-                if (checkAvailabilityMenus(menus)) { //Min un type de plat contient des plats pour les choix disponibles de cette table
-                    boolean childOrder = askChildOrder();
-                    DishType dishType = getOrderDishType(menus);
-                    if (dishType != null) { //Min un plat est disponible pour ce type de plat
-                        List<String> idDishes = getDishesOrdered(dishType, menus);
-                        List<String> idDrinks = getDrinksOrdered();
-                        OrderEntity orderToSave = createOrderToSave(tables.get(idTableChoice).getId(), childOrder, idDishes, idDrinks);
-
-                        serverView.displayOrderToSave(orderToSave);
-                        Integer choice = getIntegerInput(0, 1);
-                        if (choice == 1) {
-                            baseService.save(orderToSave);
-                            serverView.displaySuccess();
-                        } else {
-                            serverView.displayError();
-                            orderToSave.giveStockBack(baseService);
-                        }
-                    }
-                } else {
-                    serverView.displayNoDishOnTheMenu();
-                }
+                presentMenu(tables, idTableChoice);
             }
         }
         launch(Role.SERVER);
+    }
+
+    protected void presentMenu(List<TableEntity> tables, int idTableChoice) {
+        HashMap<Integer, MenuUtil> menus = getMenusAvailable(tables.get(idTableChoice).getTableState());
+        if (checkAvailabilityMenus(menus)) { //Min un type de plat contient des plats pour les choix disponibles de cette table
+            boolean childOrder = askChildOrder();
+            DishType dishType = getOrderDishType(menus);
+            if (dishType != null) { //Min un plat est disponible pour ce type de plat
+                List<String> idDishes = getDishesOrdered(dishType, menus);
+                List<String> idDrinks = getDrinksOrdered();
+                OrderEntity orderToSave = createOrderToSave(tables.get(idTableChoice).getId(), childOrder, idDishes, idDrinks);
+
+                serverView.displayOrderToSave(orderToSave);
+                Integer choice = getIntegerInput(0, 1);
+                if (choice == 1) {
+                    baseService.save(orderToSave);
+                    serverView.displaySuccess();
+                } else {
+                    serverView.displayError();
+                    orderToSave.giveStockBack(baseService);
+                }
+            }
+        } else {
+            serverView.displayNoDishOnTheMenu();
+        }
     }
 
     //Si aucun plat n'est disponible dans aucun type de plat renvoie faux

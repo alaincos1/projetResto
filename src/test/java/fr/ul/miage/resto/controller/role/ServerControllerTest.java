@@ -751,15 +751,35 @@ class ServerControllerTest {
 
         verify(serverView, times(1)).displayMessage("À quelle table souhaitez vous prendre une commande ?" +
                 "\n 0) Annuler");
-        verify(serverController, times(0)).getMenusAvailable(any(TableState.class));
+        verify(serverController, times(0)).presentMenu(anyList(), anyInt());
+    }
+
+    @Test
+    @DisplayName("Prend une commande")
+    void testTakeOrders() {
+        UserEntity user = new UserEntity();
+        user.setId("serveur");
+        user.setRole(Role.SERVER);
+        List<TableEntity> tables = new ArrayList<>();
+        TableEntity table1 = new TableEntity();
+        table1.setId("1");
+        tables.add(table1);
+
+        when(baseService.getTablesReadyToOrderByServer(anyString())).thenReturn(tables);
+        doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
+        doNothing().when(serverController).presentMenu(anyList(), anyInt());
+        doNothing().when(serverController).launch(Role.SERVER);
+
+        serverController.takeOrders(user);
+
+        verify(serverView, times(1)).displayMessage("À quelle table souhaitez vous prendre une commande ?" +
+                "\n 0) Annuler");
+        verify(serverController, times(1)).presentMenu(anyList(), anyInt());
     }
 
     @Test
     @DisplayName("Prend une commande mais aucun plat sur le menus")
-    void testTakeOrdersNoDishTypeAvailable() {
-        UserEntity user = new UserEntity();
-        user.setId("serveur");
-        user.setRole(Role.SERVER);
+    void testPresentMenuNoDishTypeAvailable() {
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
         table1.setId("1");
@@ -770,22 +790,17 @@ class ServerControllerTest {
         menus.put(2, new MenuUtil(DishType.MAIN_COURSE, false, new ArrayList<>()));
         menus.put(3, new MenuUtil(DishType.DESSERT, false, new ArrayList<>()));
 
-        when(baseService.getTablesReadyToOrderByServer(anyString())).thenReturn(tables);
-        doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
         doReturn(menus).when(serverController).getMenusAvailable(any(TableState.class));
-        doNothing().when(serverController).launch(Role.SERVER);
 
-        serverController.takeOrders(user);
+        serverController.presentMenu(tables,0);
 
         verify(serverView, times(1)).displayNoDishOnTheMenu();
     }
 
     @Test
     @DisplayName("Prend une commande mais abandon au moment de chosir le type de plat")
-    void testTakeOrdersCancelChoiceDishType() {
-        UserEntity user = new UserEntity();
-        user.setId("serveur");
-        user.setRole(Role.SERVER);
+    void testPresentMenuCancelChoiceDishType() {
+
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
         table1.setId("1");
@@ -796,24 +811,18 @@ class ServerControllerTest {
         menus.put(2, new MenuUtil(DishType.MAIN_COURSE, true, new ArrayList<>()));
         menus.put(3, new MenuUtil(DishType.DESSERT, true, new ArrayList<>()));
 
-        when(baseService.getTablesReadyToOrderByServer(anyString())).thenReturn(tables);
-        doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
         doReturn(menus).when(serverController).getMenusAvailable(any(TableState.class));
         doReturn(true).when(serverController).askChildOrder();
         doReturn(null).when(serverController).getOrderDishType(any());
-        doNothing().when(serverController).launch(Role.SERVER);
 
-        serverController.takeOrders(user);
+        serverController.presentMenu(tables,0);
 
         verify(serverController, times(0)).getDishesOrdered(any(DishType.class), any());
     }
 
     @Test
     @DisplayName("Prend une commande mais annule à la fin de la procédure ")
-    void testTakeOrdersCancleAllOrder() {
-        UserEntity user = new UserEntity();
-        user.setId("serveur");
-        user.setRole(Role.SERVER);
+    void testPresentMenuCancelAllOrder() {
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
         table1.setId("1");
@@ -829,8 +838,7 @@ class ServerControllerTest {
         OrderEntity dish = new OrderEntity();
         OrderEntity spy = spy(dish);
 
-        when(baseService.getTablesReadyToOrderByServer(anyString())).thenReturn(tables);
-        doReturn(1).doReturn(0).when(serverController).getIntegerInput(anyInt(), anyInt());
+        doReturn(0).when(serverController).getIntegerInput(anyInt(), anyInt());
         doReturn(menus).when(serverController).getMenusAvailable(any(TableState.class));
         doReturn(true).when(serverController).askChildOrder();
         doReturn(DishType.STARTER).when(serverController).getOrderDishType(any());
@@ -838,9 +846,8 @@ class ServerControllerTest {
         doReturn(new ArrayList<>()).when(serverController).getDrinksOrdered();
         doReturn(spy).when(serverController).createOrderToSave(anyString(), anyBoolean(), anyList(), anyList());
         doNothing().when(spy).giveStockBack(any(BaseService.class));
-        doNothing().when(serverController).launch(Role.SERVER);
 
-        serverController.takeOrders(user);
+        serverController.presentMenu(tables,0);
 
         verify(serverView, times(1)).displayOrderToSave(any(OrderEntity.class));
         verify(baseService, times(0)).save(any(OrderEntity.class));
@@ -849,10 +856,7 @@ class ServerControllerTest {
 
     @Test
     @DisplayName("Prend une commande")
-    void testTakeOrders() {
-        UserEntity user = new UserEntity();
-        user.setId("serveur");
-        user.setRole(Role.SERVER);
+    void testPresentMenu() {
         List<TableEntity> tables = new ArrayList<>();
         TableEntity table1 = new TableEntity();
         table1.setId("1");
@@ -865,17 +869,18 @@ class ServerControllerTest {
         List<String> dishes = new ArrayList<>();
         dishes.add("Salades de riz");
         dishes.add("Beignet de crevettes");
+        OrderEntity dish = new OrderEntity();
+        OrderEntity spy = spy(dish);
 
-        when(baseService.getTablesReadyToOrderByServer(anyString())).thenReturn(tables);
         doReturn(1).when(serverController).getIntegerInput(anyInt(), anyInt());
         doReturn(menus).when(serverController).getMenusAvailable(any(TableState.class));
         doReturn(true).when(serverController).askChildOrder();
         doReturn(DishType.STARTER).when(serverController).getOrderDishType(any());
         doReturn(dishes).when(serverController).getDishesOrdered(any(DishType.class), any());
         doReturn(new ArrayList<>()).when(serverController).getDrinksOrdered();
-        doNothing().when(serverController).launch(Role.SERVER);
+        doReturn(spy).when(serverController).createOrderToSave(anyString(), anyBoolean(), anyList(), anyList());
 
-        serverController.takeOrders(user);
+        serverController.presentMenu(tables,0);
 
         verify(serverView, times(1)).displaySuccess();
         verify(baseService, times(1)).save(any(OrderEntity.class));

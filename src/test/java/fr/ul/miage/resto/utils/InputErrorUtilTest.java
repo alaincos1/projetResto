@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DisplayName("InputErrorUtil")
-class TestInputErrorUtil {
+class InputErrorUtilTest {
 
     @ParameterizedTest
     @DisplayName("Integer : Vérifier que si l'input est un string, est trop petit ou trop grand alors renvoyer null")
